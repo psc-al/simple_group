@@ -1,0 +1,82 @@
+// for the love of everything that is holy someone please make this nicer
+.navbar {
+  @include padding(null var(--spacing--small) null var(--spacing--small));
+  background-color: $primary-color;
+  height: 55px;
+  line-height: 55px;
+
+  .navbar-elements {
+    width: 75%;
+    margin: auto;
+
+    .navbar-brand {
+      float: left;
+
+      .navbar-brand-logo > img {
+        height: 40px;
+        vertical-align: middle;
+      }
+
+      .navbar-brand-name {
+        color: $base-background-color;
+        font-size: 1.15rem;
+        vertical-align: middle;
+        margin-left: var(--spacing--smaller);
+      }
+    }
+
+    .navbar-links {
+      ul {
+        float: right;
+        li {
+          @include margin(
+            null var(--spacing--smaller) null var(--spacing--smaller)
+          );
+          display: inline-block;
+          a {
+            text-decoration: none;
+            color: $base-background-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 935px) {
+  .navbar {
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+    .navbar-elements {
+      width: 100%;
+      .navbar-brand {
+        text-align: center;
+        float: none;
+        .navbar-brand-logo > img {
+          height: 30px;
+          vertical-align: middle;
+        }
+
+        .navbar-brand-name {
+          color: $base-background-color;
+          font-size: 1rem;
+          vertical-align: middle;
+          margin-left: var(--spacing--smaller);
+        }
+      }
+      .navbar-links {
+        ul {
+          float: none;
+          li {
+            height: 35px;
+            margin: 0;
+            display: block;
+            text-align: center;
+            background-color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}

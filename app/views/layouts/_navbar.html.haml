@@ -1,0 +1,20 @@
+.navbar 
+  .navbar-elements
+    .navbar-brand
+      %span{ class: "navbar-brand-logo" }
+        = image_tag("logo.png")
+      %span{ class: "navbar-brand-name" }
+        = t("branding.organization_name")
+
+    .navbar-links
+      %ul
+        %li
+          %span= link_to t("navigation.links.recent"), "#"
+        %li
+          %span= link_to t("navigation.links.submit"), "#"
+        %li
+          %span= link_to t("navigation.links.your_submissions"), "#"
+        %li
+          %span= link_to t("navigation.links.inbox"), "#"
+        %li
+          %span= link_to "placeholduser (5)", "#"

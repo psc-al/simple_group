@@ -1,0 +1,7 @@
+form > .field > br { display: none; }
+form {
+  .hint {
+    @include margin(null null var(--spacing--smaller) null);
+    display: block;
+  }
+}

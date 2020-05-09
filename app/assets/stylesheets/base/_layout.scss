@@ -14,3 +14,15 @@ body {
   height: 100%;
   margin: 0;
 }
+
+.application-container {
+  @include padding(var(--spacing--small));
+  width: 75%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 935px) {
+  .application-container {
+    margin-top: 175px;
+  }
+}

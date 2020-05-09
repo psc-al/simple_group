@@ -33,9 +33,14 @@ gem "haml-rails", "~> 2.0"
 
 # devise for auth
 gem "devise"
+gem "devise-i18n"
+
+# simple form for forms
+gem "simple_form"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'factory_bot_rails'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 4.0.0'
   gem 'shoulda-matchers'
@@ -51,7 +56,10 @@ group :development do
 end
 
 group :test do
+  gem "capybara"
+  gem "formulaic"
   gem "rspec_junit_formatter"
+  gem "selenium-webdriver"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

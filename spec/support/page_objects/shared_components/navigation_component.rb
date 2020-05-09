@@ -11,9 +11,9 @@ module NavigationComponent
     end
   end
 
-  def has_profile_link_for?(user)
+  def has_edit_profile_link_for?(user)
     within(".navbar-links") do
-      has_link?(user.username, href: edit_user_registration_path(user.id))
+      has_link?(user.username, href: edit_user_registration_path)
     end
   end
 

@@ -19,11 +19,11 @@ RSpec.describe "navigation" do
 
       page.visit(as: user)
 
-      expect(page).to have_profile_link_for(user)
+      expect(page).to have_edit_profile_link_for(user)
 
       page.visit_profile_link_for(user)
 
-      expect(page).to have_current_path(edit_user_registration_path(user.id))
+      expect(page).to have_current_path(edit_user_registration_path)
     end
   end
 end

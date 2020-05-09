@@ -31,6 +31,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # haml for views
 gem "haml-rails", "~> 2.0"
 
+# devise for auth
+gem "devise"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

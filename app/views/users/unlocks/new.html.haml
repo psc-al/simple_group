@@ -3,10 +3,10 @@
   = f.error_notification
   = f.full_error :unlock_token
   .form-inputs
-    = f.input :email,                       |
-      required: true,                       |
-      autofocus: true,                      |
-      input_html: { autocomplete: "email" } |
+    = f.input :email,
+      required: true,
+      autofocus: true,
+      input_html: { autocomplete: "email" }
   .form-actions
     = f.button :submit, t(".resend_unlock_instructions")
 = render "users/shared/links"

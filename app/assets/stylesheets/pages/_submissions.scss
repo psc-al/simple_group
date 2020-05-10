@@ -1,0 +1,41 @@
+.submissions-list {
+  @include padding(var(--spacing--smaller) null null null);
+
+  ol {
+    li {
+      @include padding(null null var(--spacing--small) null);
+      .submission-line1 {
+        .submission-link a {
+          text-decoration: none;
+          font-size: 1.2rem;
+          font-weight: var(--font-weight--bold);
+          font-color: $primary-color;
+        }
+      }
+      .submission-line2 {
+        .submission-info, .submission-comments {
+          color: $scorpion;
+          a {
+            text-decoration: none;
+            color: $scorpion;
+          }
+        }
+
+        .submission-time::after {
+          content: "|";
+        }
+
+        .submission-info a::after {
+          @include margin(null 1px null null);
+          @include padding(null null null 4px);
+          content: "|";
+          font-size: 1rem;
+        }
+        .submission-user {
+          color: $off-indigo;
+          a { text-decoration: none; }
+        }
+      }
+    }
+  }
+}

@@ -4,5 +4,6 @@ FactoryBot.define do
     sequence(:url) { |n| "https://www.somesite#{n}.com/path/to/content" }
     body { nil }
     user
+    original_author { false }
   end
 end

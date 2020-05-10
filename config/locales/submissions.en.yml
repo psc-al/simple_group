@@ -1,0 +1,9 @@
+en:
+  submissions:
+    submission_list_item:
+      submitted_by: via 
+      authored_by: authored by
+      ago: ago
+      hide: hide
+      save: save
+      comments: "%{count} comments"

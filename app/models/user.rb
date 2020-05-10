@@ -11,6 +11,8 @@ class User < ApplicationRecord
     admin: 20
   }
 
+  has_many :submissions
+
   validates :username, presence: true
 
   def self.find_first_by_auth_conditions(warden_conditions)

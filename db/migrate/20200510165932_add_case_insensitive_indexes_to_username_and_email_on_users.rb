@@ -11,7 +11,7 @@ class AddCaseInsensitiveIndexesToUsernameAndEmailOnUsers < ActiveRecord::Migrati
     remove_index :users, name: "index_users_on_LOWER_email"
     remove_index :users, name: "index_users_on_LOWER_username"
 
-    add_index :users, "email", unique: true
-    add_index :users, "username", unique: true
+    add_index :users, :email, unique: true
+    add_index :users, :username, unique: true
   end
 end

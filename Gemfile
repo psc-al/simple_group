@@ -39,10 +39,14 @@ gem "devise-i18n"
 gem "simple_form"
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem "bundler-audit"
   gem 'factory_bot_rails'
+  gem 'haml_lint', require: false
   gem 'pry-rails'
   gem 'rspec-rails', '~> 4.0.0'
+  gem 'rubocop', '~> 0.82.0', require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
   gem 'shoulda-matchers'
 end
 

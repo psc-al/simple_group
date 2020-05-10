@@ -1,0 +1,90 @@
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@0.1.4
+
+jobs:
+  build:
+    parallelism: 1
+    working_directory: ~/simple_group
+
+    docker:
+      - image: circleci/ruby:2.7.1-node
+        environment:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: simple_group
+      - image: circleci/postgres:12.1-alpine-ram
+        environment:
+          POSTGRES_DB: simple_group_test
+          POSTGRES_USER: simple_group
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore bundle cache
+          key: simple_group-bundle-{{ arch }}-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Bundle install
+          command: |
+            gem install bundler
+            bundle config --local disable_platform_warnings true
+            bundle config set path "vendor/bundle"
+            bundle install --jobs=4 --retry=3
+
+      - save_cache:
+          name: Save bundle cache
+          key: simple_group-bundle-{{ arch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Audit bundle
+          command: bundle exec bundle-audit check --update
+
+      - run:
+          name: Validate HAML formatting
+          command: bundle exec haml-lint app/views/**/*.haml
+
+      - run:
+          name: Database setup
+          command: bundle exec rails db:test:prepare
+
+      - run:
+          name: Precompile assets
+          command: bundle exec rails assets:precompile
+
+      # Installing chrome & chromedriver
+      - run: sudo apt-get -y install xvfb libwayland-server0 libgbm1
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+
+      - run:
+          name: Run Ruby tests
+          command: |
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+            xvfb-run -a bundle exec rspec --format progress --format RspecJunitFormatter -o /tmp/rspec.xml -- ${TEST_FILES}
+
+      - run:
+          name: Run seeds
+          command: |
+            if [ $CIRCLE_NODE_INDEX -eq 0 ]; then
+              echo "Running seeds on CI node $CIRCLE_NODE_INDEX"
+              bundle exec rails db:seed
+            else
+              echo "Not running seeds on CI node $CIRCLE_NODE_INDEX"
+            fi
+
+      - store_test_results:
+          path: /tmp/rspec.xml
+          prefix: tests
+
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+
+      - store_artifacts:
+          path: tmp/screenshots
+          prefix: screenshots

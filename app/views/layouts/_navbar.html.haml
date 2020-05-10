@@ -1,9 +1,9 @@
-.navbar 
+.navbar
   .navbar-elements
     .navbar-brand
-      %span{ class: "navbar-brand-logo" }
+      %span.navbar-brand-logo
         = image_tag("logo.png")
-      %span{ class: "navbar-brand-name" }
+      %span.navbar-brand-name
         = t("branding.organization_name")
 
     .navbar-links
@@ -17,4 +17,4 @@
         %li
           %span= link_to t("navigation.links.inbox"), "#"
         %li
-          %span= link_to *users_link_for(current_user)
+          %span= link_to(*users_link_for(current_user))

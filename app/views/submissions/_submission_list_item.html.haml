@@ -1,0 +1,16 @@
+%li{ id: "submission_#{submission.id}" }
+  .submission-line1
+    %span.submission-link= link_to(submission.title, submission_href_for(submission))
+  .submission-line2
+    %span.submission-info
+      = submitted_by_text(submission)
+    %span.submission-user
+      = link_to submission.user.username, "#"
+    %span.submission-info
+      %span.submission-time
+        = submitted_time_text(submission)
+    %span.submission-info
+      = link_to t(".hide"), "#"
+      = link_to t(".save"), "#"
+    %span.submission-comments
+      = link_to t(".comments", count: 25), "#"

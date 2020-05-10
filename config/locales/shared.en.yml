@@ -1,0 +1,5 @@
+en:
+  shared:
+    pagination_controls:
+      next_page: Next Page →
+      previous_page: ← Previous Page

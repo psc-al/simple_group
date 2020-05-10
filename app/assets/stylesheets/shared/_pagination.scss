@@ -1,0 +1,10 @@
+.pagination-controls {
+  @include padding(var(--spacing--small) null var(--spacing--small) null);
+  .pagination-back {
+    margin-right: var(--spacing--small);
+  }
+  .pagination-back > a, .pagination-forward > a {
+    text-decoration: none;
+    color: $congress-blue;
+  }
+}

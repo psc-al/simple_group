@@ -6,7 +6,7 @@
   line-height: 55px;
 
   .navbar-elements {
-    width: 75%;
+    width: 50%;
     margin: auto;
 
     .navbar-brand {
@@ -43,7 +43,7 @@
   }
 }
 
-@media only screen and (max-width: 935px) {
+@media only screen and (max-width: 1155px) {
   .navbar {
     padding: 0;
     height: 40px;

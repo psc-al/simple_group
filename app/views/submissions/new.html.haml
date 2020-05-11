@@ -1,0 +1,12 @@
+%h2= t(".title")
+%ul.errors
+  - @form.errors.values.flatten.map do |e|
+    %li.error= e
+= simple_form_for @form, url: submissions_path do |f|
+  = f.input :url
+  = f.input :title
+  = f.input :body, as: :text, input_html: { rows: 15 }
+  .original-author-statement
+    = f.input :original_author, as: :boolean, wrapper: :left_hand_label
+    = t(".original_author")
+  = f.submit

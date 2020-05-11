@@ -1,0 +1,8 @@
+en:
+  simple_form:
+    labels:
+      create_submission_form:
+        url: "URL:"
+        title: "Title:"
+        body: "Body:"
+        original_author: "Original author:"

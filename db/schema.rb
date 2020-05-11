@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_030843) do
+ActiveRecord::Schema.define(version: 2020_05_15_043324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_05_12_030843) do
     t.boolean "original_author", default: false, null: false
     t.bigint "domain_id"
     t.index ["domain_id"], name: "index_submissions_on_domain_id", where: "(domain_id IS NOT NULL)"
+    t.index ["url"], name: "index_submissions_on_url", unique: true, where: "(url IS NOT NULL)"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 

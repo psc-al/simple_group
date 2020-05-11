@@ -1,5 +1,5 @@
 en:
   url:
     error:
-      scheme: "unaccepted URL scheme: %{scheme}"
+      scheme: "unaccepted URL scheme: %{scheme}. Must be http or https (and make sure it's prepended to your URL!)"
       invalid: "invalid URL: %{url}"

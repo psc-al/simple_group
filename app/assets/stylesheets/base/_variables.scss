@@ -1,19 +1,22 @@
 // Colors
+$alto: #cecece;
 $blue: #1565c0;
 $blue-light: #3b83d5;
 $blue-light-very: #f4fbff;
 $congress-blue: #004e98;
+$gallery: #ebebeb;
 $gray: #333;
 $off-indigo: #4f86c6;
+$red: #ff0000;
 $scorpion: #606060;
 $white: #fff;
 $white-gray: #fafafa;
 
 // Font Colors
 $font-color--base: $gray;
-$action-color: $blue;
+$action-color: $congress-blue;
 $action-color--alt: $blue-light;
-$action-color--contrast: $white;
+$action-color--contrast: $gallery;
 
 // Background Colors
 $base-background-color: $white;
@@ -68,11 +71,13 @@ $line-height-heading: 1.2;
 // Borders
 $border-radius: 0.1875rem;
 $border: 0.0625rem solid $gray;
+$light-border: 1px solid $alto;
 
 // Spacing
 $spacing: 1.5rem;
 $spacing-small: 0.75rem;
 $spacing-smaller: 0.5rem;
+$spacing-xs: 0.25rem;
 
 // Focus
 $focus-outline: 0.1875rem solid #{$action-color};

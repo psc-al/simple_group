@@ -1,0 +1,5 @@
+= render "submission_list_item", submission: @submission
+.submission-body.latex-container
+  = sanitize CommonMarker.render_html(@submission.body.gsub("\\", "\\\\\\")) if @submission.body.present?
+
+= javascript_pack_tag :latex

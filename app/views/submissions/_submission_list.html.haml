@@ -1,5 +1,6 @@
 .submissions-list
   %ol
     - submissions.each do |s|
-      = render "submission_list_item", submission: s
+      %li
+        = render "submission_list_item", submission: s
 

@@ -40,6 +40,7 @@ gem "simple_form"
 
 group :development, :test do
   gem "bundler-audit"
+  gem "dotenv-rails"
   gem 'factory_bot_rails'
   gem 'haml_lint', require: false
   gem 'pry-rails'

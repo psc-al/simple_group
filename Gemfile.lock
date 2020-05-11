@@ -81,6 +81,8 @@ GEM
       xpath (~> 3.2)
     childprocess (3.0.0)
     coderay (1.1.2)
+    commonmarker (0.21.0)
+      ruby-enum (~> 0.5)
     concurrent-ruby (1.1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -246,6 +248,8 @@ GEM
       rubocop (>= 0.72.0)
     rubocop-rspec (1.39.0)
       rubocop (>= 0.68.1)
+    ruby-enum (0.8.0)
+      i18n
     ruby-progressbar (1.10.1)
     ruby_parser (3.14.2)
       sexp_processor (~> 4.9)
@@ -323,6 +327,7 @@ DEPENDENCIES
   bourbon
   bundler-audit
   capybara
+  commonmarker
   devise
   devise-i18n
   dotenv-rails

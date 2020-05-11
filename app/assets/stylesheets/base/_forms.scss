@@ -104,3 +104,12 @@ select {
     outline: none;
   }
 }
+
+.errors {
+  list-style-type: circle;
+  margin-left: $spacing;
+  margin-bottom: $spacing-smaller;
+  .error {
+    color: $red;
+  }
+}

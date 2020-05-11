@@ -7,3 +7,16 @@ en:
       hide: hide
       save: save
       comments: "%{count} comments"
+    new:
+      title: Make a new submission
+      original_author: I am the original author of the submission at this URL / this text.
+      error:
+        banned_domain: "The submission is from a banned domain: %{domain}"
+        title_missing: Please ensure you provide a helpful title within 10 and 175 characters long.
+        title_length: Title must be between 10 and 175 characters long.
+        url_exists: Woops! It looks like there is already a submission for this URL!
+        url_health: >-
+          The URL you submitted failed our health checks. Please ensure you've specified the URL
+          scheme (http / https) and that the website is up and accepting connections. If the problem
+          persists please contact our mod team.
+        url_or_body: You must specify a URL or body, but not both. If you submit a URL, put your description in the comments.

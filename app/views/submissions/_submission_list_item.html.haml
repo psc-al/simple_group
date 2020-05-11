@@ -1,6 +1,8 @@
-%li{ id: "submission_#{submission.id}" }
+.submission{ id: "submission_#{submission.id}" }
   .submission-line1
     %span.submission-link= link_to(submission.title, submission_href_for(submission))
+    %span.submission-info
+      %i= submission.domain.name if submission.domain.present?
   .submission-line2
     %span.submission-info
       = submitted_by_text(submission)

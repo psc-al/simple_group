@@ -15,7 +15,7 @@ class SubmissionSearch
   attr_reader :params
 
   def scope
-    Submission.preload(:user).all
+    Submission.preload(:user, :domain)
   end
 
   def pagination_params

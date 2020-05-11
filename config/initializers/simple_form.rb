@@ -64,6 +64,11 @@ SimpleForm.setup do |config|
     # b.use :full_error, wrap_with: { tag: :span, class: :error }
   end
 
+  config.wrappers :left_hand_label, class: "left-hand-label" do |b|
+    b.use :label
+    b.use :input
+  end
+
   # The default wrapper to be used by the FormBuilder.
   config.default_wrapper = :default
 

@@ -1,40 +1,60 @@
 .submissions-list {
   @include padding($spacing-smaller null null null);
+}
 
-  ol {
-    li {
-      @include padding(null null $spacing-small null);
-      .submission-line1 {
-        .submission-link a {
-          text-decoration: none;
-          font-size: 1.2rem;
-          font-weight: $font-weight-bold;
-        }
-      }
-      .submission-line2 {
-        .submission-info, .submission-comments {
-          color: $scorpion;
-          a {
-            text-decoration: none;
-            color: $scorpion;
-          }
-        }
+.submission {
+  @include padding(null null $spacing-small null);
+  .submission-info, .submission-comments {
+    color: $scorpion;
+    a {
+      text-decoration: none;
+      color: $scorpion;
+    }
+  }
+  .submission-line1 {
+    .submission-link a {
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: $font-weight-bold;
+      margin-right: $spacing-xs;
+    }
+  }
+  .submission-line2 {
+    .submission-time::after {
+      content: "|";
+    }
 
-        .submission-time::after {
-          content: "|";
-        }
+    .submission-info a::after {
+      @include margin(null 1px null null);
+      @include padding(null null null 4px);
+      content: "|";
+      font-size: 1rem;
+    }
+    .submission-user {
+      color: $off-indigo;
+      a { text-decoration: none; }
+    }
+  }
+}
 
-        .submission-info a::after {
-          @include margin(null 1px null null);
-          @include padding(null null null 4px);
-          content: "|";
-          font-size: 1rem;
-        }
-        .submission-user {
-          color: $off-indigo;
-          a { text-decoration: none; }
-        }
-      }
+.submission-body {
+  border-top: $light-border;
+  padding-top: $spacing-smaller
+}
+
+.original-author-statement {
+  padding-top: $spacing-smaller;
+  margin-bottom: $spacing-smaller;
+  .left-hand-label {
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: 1155px) {
+  .submissions-list {
+    .submission {
+      border-bottom: $light-border;
+      margin-bottom: $spacing-smaller;
     }
   }
 }

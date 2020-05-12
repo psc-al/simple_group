@@ -1,0 +1,5 @@
+en:
+  url:
+    error:
+      scheme: "unaccepted URL scheme: %{scheme}"
+      invalid: "invalid URL: %{url}"

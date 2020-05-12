@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_10_221526) do
+ActiveRecord::Schema.define(version: 2020_05_12_030843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "domains", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "tracker", default: false, null: false
+    t.datetime "banned_at"
+    t.bigint "banned_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["banned_by_id"], name: "index_domains_on_banned_by_id", where: "(banned_by_id IS NOT NULL)"
+    t.index ["name"], name: "index_domains_on_name", unique: true
+  end
 
   create_table "submissions", force: :cascade do |t|
     t.string "title", limit: 175, null: false
@@ -23,6 +34,8 @@ ActiveRecord::Schema.define(version: 2020_05_10_221526) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "original_author", default: false, null: false
+    t.bigint "domain_id"
+    t.index ["domain_id"], name: "index_submissions_on_domain_id", where: "(domain_id IS NOT NULL)"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
@@ -51,5 +64,7 @@ ActiveRecord::Schema.define(version: 2020_05_10_221526) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "domains", "users", column: "banned_by_id"
+  add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
 end

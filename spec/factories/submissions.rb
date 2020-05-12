@@ -5,5 +5,6 @@ FactoryBot.define do
     body { nil }
     user
     original_author { false }
+    domain
   end
 end

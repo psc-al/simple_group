@@ -1,13 +1,14 @@
 // for the love of everything that is holy someone please make this nicer
 .navbar {
-  @include padding(null var(--spacing--small) null var(--spacing--small));
-  background-color: $primary-color;
-  height: 55px;
-  line-height: 55px;
+  @include padding(null $spacing-small null $spacing-small);
+  height: 60px;
+  line-height: 60px;
+  box-shadow: 0px 5px 5px -4px rgba(0,0,0,0.2);
 
   .navbar-elements {
-    width: 50%;
+    width: 70%;
     margin: auto;
+    max-width: 80rem;
 
     .navbar-brand {
       float: left;
@@ -20,10 +21,10 @@
       }
 
       .navbar-brand-name {
-        color: $base-background-color;
-        font-size: 1.15rem;
+        color: $gray;
+        font-size: 2rem;
         vertical-align: middle;
-        margin-left: var(--spacing--smaller);
+        margin-left: $spacing-smaller;
       }
     }
 
@@ -32,12 +33,21 @@
         float: right;
         li {
           @include margin(
-            null var(--spacing--smaller) null var(--spacing--smaller)
+            null $spacing-smaller null $spacing-smaller
           );
           display: inline-block;
           a {
             text-decoration: none;
-            color: $base-background-color;
+            color: $gray;
+            font-variant: small-caps;
+
+            &:hover {
+              color: $action-color--alt;
+            }
+
+            &:active {
+              color: $action-color;
+            }
           }
         }
       }
@@ -45,10 +55,10 @@
   }
 }
 
-@media only screen and (max-width: 1155px) {
+@media only screen and (max-width: 1000px) {
   .navbar {
     padding: 0;
-    height: 40px;
+    height: 80px;
     line-height: 40px;
     .navbar-elements {
       width: 100%;
@@ -61,21 +71,22 @@
         }
 
         .navbar-brand-name {
-          color: $base-background-color;
+          color: $gray;
           font-size: 1rem;
           vertical-align: middle;
-          margin-left: var(--spacing--smaller);
+          margin-left: $spacing-smaller;
         }
       }
       .navbar-links {
         ul {
-          float: none;
+          height: 40px;
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
           li {
-            height: 35px;
             margin: 0;
-            display: block;
+            display: inline;
             text-align: center;
-            background-color: $primary-color;
           }
         }
       }

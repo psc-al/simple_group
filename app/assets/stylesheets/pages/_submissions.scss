@@ -1,15 +1,14 @@
 .submissions-list {
-  @include padding(var(--spacing--smaller) null null null);
+  @include padding($spacing-smaller null null null);
 
   ol {
     li {
-      @include padding(null null var(--spacing--small) null);
+      @include padding(null null $spacing-small null);
       .submission-line1 {
         .submission-link a {
           text-decoration: none;
           font-size: 1.2rem;
-          font-weight: var(--font-weight--bold);
-          font-color: $primary-color;
+          font-weight: $font-weight-bold;
         }
       }
       .submission-line2 {

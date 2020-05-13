@@ -12,6 +12,8 @@
     .navbar-brand {
       float: left;
 
+      a { text-decoration: none; }
+
       .navbar-brand-logo > img {
         height: 40px;
         vertical-align: middle;

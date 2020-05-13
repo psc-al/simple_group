@@ -5,30 +5,35 @@ button,
   appearance: none;
   background-color: $action-color;
   border: 0;
-  border-radius: var(--border-radius);
+  border-radius: $border-radius;
   color: $action-color--contrast;
   cursor: pointer;
   display: inline-block;
-  font-family: var(--font-family-base);
+  font-family: $font-stack;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   font-weight: 600;
   line-height: 1;
-  padding: var(--spacing--small) var(--spacing);
+  padding: $spacing-small $spacing;
   text-align: center;
   text-decoration: none;
-  transition: background-color var(--duration) var(--timing);
+  transition: background-color $transition;
   user-select: none;
   vertical-align: middle;
   white-space: nowrap;
+  font-variant: small-caps;
+  margin: 0.5rem 0;
 
   &:hover {
     background-color: $action-color--alt;
   }
 
+  &:focus:not(:hover) {
+    outline: $focus-outline;
+  }
+
   &:focus {
-    outline: var(--focus-outline);
-    outline-offset: var(--focus-outline-offset);
+    outline: none;
   }
 
   &:disabled {

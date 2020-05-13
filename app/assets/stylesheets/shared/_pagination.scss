@@ -1,7 +1,7 @@
 .pagination-controls {
-  @include padding(var(--spacing--small) null var(--spacing--small) null);
+  @include padding($spacing-small null $spacing-small null);
   .pagination-back {
-    margin-right: var(--spacing--small);
+    margin-right: $spacing-small;
   }
   .pagination-back > a, .pagination-forward > a {
     text-decoration: none;

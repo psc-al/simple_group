@@ -1,7 +1,7 @@
 form > .field > br { display: none; }
 form {
   .hint {
-    @include margin(null null var(--spacing--smaller) null);
+    @include margin(null null $spacing-smaller null);
     display: block;
   }
 }

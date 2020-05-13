@@ -16,14 +16,14 @@ body {
 }
 
 .application-container {
-  @include padding(var(--spacing--small));
-  width: 50%;
+  @include padding($spacing-small);
+  width: 70%;
   margin: auto;
+  max-width: 80rem;
 }
 
-@media only screen and (max-width: 1155px) {
+@media only screen and (max-width: 1000px) {
   .application-container {
-    margin-top: 175px;
-    width: 60%;
+    width: 100%;
   }
 }

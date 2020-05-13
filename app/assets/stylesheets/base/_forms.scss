@@ -1,8 +1,3 @@
-:root {
-  --form-box-shadow: inset 0 --border-width 0.1875rem rgba(#000, 0.06);
-  --form-box-shadow-focus: var(--form-box-shadow), 0 0 0.3125rem #{$action-color};
-}
-
 fieldset {
   background-color: transparent;
   border: 0;
@@ -47,10 +42,9 @@ textarea {
 input:not([type]),
 textarea {
   appearance: none;
-  background-color: transparent;
+  background-color: $white-gray;
   border: var(--border);
   border-radius: var(--border-radius);
-  box-shadow: var(--form-box-shadow);
   box-sizing: border-box;
   margin-bottom: var(--spacing--small);
   padding: calc(var(--spacing) / 3);
@@ -58,7 +52,7 @@ textarea {
   width: 100%;
 
   &:focus {
-    box-shadow: var(--form-box-shadow-focus);
+    background-color: $blue-light-very;
   }
 
   &:disabled {
@@ -85,7 +79,7 @@ textarea {
 
 [type="checkbox"],
 [type="radio"] {
-  display: inline;
+  display: inline-block;
   margin-right: var(--spacing--small);
 }
 

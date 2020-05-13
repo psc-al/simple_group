@@ -1,13 +1,14 @@
 // for the love of everything that is holy someone please make this nicer
 .navbar {
   @include padding(null var(--spacing--small) null var(--spacing--small));
-  background-color: $primary-color;
-  height: 55px;
-  line-height: 55px;
+  height: 60px;
+  line-height: 60px;
+  box-shadow: 0px 5px 5px -4px rgba(0,0,0,0.2);
 
   .navbar-elements {
-    width: 50%;
+    width: 70%;
     margin: auto;
+    max-width: 80rem;
 
     .navbar-brand {
       float: left;
@@ -20,8 +21,8 @@
       }
 
       .navbar-brand-name {
-        color: $base-background-color;
-        font-size: 1.15rem;
+        color: $gray;
+        font-size: 2rem;
         vertical-align: middle;
         margin-left: var(--spacing--smaller);
       }
@@ -37,7 +38,16 @@
           display: inline-block;
           a {
             text-decoration: none;
-            color: $base-background-color;
+            color: $gray;
+            font-variant: small-caps;
+
+            &:hover {
+              color: $action-color--alt;
+            }
+
+            &:active {
+              color: $action-color;
+            }
           }
         }
       }
@@ -61,7 +71,7 @@
         }
 
         .navbar-brand-name {
-          color: $base-background-color;
+          color: $gray;
           font-size: 1rem;
           vertical-align: middle;
           margin-left: var(--spacing--smaller);
@@ -75,7 +85,6 @@
             margin: 0;
             display: block;
             text-align: center;
-            background-color: $primary-color;
           }
         }
       }

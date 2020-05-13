@@ -1,11 +1,13 @@
 // Colors
 $blue: #1565c0;
 $blue-light: #3b83d5;
+$blue-light-very: #f4fbff;
 $congress-blue: #004e98;
 $gray: #333;
 $off-indigo: #4f86c6;
 $scorpion: #606060;
 $white: #fff;
+$white-gray: #fafafa;
 
 // Font Colors
 $font-color--base: $gray;
@@ -14,15 +16,16 @@ $action-color--alt: $blue-light;
 $action-color--contrast: $white;
 
 // Background Colors
-$base-background-color: #EBEBEB;
+$base-background-color: white;
 $viewport-background-color: $base-background-color;
 
 // Primary color (nav, etc.)
 $primary-color: $congress-blue;
 
 :root {
+
   // Typography
-  --font-family: system-ui, sans-serif;
+  --font-family: "CMU Serif", system-ui, sans-serif;
   --font-family--heading: var(--font-family);
 
   --font-weight--thin: 100;
@@ -47,7 +50,7 @@ $primary-color: $congress-blue;
 
   // Borders
   --border-width: 0.0625rem;
-  --border: var(--border-width) solid currentColor;
+  --border: var(--border-width) solid #333;
 
   // Focus
   --focus-outline-width: 0.1875rem;

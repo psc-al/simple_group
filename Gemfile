@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
+# http
+gem "faraday"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3'
 # Use postgresql as the database for Active Record
@@ -65,6 +68,7 @@ group :test do
   gem "formulaic"
   gem "rspec_junit_formatter"
   gem "selenium-webdriver"
+  gem "webmock"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

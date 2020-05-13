@@ -1,10 +1,11 @@
 .navbar
   .navbar-elements
     .navbar-brand
-      %span.navbar-brand-logo
-        = image_tag("logo.png")
-      %span.navbar-brand-name
-        = t("branding.organization_name")
+      %a{ href: root_path }
+        %span.navbar-brand-logo
+          = image_tag("logo.png")
+        %span.navbar-brand-name
+          = t("branding.organization_name")
 
     .navbar-links
       %ul

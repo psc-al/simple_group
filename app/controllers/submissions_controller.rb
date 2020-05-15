@@ -25,7 +25,8 @@ class SubmissionsController < ApplicationController
   private
 
   def create_submission_params
-    params.require(:create_submission_form).permit(:url, :title, :body, :original_author)
+    params.require(:create_submission_form).
+      permit(:url, :title, :body, :original_author, tag_ids: [])
   end
 
   def submission_search_params

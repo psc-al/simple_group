@@ -1,0 +1,43 @@
+.tag {
+  text-decoration: none;
+  border-radius: 0.25rem;
+  padding: 0.15rem;
+  font-size: 65%;
+  vertical-align: middle;
+}
+
+@mixin tag($color) {
+  background-color: $color;
+  border: 1px solid darken($color, 40%);
+  color: darken($color, 60%);
+  transition: color $transition;
+  transition: background-color $transition;
+  &:hover {
+    background-color: lighten($color, 10%);
+    color: darken($color, 50%);
+  }
+  &:active {
+    background-color: darken($color, 10%);
+    color: darken($color, 80%);
+  }
+}
+
+.tag_topic {
+  @include tag(#ceecfd);
+}
+
+.tag_media {
+  @include tag(#d9c7f2);
+}
+
+.tag_source {
+  @include tag(#f7f5a8);
+}
+
+.tag_meta {
+  @include tag(#c7f2cd);
+}
+
+.tag_mod {
+  @include tag(#ff8f8f);
+}

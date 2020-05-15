@@ -1,6 +1,8 @@
 RSpec.describe Submission, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:domain).optional }
+  it { should have_many(:submission_tags) }
+  it { should have_many(:tags).through(:submission_tags) }
 
   describe "#before_create" do
     it "sets its short id" do

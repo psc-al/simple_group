@@ -5,6 +5,8 @@
 = simple_form_for @form, url: submissions_path do |f|
   = f.input :url
   = f.input :title
+  = f.input :tag_ids, collection: tag_select_options(current_user),
+    input_html: { multiple: true, id: "tag-select" }
   = f.input :body, as: :text, input_html: { rows: 15 }
   .original-author-statement
     = f.input :original_author, as: :boolean, wrapper: :left_hand_label

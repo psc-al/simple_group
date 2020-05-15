@@ -1,6 +1,9 @@
 .submission{ id: "submission_#{submission.id}" }
   .submission-line1
     %span.submission-link= link_to(submission.title, submission_href_for(submission))
+    %span.submission-tags
+      - submission.tags.each do |tag|
+        = render "shared/tag", tag: tag
     %span.submission-info
       %i= submission.domain.name if submission.domain.present?
   .submission-line2

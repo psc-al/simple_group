@@ -5,4 +5,5 @@ en:
         url: "URL"
         title: "Title"
         body: "Body"
+        tag_ids: "Tags (choose up to 5)"
         original_author: "Original author:"

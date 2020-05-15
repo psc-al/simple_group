@@ -1,7 +1,7 @@
 RSpec.describe "submissions index" do
   context "when a user visits the submission index" do
     it "can view a list of submissions in descending order by default" do
-      submissions = create_pair(:submission)
+      submissions = create_pair(:submission, :with_all_tags)
       page = SubmissionsIndexPage.new
 
       page.visit
@@ -25,7 +25,7 @@ RSpec.describe "submissions index" do
         # to get it to page, so we'll do this for now.
         # Open to better ways to do it.
         stub_const("SubmissionSearch::DEFAULT_PER_PAGE", 2)
-        s1, s2, s3, s4, s5 = create_list(:submission, 5)
+        s1, s2, s3, s4, s5 = create_list(:submission, 5, :with_all_tags)
         page = SubmissionsIndexPage.new
 
         page.visit
@@ -66,7 +66,7 @@ RSpec.describe "submissions index" do
 
     context "when there is only one page" do
       it "there are no paging controls" do
-        submission = create(:submission)
+        submission = create(:submission, :with_all_tags)
         page = SubmissionsIndexPage.new
 
         page.visit

@@ -34,4 +34,8 @@ class ViewSubmissionPage < PageBase
       has_css?("p", text: body)
     end
   end
+
+  def has_tag?(tag)
+    has_css?(".tag_#{tag.kind}", text: tag.id)
+  end
 end

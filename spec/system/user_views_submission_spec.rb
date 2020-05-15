@@ -89,5 +89,18 @@ RSpec.describe "user views submission" do
         end
       end
     end
+
+    it "can see the submission's tags" do
+      body = "\\(f(x)=x^2\\)\n$$g(x)=x^3$$\n\\[h(x)=x^4\\]"
+      submission = create(:submission, :text, :with_all_tags, body: body) 
+
+      page = ViewSubmissionPage.new
+
+      page.visit(submission, as: user)
+
+      submission.tags.each do |tag|
+        expect(page).to have_tag(tag)
+      end
+    end
   end
 end

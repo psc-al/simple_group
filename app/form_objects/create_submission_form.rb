@@ -10,14 +10,18 @@ class CreateSubmissionForm
 
   validates :title, presence: { message: I18n.t("#{I18N_PREFIX}.title_missing") },
     length: { in: (10..175), message: I18n.t("#{I18N_PREFIX}.title_length") }
+  validates :tag_ids, presence: { message: I18n.t("#{I18N_PREFIX}.tags_missing") },
+    length: { maximum: 5, message: I18n.t("#{I18N_PREFIX}.tags_max") }
+  validate :tag_kinds_valid, if: ->(f) { f.tag_ids.present? }
   validate :url_xor_body
   validate :domain_and_url_valid, if: ->(f) { f.url.present? && f.body.blank? }
   validate :validate_user_can_submit
 
   def initialize(params, user)
-    stripped_params = params.each_value(&:strip!).select { |_, v| v.present? }
+    stripped_and_present_params = strip_params(params).
+      merge(tag_ids: params[:tag_ids].to_a.select(&:present?))
     @user = user
-    super(stripped_params)
+    super(stripped_and_present_params)
   end
 
   def save
@@ -32,17 +36,26 @@ class CreateSubmissionForm
     end
   end
 
-  attr_accessor :title, :url, :domain, :body, :original_author, :user, :submission
+  attr_accessor :title, :url, :tag_ids, :domain, :body, :original_author, :user, :submission
 
   private
+
+  def strip_params(params)
+    params.each_value { |v| v.respond_to?(:strip!) ? v.strip! : v }.select { |_, v| v.present? }
+  end
 
   def initialize_submission
     Submission.new(
       title: title,
       body: body,
       original_author: original_author.to_i.eql?(1),
-      user: user
+      user: user,
+      tags: tags
     )
+  end
+
+  def tags
+    @_tags ||= Tag.where(id: tag_ids)
   end
 
   def url_xor_body
@@ -104,6 +117,23 @@ class CreateSubmissionForm
     try_again_min = user.minutes_until_next_submission
     unless try_again_min.zero?
       errors.add(:user, I18n.t("#{I18N_PREFIX}.rate_limit", try_again_min: try_again_min))
+    end
+  end
+
+  def tag_kinds_valid
+    validate_tags_accessible_for_user
+    validate_at_least_one_non_media_tag
+  end
+
+  def validate_tags_accessible_for_user
+    unless tags.none?(&:mod?) || (user.moderator? || user.admin?)
+      errors.add(:tag_ids, I18n.t("#{I18N_PREFIX}.tag_forbidden"))
+    end
+  end
+
+  def validate_at_least_one_non_media_tag
+    unless tags.any? { |t| !t.media? }
+      errors.add(:tag_ids, I18n.t("#{I18N_PREFIX}.tag_media"))
     end
   end
 end

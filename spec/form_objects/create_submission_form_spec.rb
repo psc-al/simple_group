@@ -8,7 +8,8 @@ RSpec.describe CreateSubmissionForm do
     it "updates the user's `last_submission_time` when successful" do
       now = Time.zone.now.change(usec: 0)
       travel_to now do
-        params = { title: "Foo bar biz", body: "abcd1234", original_author: "1" }
+        tag = create(:topic_tag)
+        params = { title: "Foo bar biz", body: "abcd1234", original_author: "1", tag_ids: [tag.id] }
 
         expect(user.last_submission_at).to be_nil
 
@@ -37,7 +38,8 @@ RSpec.describe CreateSubmissionForm do
     context "when the submission is a text submission" do
       context "when the submission is valid" do
         it "persists the submission" do
-          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1" }
+          tag = create(:topic_tag)
+          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1", tag_ids: [tag.id] }
 
           form = CreateSubmissionForm.new(params, user)
 
@@ -57,8 +59,9 @@ RSpec.describe CreateSubmissionForm do
     context "when the submission involves a URL and is valid" do
       context "when the domain has not been seen before" do
         it "creates a new submission record and domain record" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url)
 
           form = CreateSubmissionForm.new(params, user)
@@ -83,8 +86,9 @@ RSpec.describe CreateSubmissionForm do
 
       context "when there is an existing record for the domain" do
         it "assigns the submission the existing domain record and saves the submission" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url)
           domain = create(:domain, name: "foobar.com")
 
@@ -109,8 +113,9 @@ RSpec.describe CreateSubmissionForm do
     context "when the submission involves a URL and is not valid" do
       context "when the domain is banned" do
         it "adds a domain error and does not persist the submission" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url)
           domain = create(:domain, :banned, name: "foobar.com")
 
@@ -130,8 +135,9 @@ RSpec.describe CreateSubmissionForm do
       # maybe someone tried to pull a fast one, or didn't know.
       context "when the redirected domain is banned" do
         it "adds a domain error and does not persist the submission" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url, ending_url: "http://barfoo.com")
           domain = create(:domain, :banned, name: "barfoo.com")
 
@@ -149,8 +155,9 @@ RSpec.describe CreateSubmissionForm do
 
       context "when the URL fails health checks" do
         it "adds a url health error and does not persist the submission" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url, healthy: false)
 
           form = CreateSubmissionForm.new(params, user)
@@ -166,8 +173,9 @@ RSpec.describe CreateSubmissionForm do
 
       context "when there is an issue with the URL itself" do
         it "adds a url error when the URL scheme is not http or https and does not persist submission" do
+          tag = create(:topic_tag)
           url = "htt://foobar.com"
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
 
           form = CreateSubmissionForm.new(params, user)
 
@@ -197,9 +205,10 @@ RSpec.describe CreateSubmissionForm do
 
       context "when the URL has already been submitted" do
         it "does not persist the submission and adds an error to the error list" do
+          tag = create(:topic_tag)
           url = "http://foobar.com"
           create(:submission, :url, url: url)
-          params = { title: "Foo to the bar, biz, and baz", url: url }
+          params = { title: "Foo to the bar, biz, and baz", url: url, tag_ids: [tag.id] }
           stub_url_health_check(url)
 
           form = CreateSubmissionForm.new(params, user)
@@ -216,8 +225,9 @@ RSpec.describe CreateSubmissionForm do
 
     context "when there is both a URL and a submission body" do
       it "adds a base error and does not persist the submission" do
+        tag = create(:topic_tag)
         url = "http://foobar.com"
-        params = { title: "Foo to the bar, biz, and baz", url: url, body: "abcd12323423234" }
+        params = { title: "Foo to the bar, biz, and baz", url: url, body: "abcd12323423234", tag_ids: [tag.id] }
         stub_url_health_check(url)
 
         form = CreateSubmissionForm.new(params, user)
@@ -233,8 +243,9 @@ RSpec.describe CreateSubmissionForm do
 
     context "when the title is missing" do
       it "adds an error and doesn't persist the submission" do
+        tag = create(:topic_tag)
         url = "http://foobar.com"
-        params = { body: "abcd12323423234" }
+        params = { body: "abcd12323423234", tag_ids: [tag.id] }
         stub_url_health_check(url)
 
         form = CreateSubmissionForm.new(params, user)
@@ -252,8 +263,9 @@ RSpec.describe CreateSubmissionForm do
 
     context "when the title is too short" do
       it "adds an error and doesn't persist the submission" do
+        tag = create(:topic_tag)
         url = "http://foobar.com"
-        params = { title: "abc", body: "abcd12323423234" }
+        params = { title: "abc", body: "abcd12323423234", tag_ids: [tag.id] }
         stub_url_health_check(url)
 
         form = CreateSubmissionForm.new(params, user)
@@ -271,8 +283,9 @@ RSpec.describe CreateSubmissionForm do
 
     context "when the title is too long" do
       it "adds an error and doesn't persist the submission" do
+        tag = create(:topic_tag)
         url = "http://foobar.com"
-        params = { title: ("abc" * 100), body: "abcd12323423234" }
+        params = { title: ("abc" * 100), body: "abcd12323423234", tag_ids: [tag.id] }
         stub_url_health_check(url)
 
         form = CreateSubmissionForm.new(params, user)
@@ -288,7 +301,7 @@ RSpec.describe CreateSubmissionForm do
       end
     end
 
-    context "when the user has tries to make a submission too soon after their last" do
+    context "when the user tries to make a submission too soon after their last" do
       it "adds an error and doesn't persist the submission" do
         now = Time.zone.now
 
@@ -303,6 +316,79 @@ RSpec.describe CreateSubmissionForm do
           expect(submission).not_to be_persisted
           expect(form.errors[:user]).to include(
             I18n.t("#{i18n_error_prefix}.rate_limit", try_again_min: 5)
+          )
+        end
+      end
+    end
+
+    context "when there are issues with the tags" do
+      context "when the tag is missing" do
+        it "adds an error and doesn't persist the submission" do
+          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1" }
+
+          form = CreateSubmissionForm.new(params, user)
+
+          form.save
+
+          submission = form.submission
+
+          expect(submission).not_to be_persisted
+          expect(form.errors[:tag_ids]).to include(
+            I18n.t("#{i18n_error_prefix}.tags_missing")
+          )
+        end
+      end
+
+      context "when there are too many tags" do
+        it "adds an error and doesn't persist the submission" do
+          tag_ids = create_list(:topic_tag, 6).map(&:id)
+          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1", tag_ids: tag_ids }
+
+          form = CreateSubmissionForm.new(params, user)
+
+          form.save
+
+          submission = form.submission
+
+          expect(submission).not_to be_persisted
+          expect(form.errors[:tag_ids]).to include(
+            I18n.t("#{i18n_error_prefix}.tags_max")
+          )
+        end
+      end
+
+      context "when the user tries to add a mod tag but they are not a moderator" do
+        it "adds an error and doesn't persist the submission" do
+          tag = create(:mod_tag)
+          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1", tag_ids: [tag.id] }
+
+          form = CreateSubmissionForm.new(params, user)
+
+          form.save
+
+          submission = form.submission
+
+          expect(submission).not_to be_persisted
+          expect(form.errors[:tag_ids]).to include(
+            I18n.t("#{i18n_error_prefix}.tag_forbidden")
+          )
+        end
+      end
+
+      context "when there is not at least one non-media tag" do
+        it "adds an error and doesn't persist the submission" do
+          tag = create(:media_tag)
+          params = { title: "Foo bar biz", body: "abcd1234", original_author: "1", tag_ids: [tag.id] }
+
+          form = CreateSubmissionForm.new(params, user)
+
+          form.save
+
+          submission = form.submission
+
+          expect(submission).not_to be_persisted
+          expect(form.errors[:tag_ids]).to include(
+            I18n.t("#{i18n_error_prefix}.tag_media")
           )
         end
       end

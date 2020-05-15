@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 2020_05_16_200636) do
     t.index ["name"], name: "index_domains_on_name", unique: true
   end
 
+  create_table "submission_tags", force: :cascade do |t|
+    t.bigint "submission_id", null: false
+    t.text "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "index_submission_tags_on_submission_id"
+    t.index ["tag_id"], name: "index_submission_tags_on_tag_id"
+  end
+
   create_table "submissions", force: :cascade do |t|
     t.string "title", limit: 175, null: false
     t.string "url"
@@ -40,6 +49,13 @@ ActiveRecord::Schema.define(version: 2020_05_16_200636) do
     t.index ["short_id"], name: "index_submissions_on_short_id", unique: true
     t.index ["url"], name: "index_submissions_on_url", unique: true, where: "(url IS NOT NULL)"
     t.index ["user_id"], name: "index_submissions_on_user_id"
+  end
+
+  create_table "tags", id: :string, force: :cascade do |t|
+    t.string "description", limit: 100
+    t.integer "kind", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -69,6 +85,8 @@ ActiveRecord::Schema.define(version: 2020_05_16_200636) do
   end
 
   add_foreign_key "domains", "users", column: "banned_by_id"
+  add_foreign_key "submission_tags", "submissions", on_delete: :cascade
+  add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
 end

@@ -17,6 +17,11 @@ class CreateSubmissionPage < PageBase
     self
   end
 
+  def select_tag(tag_name)
+    select tag_name, from: t("simple_form.labels.create_submission_form.tag_ids")
+    self
+  end
+
   def fill_in_body(str)
     fill_in :create_submission_form_body, with: str
     self
@@ -44,6 +49,18 @@ class CreateSubmissionPage < PageBase
 
   def has_url_xor_body_error?
     has_error?(t("submissions.new.error.url_or_body"))
+  end
+
+  def has_missing_tags_error?
+    has_error?(t("submissions.new.error.tags_missing"))
+  end
+
+  def has_tags_max_error?
+    has_error?(t("submissions.new.error.tags_max"))
+  end
+
+  def has_tag_media_error?
+    has_error?(t("submissions.new.error.tag_media"))
   end
 
   def has_banned_domain_error?(domain)

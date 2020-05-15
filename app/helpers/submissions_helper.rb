@@ -14,4 +14,10 @@ module SubmissionsHelper
   def submitted_time_text(submission)
     "#{time_ago_in_words(submission.created_at)} #{t('submissions.submission_list_item.ago')}"
   end
+
+  def tag_select_options(user)
+    Tag.for_user(user).order(:id).all.map do |tag|
+      [tag.id, tag.id]
+    end
+  end
 end

@@ -2,6 +2,7 @@ RSpec.describe "user makes a submission" do
   include UrlHelpers
 
   let(:page) { CreateSubmissionPage.new }
+  let!(:tag) { create(:topic_tag) }
 
   context "when the user is not signed in" do
     it "redirects the user to the login page" do
@@ -25,6 +26,7 @@ RSpec.describe "user makes a submission" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
           fill_in_url(url).
+          select_tag(tag.id).
           check_original_author.
           submit_form
 
@@ -46,6 +48,7 @@ RSpec.describe "user makes a submission" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
           fill_in_url(url).
+          select_tag(tag.id).
           check_original_author.
           submit_form
 
@@ -66,6 +69,7 @@ RSpec.describe "user makes a submission" do
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
             fill_in_url(url).
+            select_tag(tag.id).
             check_original_author.
             submit_form
 
@@ -81,6 +85,7 @@ RSpec.describe "user makes a submission" do
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
             fill_in_url(url).
+            select_tag(tag.id).
             check_original_author.
             submit_form
 
@@ -95,6 +100,7 @@ RSpec.describe "user makes a submission" do
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
             fill_in_url("https://www.foo.com/biz/baz").
+            select_tag(tag.id).
             check_original_author.
             submit_form
 
@@ -111,6 +117,7 @@ RSpec.describe "user makes a submission" do
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
             fill_in_url(url).
+            select_tag(tag.id).
             check_original_author.
             submit_form
 
@@ -128,6 +135,7 @@ RSpec.describe "user makes a submission" do
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
             fill_in_url(url).
+            select_tag(tag.id).
             check_original_author.
             submit_form
 
@@ -141,6 +149,7 @@ RSpec.describe "user makes a submission" do
       it "creates the submission and redirects the user to the submission's view if successful" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
+          select_tag(tag.id).
           fill_in_body("This is a very nice submission body").
           check_original_author.
           submit_form
@@ -160,6 +169,7 @@ RSpec.describe "user makes a submission" do
       it "displays an error at the top of the page and doesn't save the submission" do
         page.visit(as: user).
           fill_in_body("This is a very nice submission body with some great info").
+          select_tag(tag.id).
           check_original_author.
           submit_form
 
@@ -185,6 +195,7 @@ RSpec.describe "user makes a submission" do
       it "displays an error at the top of the page and doesn't save the submission" do
         page.visit(as: user).
           fill_in_title("f" * 176).
+          select_tag(tag.id).
           fill_in_body("This is a very nice submission body with some great info").
           check_original_author.
           submit_form
@@ -197,6 +208,7 @@ RSpec.describe "user makes a submission" do
     context "when both the URL and body are missing" do
       it "displays an error at the top of the page and doesn't save the submission" do
         page.visit(as: user).
+          select_tag(tag.id).
           check_original_author.
           submit_form
 
@@ -210,6 +222,7 @@ RSpec.describe "user makes a submission" do
         page.visit(as: user).
           fill_in_title("a very nice title").
           fill_in_body("lalalal la la laalla la").
+          select_tag(tag.id).
           fill_in_url("https://www.url.com").
           check_original_author.
           submit_form
@@ -234,6 +247,52 @@ RSpec.describe "user makes a submission" do
           expect(Submission.count).to eq(0)
           expect(page).to have_rate_limit_error(5)
         end
+      end
+    end
+
+    context "when no tag is selected" do
+      it "displays an error at the top of the page and doesn't save the submission" do
+        page.visit(as: user).
+          fill_in_title("A Very Nice Title").
+          fill_in_body("This is a very nice submission body").
+          check_original_author.
+          submit_form
+
+        expect(Submission.count).to eq(0)
+        expect(page).to have_missing_tags_error
+      end
+    end
+
+    context "when too many tags are selected" do
+      it "displays an error at the top of the page and doesn't save the submission" do
+        tags = create_list(:topic_tag, 6)
+        page.visit(as: user).
+          fill_in_title("A Very Nice Title").
+          fill_in_body("This is a very nice submission body").
+          check_original_author
+
+        tags.each { |t| page.select_tag(t.id) }
+
+        page.submit_form
+
+        expect(Submission.count).to eq(0)
+        expect(page).to have_tags_max_error
+      end
+    end
+
+    context "when there are no non-media tags selected" do
+      it "displays an error at the top of the page and doesn't save the submission" do
+        media_tag = create(:media_tag)
+        page.visit(as: user).
+          fill_in_title("A Very Nice Title").
+          fill_in_body("This is a very nice submission body").
+          select_tag(media_tag.id).
+          check_original_author
+
+        page.submit_form
+
+        expect(Submission.count).to eq(0)
+        expect(page).to have_tag_media_error
       end
     end
   end

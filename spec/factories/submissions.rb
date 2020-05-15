@@ -16,4 +16,12 @@ FactoryBot.define do
     domain { nil }
     body { "A very useful text body" }
   end
+
+  trait :with_all_tags do
+    after(:build) do |submission|
+      Tag.kinds.keys.each do |kind|
+        submission.tags << build(:"#{kind}_tag")
+      end
+    end
+  end
 end

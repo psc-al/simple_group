@@ -14,6 +14,10 @@ en:
         banned_domain: "The submission is from a banned domain: %{domain}"
         title_missing: Please ensure you provide a helpful title between 10 and 175 characters long.
         title_length: Title must be between 10 and 175 characters long.
+        tags_missing: You must select at least one tag for your submission.
+        tags_max: You may only select up to 5 tags.
+        tag_forbidden: You attempted to apply a tag that you don't have access to.
+        tag_media: You must select at least one non-media tag.
         url_exists: Woops! It looks like there is already a submission for this URL!
         url_health: >-
           The URL you submitted failed our health checks. Please ensure you've specified the URL

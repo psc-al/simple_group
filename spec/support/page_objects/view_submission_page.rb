@@ -8,7 +8,7 @@ class ViewSubmissionPage < PageBase
   end
 
   def has_correct_submission_link?(submission)
-    url = submission.url.presence || submission_path(submission.id)
+    url = submission.url.presence || submission_path(submission.short_id)
 
     within find(".submission-link") do
       has_link?(submission.title, href: url)

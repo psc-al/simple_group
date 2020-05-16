@@ -31,7 +31,7 @@ RSpec.describe "user makes a submission" do
         submission = Submission.first
 
         expect(Submission.count).to eq(1)
-        expect(page).to have_current_path(submission_path(submission.id))
+        expect(page).to have_current_path(submission_path(submission.short_id))
         expect(submission.title).to eq("A Very Nice Title")
         expect(submission.url).to eq(url)
         expect(submission.body).to be_nil
@@ -52,7 +52,7 @@ RSpec.describe "user makes a submission" do
         submission = Submission.first
 
         expect(Submission.count).to eq(1)
-        expect(page).to have_current_path(submission_path(submission.id))
+        expect(page).to have_current_path(submission_path(submission.short_id))
         expect(submission.title).to eq("A Very Nice Title")
         expect(submission.url).to eq("https://bar.foo.com")
         expect(submission.body).to be_nil
@@ -148,7 +148,7 @@ RSpec.describe "user makes a submission" do
         submission = Submission.first
 
         expect(Submission.count).to eq(1)
-        expect(page).to have_current_path(submission_path(submission.id))
+        expect(page).to have_current_path(submission_path(submission.short_id))
         expect(submission.title).to eq("A Very Nice Title")
         expect(submission.url).to be_nil
         expect(submission.body).to eq("This is a very nice submission body")

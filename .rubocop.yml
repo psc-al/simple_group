@@ -70,15 +70,18 @@ Naming/MethodParameterName:
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
+Rails/NotNullColumn:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
 Rails/UnknownEnv:
   Environments:
     - production
     - staging
     - development
     - test
-
-Rails/OutputSafety:
-  Enabled: false
 
 RSpec/DescribeClass:
   Exclude:

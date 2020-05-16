@@ -6,7 +6,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @submission = Submission.preload(:user, :domain).find(params[:id])
+    @submission = Submission.friendly.preload(:user, :domain).find(params[:short_id])
   end
 
   def new
@@ -16,7 +16,7 @@ class SubmissionsController < ApplicationController
   def create
     @form = CreateSubmissionForm.new(create_submission_params, current_user)
     if @form.save
-      redirect_to submission_path(@form.submission.id)
+      redirect_to submission_path(@form.submission.short_id)
     else
       render :new
     end

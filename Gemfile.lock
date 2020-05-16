@@ -114,6 +114,8 @@ GEM
       activesupport
       capybara
       i18n
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.1.2)
@@ -334,6 +336,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   formulaic
+  friendly_id (~> 5.2.4)
   haml-rails (~> 2.0)
   haml_lint
   jbuilder (~> 2.7)

@@ -43,6 +43,9 @@ gem "devise-i18n"
 # simple form for forms
 gem "simple_form"
 
+# friendly id for friendly URL slugs
+gem 'friendly_id', '~> 5.2.4'
+
 group :development, :test do
   gem "bundler-audit"
   gem "dotenv-rails"

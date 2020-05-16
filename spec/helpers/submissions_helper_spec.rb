@@ -13,7 +13,7 @@ module SubmissionsHelper
       it "is the link to the submission" do
         submission = create(:submission, url: nil)
 
-        expect(helper.submission_href_for(submission)).to eq(submission_path(submission.id))
+        expect(helper.submission_href_for(submission)).to eq(submission_path(submission.short_id))
       end
     end
   end

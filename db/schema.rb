@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_043324) do
+ActiveRecord::Schema.define(version: 2020_05_16_184144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,9 @@ ActiveRecord::Schema.define(version: 2020_05_15_043324) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "original_author", default: false, null: false
     t.bigint "domain_id"
+    t.string "short_id", null: false
     t.index ["domain_id"], name: "index_submissions_on_domain_id", where: "(domain_id IS NOT NULL)"
+    t.index ["short_id"], name: "index_submissions_on_short_id", unique: true
     t.index ["url"], name: "index_submissions_on_url", unique: true, where: "(url IS NOT NULL)"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end

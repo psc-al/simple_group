@@ -1,4 +1,4 @@
-%h2= t(".title", resource: resource.model_name.human)
+%h2.prompt= t(".title", resource: resource.model_name.human)
 = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
   = f.error_notification
   .form-inputs

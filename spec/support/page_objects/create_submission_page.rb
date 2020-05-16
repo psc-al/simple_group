@@ -28,7 +28,9 @@ class CreateSubmissionPage < PageBase
   end
 
   def submit_form
-    click_on t("helpers.submit.create_submission_form.create")
+    within("form#new_create_submission_form") do
+      click_on t("helpers.submit.create_submission_form.create")
+    end
     self
   end
 

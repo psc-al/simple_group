@@ -22,7 +22,7 @@ body {
   max-width: 80rem;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: $mobile-cutoff) {
   .application-container {
     width: 100%;
   }

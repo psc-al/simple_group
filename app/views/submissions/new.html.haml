@@ -1,4 +1,4 @@
-%h2= t(".title")
+%h2.prompt= t(".title")
 %ul.errors
   - @form.errors.values.flatten.map do |e|
     %li.error= e

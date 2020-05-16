@@ -20,3 +20,4 @@ en:
           scheme (http / https) and that the website is up and accepting connections. If the problem
           persists please contact our mod team.
         url_or_body: You must specify an URL or body, but not both. If you submit an URL, put your description in the comments.
+        rate_limit: "You must wait a bit in between submissions. Please try again in %{try_again_min} minutes."

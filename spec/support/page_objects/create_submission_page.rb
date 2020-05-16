@@ -66,6 +66,10 @@ class CreateSubmissionPage < PageBase
     has_error?(t("submissions.new.error.url_exists"))
   end
 
+  def has_rate_limit_error?(try_again_min)
+    has_error?(t("submissions.new.error.rate_limit", try_again_min: try_again_min))
+  end
+
   def has_error?(error)
     within find(".errors") do
       has_css?("li.error", text: error)

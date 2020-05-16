@@ -1,6 +1,6 @@
 module SubmissionsHelper
   def submission_href_for(submission)
-    submission.url.presence || submission_path(submission.id)
+    submission.url.presence || submission_path(submission.short_id)
   end
 
   def submitted_by_text(submission)

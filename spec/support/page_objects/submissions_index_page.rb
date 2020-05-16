@@ -23,7 +23,7 @@ class SubmissionsIndexPage < PageBase
   end
 
   def has_proper_submission_link?(submission)
-    url = submission.url.presence || submission_path(submission.id)
+    url = submission.url.presence || submission_path(submission.short_id)
 
     has_link?(submission.title, href: url)
   end

@@ -5,12 +5,3 @@ form {
     display: block;
   }
 }
-
-.left-hand-label {
-  * {
-    display: inline-block;
-  }
-  label:first-child {
-    margin-right: $spacing-smaller;
-  }
-}

@@ -12,7 +12,6 @@ legend {
 }
 
 label {
-  display: flex;
   font-weight: 600;
   margin-bottom: $spacing-small;
 }
@@ -43,15 +42,16 @@ textarea {
   appearance: none;
   background-color: $white-gray;
   border: $border;
-  border-radius: $border-radius;
   box-sizing: border-box;
   margin-bottom: $spacing-small;
   padding: $spacing / 3;
   transition: border-color $transition;
   width: 100%;
-
+  font-family: $font-stack;
+  box-shadow: $box-shadow;
   &:focus {
-    background-color: $blue-light-very;
+    background-color: $white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
   }
 
   &:disabled {
@@ -78,8 +78,7 @@ textarea {
 
 [type="checkbox"],
 [type="radio"] {
-  display: inline-block;
-  margin-right: $spacing-small;
+  margin: 0 $spacing-xs 0 $spacing-small;
 }
 
 [type="file"] {
@@ -112,4 +111,14 @@ select {
   .error {
     color: $red;
   }
+}
+
+.prompt {
+  text-align: center;
+}
+
+.original-author-statement * {
+  display: inline-flex;
+  align-items: center;
+  height: 1rem;
 }

@@ -35,4 +35,4 @@ en:
   helpers:
     submit:
       create_submission_form:
-        create: "Create Submission"
+        create: "Submit"

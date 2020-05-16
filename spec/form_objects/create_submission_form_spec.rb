@@ -5,6 +5,33 @@ RSpec.describe CreateSubmissionForm do
   let(:i18n_error_prefix) { CreateSubmissionForm::I18N_PREFIX }
 
   describe "#save" do
+    it "updates the user's `last_submission_time` when successful" do
+      now = Time.zone.now.change(usec: 0)
+      travel_to now do
+        params = { title: "Foo bar biz", body: "abcd1234", original_author: "1" }
+
+        expect(user.last_submission_at).to be_nil
+
+        form = CreateSubmissionForm.new(params, user)
+
+        form.save
+
+        expect(user.last_submission_at).to eq(now)
+      end
+    end
+
+    it "does not update the user's `last_submission_time` when unsuccessful" do
+      params = { body: "abcd1234", original_author: "1" }
+
+      form = CreateSubmissionForm.new(params, user)
+
+      expect(user.last_submission_at).to be_nil
+
+      form.save
+
+      expect(user.last_submission_at).to be_nil
+    end
+
     # we can probably do some more validations on this but
     # for now making a text submission is pretty easy.
     context "when the submission is a text submission" do
@@ -258,6 +285,26 @@ RSpec.describe CreateSubmissionForm do
         expect(form.errors[:title]).to include(
           I18n.t("#{i18n_error_prefix}.title_length")
         )
+      end
+    end
+
+    context "when the user has tries to make a submission too soon after their last" do
+      it "adds an error and doesn't persist the submission" do
+        now = Time.zone.now
+
+        travel_to now + 5.minutes do
+          params = { title: "a very wonderfully great title", body: "abcd12323423234" }
+          form = CreateSubmissionForm.new(params, build(:user, last_submission_at: now))
+
+          form.save
+
+          submission = form.submission
+
+          expect(submission).not_to be_persisted
+          expect(form.errors[:user]).to include(
+            I18n.t("#{i18n_error_prefix}.rate_limit", try_again_min: 5)
+          )
+        end
       end
     end
   end

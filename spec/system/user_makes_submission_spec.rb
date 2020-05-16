@@ -208,7 +208,7 @@ RSpec.describe "user makes a submission" do
     context "when both the URL and body are present" do
       it "displays an error at the top of the page and doesn't save the submission" do
         page.visit(as: user).
-          fill_in_title("a very nice ticle").
+          fill_in_title("a very nice title").
           fill_in_body("lalalal la la laalla la").
           fill_in_url("https://www.url.com").
           check_original_author.
@@ -216,6 +216,24 @@ RSpec.describe "user makes a submission" do
 
         expect(Submission.count).to eq(0)
         expect(page).to have_url_xor_body_error
+      end
+    end
+
+    context "when the user tries to make a submission too soon after their last" do
+      it "displays an error at the top of the page and doesn't save the submission" do
+        now = Time.zone.now
+        user = create(:user, last_submission_at: now)
+
+        travel_to now + 5.minutes do
+          page.visit(as: user).
+            fill_in_title("a very nice title").
+            fill_in_body("lalalal la la laalla la").
+            check_original_author.
+            submit_form
+
+          expect(Submission.count).to eq(0)
+          expect(page).to have_rate_limit_error(5)
+        end
       end
     end
   end

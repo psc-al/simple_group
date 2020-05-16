@@ -12,6 +12,7 @@ class CreateSubmissionForm
     length: { in: (10..175), message: I18n.t("#{I18N_PREFIX}.title_length") }
   validate :url_xor_body
   validate :domain_and_url_valid, if: ->(f) { f.url.present? && f.body.blank? }
+  validate :validate_user_can_submit
 
   def initialize(params, user)
     stripped_params = params.each_value(&:strip!).select { |_, v| v.present? }
@@ -22,9 +23,12 @@ class CreateSubmissionForm
   def save
     @submission = initialize_submission
     if valid?
-      @submission.url = url if url.present?
-      @submission.domain = domain if domain.present?
-      @submission.save
+      ApplicationRecord.transaction do
+        @submission.url = url if url.present?
+        @submission.domain = domain if domain.present?
+        @submission.save!
+        user.update_last_submission_at!
+      end
     end
   end
 
@@ -94,5 +98,12 @@ class CreateSubmissionForm
 
   def check_for_existing_submission
     errors.add(:url, I18n.t("#{I18N_PREFIX}.url_exists")) if Submission.where(url: url).exists?
+  end
+
+  def validate_user_can_submit
+    try_again_min = user.minutes_until_next_submission
+    unless try_again_min.zero?
+      errors.add(:user, I18n.t("#{I18N_PREFIX}.rate_limit", try_again_min: try_again_min))
+    end
   end
 end

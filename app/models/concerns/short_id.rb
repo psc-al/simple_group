@@ -13,7 +13,7 @@ module ShortId
     short_id = nil
 
     loop do
-      short_id = SecureRandom.urlsafe_base64(6).gsub(/-|_/, ("a".."z").to_a[rand(26)])
+      short_id = "#{self.class.short_id_prefix}#{SecureRandom.base36(8)}"
       break unless self.class.name.constantize.where(short_id: short_id).exists?
     end
 

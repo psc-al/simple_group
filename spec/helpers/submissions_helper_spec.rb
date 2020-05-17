@@ -1,5 +1,4 @@
-module SubmissionsHelper
-  include ActiveSupport::Testing::TimeHelpers
+RSpec.describe SubmissionsHelper do
   describe "#submission_href_for" do
     context "when the submission has a URL" do
       it "is the URL" do
@@ -49,6 +48,88 @@ module SubmissionsHelper
           "#{t('datetime.distance_in_words.about_x_hours.one')} "\
           "#{t('submissions.submission_list_item.ago')}"
         )
+      end
+    end
+  end
+
+  describe "#saved_class_for" do
+    context "when `saved_action_id` is defined on the submission" do
+      it "returns `submission-saved` when the id is present" do
+        create(:submission, :text)
+        submission = Submission.select("*, 666 AS saved_action_id").first
+
+        expect(helper.saved_class_for(submission)).to eq("submission-saved")
+      end
+
+      it "returns the empty string when the id is nil" do
+        create(:submission, :text)
+        submission = Submission.select("*, NULL AS saved_action_id").first
+
+        expect(helper.saved_class_for(submission)).to eq("")
+      end
+    end
+
+    context "when `saved_action_id` is not defined on the submission" do
+      it "raises an error" do
+        submission = build(:submission, :text)
+
+        expect { helper.saved_class_for(submission) }.to raise_error(NoMethodError)
+      end
+    end
+  end
+
+  describe "#save_link_text_for" do
+    context "when `saved_action_id` is defined on the submission" do
+      it "returns `submission-saved` when the id is present" do
+        create(:submission, :text)
+        submission = Submission.select("*, 666 AS saved_action_id").first
+
+        expect(helper.save_link_text_for(submission)).
+          to eq(t("submissions.submission_list_item.actions.created.saved"))
+      end
+
+      it "returns the empty string when the id is nil" do
+        create(:submission, :text)
+        submission = Submission.select("*, NULL AS saved_action_id").first
+
+        expect(helper.save_link_text_for(submission)).
+          to eq(t("submissions.submission_list_item.actions.default.saved"))
+      end
+    end
+
+    context "when `saved_action_id` is not defined on the submission" do
+      it "raises an error" do
+        submission = build(:submission, :text)
+
+        expect { helper.saved_link_text_for(submission) }.to raise_error(NoMethodError)
+      end
+    end
+  end
+
+  describe "#hide_link_text_for" do
+    context "when `saved_action_id` is defined on the submission" do
+      it "returns `submission-saved` when the id is present" do
+        create(:submission, :text)
+        submission = Submission.select("*, 666 AS hidden_action_id").first
+
+        expect(helper.hide_link_text_for(submission)).
+          to eq(t("submissions.submission_list_item.actions.created.hidden"))
+      end
+
+      it "returns the empty string when the id is nil" do
+        create(:submission, :text)
+        submission = Submission.select("*, NULL AS hidden_action_id").first
+
+        expect(helper.hide_link_text_for(submission)).
+          to eq(t("submissions.submission_list_item.actions.default.hidden"))
+      end
+    end
+
+    context "when `saved_action_id` is not defined on the submission" do
+      it "raises an error" do
+        submission = build(:submission, :text)
+
+        expect { helper.hide_link_text_for(submission) }.to raise_error(NoMethodError)
       end
     end
   end

@@ -1,4 +1,4 @@
-.submission{ id: "submission_#{submission.id}" }
+.submission{ id: submission.short_id, class: submission_classes_for(submission) }
   .submission-line1
     %span.submission-link= link_to(submission.title, submission_href_for(submission))
     %span.submission-tags
@@ -15,7 +15,7 @@
       %span.submission-time
         = submitted_time_text(submission)
     %span.submission-info
-      = link_to t(".hide"), "#"
-      = link_to t(".save"), "#"
+      = link_to hide_link_text_for(submission), "", class: "hide"
+      = link_to save_link_text_for(submission), "", class: "save"
     %span.submission-comments
       = link_to t(".comments", count: 25), "#"

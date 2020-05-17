@@ -9,4 +9,8 @@ Rails.application.routes.draw do
 
   resources :submissions, only: [:index, :new, :create]
   resources :submissions, only: [:show], param: :short_id, path: :s
+
+  namespace :users do
+    resource :submission_actions, only: [:update]
+  end
 end

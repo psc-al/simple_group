@@ -4,8 +4,13 @@ en:
       submitted_by: via 
       authored_by: authored by
       ago: ago
-      hide: hide
-      save: save
+      actions:
+        created:
+          hidden: hidden
+          saved: saved
+        default:
+          hidden: hide
+          saved: save
       comments: "%{count} comments"
     new:
       title: Make a new submission

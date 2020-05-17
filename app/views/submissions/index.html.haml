@@ -1,2 +1,3 @@
 = render "submission_list", submissions: @paginator.results_page
 = render "shared/pagination_controls", paginator: @paginator
+= javascript_pack_tag "submission_actions"

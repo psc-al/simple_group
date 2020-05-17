@@ -19,7 +19,7 @@ FactoryBot.define do
 
   trait :with_all_tags do
     after(:build) do |submission|
-      Tag.kinds.keys.each do |kind|
+      Tag.kinds.each_key do |kind|
         submission.tags << build(:"#{kind}_tag")
       end
     end

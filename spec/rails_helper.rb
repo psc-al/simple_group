@@ -34,6 +34,16 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
+Capybara.register_driver :chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(
+    args: %w[headless disable-popup-blocking disable-gpu no-sandbox window-size=1280,1800]
+  )
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :chrome
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
@@ -47,11 +57,17 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by(:selenium_chrome_headless)
+    driven_by(:chrome)
+  end
+
+  config.around(:each, type: :system) do |example|
+    original_csrf_status = ActionController::Base.allow_forgery_protection
+
+    ActionController::Base.allow_forgery_protection = true
+    example.run
+    ActionController::Base.allow_forgery_protection = original_csrf_status
   end
 end
-
-Capybara.javascript_driver = :selenium_headless_chrome
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

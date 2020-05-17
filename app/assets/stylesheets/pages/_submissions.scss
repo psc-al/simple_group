@@ -2,6 +2,24 @@
   @include padding($spacing-smaller null null null);
 }
 
+.submission-hidden .submission-line2 .submission-info {
+  .hide {
+    font-style: italic;
+  }
+  .hide::after {
+    font-style: normal;
+  }
+}
+
+.submission-saved .submission-line2 .submission-info {
+  .save {
+    color: green;
+  }
+  .save::after {
+    color: $scorpion;
+  }
+}
+
 .submission {
   @include padding(null null $spacing-small null);
   .submission-info,

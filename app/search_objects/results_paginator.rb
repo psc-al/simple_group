@@ -6,6 +6,7 @@ class ResultsPaginator
     @page = [params.fetch(:page).to_i, MAX_PER_PAGE].min
     @per_page = params.fetch(:per_page)
     @order = params.fetch(:order, { id: :asc })
+    @count_field = params.fetch(:count_field, :id)
   end
 
   def results_page
@@ -16,7 +17,7 @@ class ResultsPaginator
   end
 
   def max_page
-    (scope.count.to_f / per_page).ceil - 1
+    (scope.count(count_field).to_f / per_page).ceil - 1
   end
 
   def offset
@@ -27,7 +28,7 @@ class ResultsPaginator
     end
   end
 
-  attr_reader :page, :per_page, :order
+  attr_reader :page, :per_page, :order, :count_field
 
   private
 

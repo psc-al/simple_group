@@ -1,6 +1,9 @@
 require "support/page_objects/page_base"
+require "support/page_objects/shared_components/submission_actions_component"
 
 class ViewSubmissionPage < PageBase
+  include SubmissionActionsComponent
+
   def visit(submission, as:)
     login_as(as) if as.present?
     super(submission_path(submission.id))

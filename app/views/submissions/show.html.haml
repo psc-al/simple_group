@@ -3,3 +3,4 @@
   = sanitize CommonMarker.render_html(@submission.body.gsub("\\", "\\\\\\")) if @submission.body.present?
 
 = javascript_pack_tag :latex
+= javascript_pack_tag "submission_actions"

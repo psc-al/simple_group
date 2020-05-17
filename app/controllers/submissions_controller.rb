@@ -2,11 +2,11 @@ class SubmissionsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @paginator = SubmissionSearch.new(submission_search_params).results_paginator
+    @paginator = SubmissionSearch.new(submission_search_params, current_user).results_paginator
   end
 
   def show
-    @submission = Submission.friendly.preload(:user, :domain).find(params[:short_id])
+    @submission = submission
   end
 
   def new
@@ -23,6 +23,23 @@ class SubmissionsController < ApplicationController
   end
 
   private
+
+  def submission
+    Submission.friendly.preload(:user, :domain).then { |rel|
+      if current_user.present?
+        rel.
+          left_join_saved_info_for(current_user).
+          left_join_hidden_info_for(current_user).
+          select(%(
+            submissions.*,
+            hidden_actions.id AS hidden_action_id,
+            saved_actions.id AS saved_action_id
+          ).squish)
+      else
+        rel.select("submissions.*, NULL AS hidden_action_id, NULL AS saved_action_id")
+      end
+    }.find(params[:short_id])
+  end
 
   def create_submission_params
     params.require(:create_submission_form).

@@ -73,6 +73,9 @@ Naming/MethodParameterName:
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
+Rails/InverseOf:
+  Enabled: false
+
 Rails/NotNullColumn:
   Enabled: false
 

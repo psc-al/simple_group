@@ -1,6 +1,11 @@
 = render "submission_list_item", submission: @submission
-.submission-body.latex-container
+.submission-body.latex-container.markdownable
   = sanitize CommonMarker.render_html(@submission.body.gsub("\\", "\\\\\\")) if @submission.body.present?
+.comments-container
+  = render "comments/form", comment: @root_comment, parent: nil
+  - @submission.root_comments.each do |comment|
+    = render "comments/comment", comment: comment
 
 = javascript_pack_tag :latex
 = javascript_pack_tag "submission_actions"
+= javascript_pack_tag "comment"

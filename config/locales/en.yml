@@ -36,3 +36,5 @@ en:
     submit:
       create_submission_form:
         create: "Submit"
+      comment:
+        create: "Comment"

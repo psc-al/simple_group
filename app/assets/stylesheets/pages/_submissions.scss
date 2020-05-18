@@ -79,69 +79,6 @@
 .submission-body {
   border-top: $light-border;
   padding-top: $spacing-smaller;
-  blockquote {
-    @include padding($spacing-xs null $spacing-xs $spacing-small);
-    margin: 0.5rem 0 0.5rem 0.5rem;
-    border-left: 0.3rem solid $alto;
-    p {
-      margin: 0;
-    }
-  }
-  ul,
-  ol {
-    margin: 0.5rem 0 0.5rem 1rem;
-    p {
-      margin: 0;
-    }
-
-    ul,
-    ol {
-      margin: 0rem 1.5rem;
-    }
-  }
-
-  ul {
-    list-style-type: disc;
-    ul {
-      list-style-type: circle;
-    }
-  }
-
-  ol {
-    list-style-type: decimal;
-    ol {
-      list-style-type: lower-alpha;
-    }
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    margin: 0.5rem 0;
-  }
-
-  pre {
-    border-top: $light-border;
-    border-bottom: $light-border;
-    background-color: $white-gray;
-    padding: $spacing-smaller 0;
-  }
-
-  code {
-    font-family: "Consolas", "Menlo", monospace;
-    font-size: 14px;
-    background-color: $white-gray;
-  }
-
-  img {
-    display: block;
-    width: 600px;
-    margin: 0.5rem auto;
-  }
 }
 
 .original-author-statement {
@@ -155,5 +92,77 @@
       border-bottom: $light-border;
       margin-bottom: $spacing-smaller;
     }
+  }
+}
+
+.comments-container {
+  margin-top: $spacing-medium;
+  .comment {
+    display: grid;
+    grid-template-columns: 0.8em 1em auto;
+    grid-template-rows: auto 1.2em auto;
+    margin-top: $spacing-small;
+    grid-column-gap: $spacing-smaller;
+    grid-row-gap: $spacing-smaller;
+    .hide-comment,
+    .upvote,
+    .downvote {
+      cursor: pointer;
+      color: $scorpion;
+      justify-self: center;
+      align-self: center;
+      font-family: $font-stack-mono;
+    }
+    .upvote, .hide-comment {
+      line-height: 0.9;
+    }
+    .hide-comment::before {
+      content: "[-]";
+    }
+    .hidden.hide-comment::before {
+      content: "[+]";
+    }
+    .upvote::before {
+      content: "+";
+    }
+    .downvote::before {
+      content: "-";
+    }
+    .downvote {
+      grid-area: 2 / 1;
+    }
+    .comment-line1 {
+      padding-left: $spacing-xs;
+      align-self: center;
+      color: $scorpion;
+      line-height: 0.9;
+      .link a {
+        color: $scorpion;
+      }
+      a {
+        text-decoration: none;
+      }
+    }
+    .comment-content {
+      grid-column: 2 / 4;
+      grid-row: 2 / span 2;  
+      .comment-reply-box {
+        display: none;
+        grid-column: 3 / 3;
+        grid-row: 3 / 3;
+      }
+    }
+    .comment-tree-line {
+      grid-area: 3 / 1 ;
+      background-color: $alto;
+      width: 0.1rem;
+      justify-self: center;
+    }
+  }
+
+  :target {
+    transition: background-color 0.5s ease-in-out;
+    background-color: #f7f5a8;
+    border-radius: $border-radius;
   }
 }

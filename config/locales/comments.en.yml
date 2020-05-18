@@ -1,0 +1,9 @@
+en:
+  comments:
+    comment:
+      link: link
+      reply: reply
+    form:
+      cancel: Cancel
+    create:
+      success: Your comment has been submitted

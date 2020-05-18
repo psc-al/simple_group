@@ -7,6 +7,7 @@ class SubmissionsController < ApplicationController
 
   def show
     @submission = submission
+    @root_comment = Comment.new
   end
 
   def new
@@ -25,7 +26,7 @@ class SubmissionsController < ApplicationController
   private
 
   def submission
-    Submission.friendly.preload(:user, :domain).then { |rel|
+    Submission.friendly.preload(:user, :domain, root_comments: :user).then { |rel|
       if current_user.present?
         rel.
           left_join_saved_info_for(current_user).

@@ -15,3 +15,9 @@ User.moderator.
 User.member.
   create(username: "member", email: "member@example.com", password: "abcd1234", password_confirmation: "abcd1234").
   confirm
+
+Tag.topic.create(id: "algebra", description: "submissions related to algebra")
+Tag.media.create(id: "pdf", description: "submission involves a PDF file")
+Tag.source.create(id: "research-article", description: "submissions source is a research article")
+Tag.meta.create(id: "bug", description: "submission is pointing out a bug on our site")
+Tag.mod.create(id: "announcement", description: "submission is an announcement by mod team")

@@ -60,6 +60,7 @@ $viewport-background-color: $base-background-color;
 }
 
 $font-stack: 'Computer Modern Serif', "CMU Serif", system-ui, sans-serif;
+$font-stack-mono: "Consolas", "Menlo", monospace;
 
 $font-weight-thin: thin;
 $font-weight-normal: normal;
@@ -74,6 +75,7 @@ $border: 0.0625rem solid darken($alto, 10%);
 $light-border: 1px solid $alto;
 
 // Spacing
+$spacing-medium: 2rem;
 $spacing: 1.5rem;
 $spacing-small: 0.75rem;
 $spacing-smaller: 0.5rem;

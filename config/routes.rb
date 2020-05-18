@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   root to: "submissions#index"
 
   resources :submissions, only: [:index, :new, :create]
-  resources :submissions, only: [:show], param: :short_id, path: :s
+  resources :submissions, only: [:show], param: :short_id, path: :s do
+    resources :comments, only: [:create]
+  end
 
   namespace :users do
     resource :submission_actions, only: [:update]

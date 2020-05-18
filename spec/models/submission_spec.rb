@@ -3,6 +3,7 @@ RSpec.describe Submission, type: :model do
   it { should belong_to(:domain).optional }
   it { should have_many(:submission_tags) }
   it { should have_many(:tags).through(:submission_tags) }
+  it { should have_many(:comments) }
 
   describe ".short_id_prefix" do
     it "is :s_" do

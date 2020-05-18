@@ -2,6 +2,7 @@ RSpec.describe User do
   it { should define_enum_for(:role).with_values(member: 0, moderator: 10, admin: 20) }
   it { should have_many(:submissions) }
   it { should have_many(:submission_actions) }
+  it { should have_many(:comments) }
 
   describe "#update_last_submission_at!" do
     it "updates the last submission time to the current time" do

@@ -13,6 +13,7 @@ class User < ApplicationRecord
 
   has_many :submissions
   has_many :submission_actions
+  has_many :comments
 
   validates :username, presence: true
 

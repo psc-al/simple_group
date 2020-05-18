@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_16_221059) do
+ActiveRecord::Schema.define(version: 2020_05_17_210826) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "ltree"
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.string "short_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "submission_id", null: false
+    t.bigint "parent_id"
+    t.text "body", null: false
+    t.ltree "ancestry_path"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ancestry_path"], name: "index_comments_on_ancestry_path", using: :gist
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["short_id"], name: "index_comments_on_short_id", unique: true
+    t.index ["submission_id"], name: "index_comments_on_submission_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
 
   create_table "domains", force: :cascade do |t|
     t.string "name", null: false
@@ -95,6 +112,9 @@ ActiveRecord::Schema.define(version: 2020_05_16_221059) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
+  add_foreign_key "comments", "submissions", on_delete: :cascade
+  add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "domains", "users", column: "banned_by_id"
   add_foreign_key "submission_actions", "submissions", column: "submission_short_id", primary_key: "short_id"
   add_foreign_key "submission_actions", "users", on_delete: :cascade

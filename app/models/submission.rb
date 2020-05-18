@@ -5,6 +5,7 @@ class Submission < ApplicationRecord
   belongs_to :domain, optional: true
   has_many :submission_tags
   has_many :tags, through: :submission_tags
+  has_many :comments
 
   def self.short_id_prefix
     :s_

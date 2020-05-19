@@ -24,4 +24,13 @@ FactoryBot.define do
       end
     end
   end
+
+  trait :with_comments do
+    transient do
+      num_comments { 3 }
+    end
+    after(:build) do |submission, evaluator|
+      submission.comments = build_list(:comment, evaluator.num_comments)
+    end
+  end
 end

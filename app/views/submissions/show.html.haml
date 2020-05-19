@@ -3,8 +3,7 @@
   = sanitize CommonMarker.render_html(@submission.body.gsub("\\", "\\\\\\")) if @submission.body.present?
 .comments-container
   = render "comments/form", comment: @root_comment, parent: nil
-  - @submission.root_comments.each do |comment|
-    = render "comments/comment", comment: comment
+  = render "comments/comment_tree", comments_by_parent: @comments_by_parent
 
 = javascript_pack_tag :latex
 = javascript_pack_tag "submission_actions"

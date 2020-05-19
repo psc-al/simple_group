@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_17_210826) do
+ActiveRecord::Schema.define(version: 2020_05_19_215536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -122,4 +122,55 @@ ActiveRecord::Schema.define(version: 2020_05_17_210826) do
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
+
+  create_view "flattened_submissions", sql_definition: <<-SQL
+      SELECT submissions.id,
+      submissions.short_id,
+      submissions.title,
+      submissions.url,
+      domains.name AS domain_name,
+      NULL::text AS body,
+      users.username AS submitter_username,
+      submissions.original_author,
+      submissions.created_at,
+      COALESCE(( SELECT count(comments.submission_id) AS comment_count
+             FROM comments
+            WHERE (comments.submission_id = submissions.id)
+            GROUP BY comments.submission_id), (0)::bigint) AS comment_count
+     FROM ((submissions
+       JOIN users ON ((submissions.user_id = users.id)))
+       JOIN domains ON ((submissions.domain_id = domains.id)))
+    WHERE (submissions.domain_id IS NOT NULL)
+  UNION ALL
+   SELECT submissions.id,
+      submissions.short_id,
+      submissions.title,
+      NULL::character varying AS url,
+      NULL::character varying AS domain_name,
+      submissions.body,
+      users.username AS submitter_username,
+      submissions.original_author,
+      submissions.created_at,
+      COALESCE(( SELECT count(comments.submission_id) AS comment_count
+             FROM comments
+            WHERE (comments.submission_id = submissions.id)
+            GROUP BY comments.submission_id), (0)::bigint) AS comment_count
+     FROM (submissions
+       JOIN users ON ((submissions.user_id = users.id)))
+    WHERE (submissions.domain_id IS NULL);
+  SQL
+  create_view "flattened_comments", sql_definition: <<-SQL
+      SELECT comments.id,
+      comments.short_id,
+      comments.user_id,
+      comments.submission_id,
+      comments.parent_id,
+      comments.body,
+      comments.ancestry_path,
+      comments.created_at,
+      comments.updated_at,
+      users.username AS commenter
+     FROM (comments
+       JOIN users ON ((users.id = comments.user_id)));
+  SQL
 end

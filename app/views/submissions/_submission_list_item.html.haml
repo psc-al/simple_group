@@ -5,12 +5,12 @@
       - submission.tags.each do |tag|
         = render "shared/tag", tag: tag
     %span.submission-info
-      %i= submission.domain.name if submission.domain.present?
+      %i= submission.domain_name.presence
   .submission-line2
     %span.submission-info
       = submitted_by_text(submission)
     %span.submission-user
-      = link_to submission.user.username, "#"
+      = link_to submission.submitter_username, "#"
     %span.submission-info
       %span.submission-time
         = submitted_time_text(submission)
@@ -18,4 +18,5 @@
       = link_to hide_link_text_for(submission), "", class: "hide"
       = link_to save_link_text_for(submission), "", class: "save"
     %span.submission-comments
-      = link_to t(".comments", count: 25), "#"
+      = link_to t(".comments", count: submission.comment_count),
+        submission_path(submission.short_id)

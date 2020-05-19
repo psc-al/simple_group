@@ -1,0 +1,42 @@
+<% subtree = comments_by_parent[nil] %>
+<% ancestors = [] %>
+<% while subtree %>
+  <% if (comment = subtree.shift) %>
+    <% children = comments_by_parent[comment.id] %>
+    <div class="comment" id="<%= comment.short_id %>">
+      <span class="upvote"></span>
+      <span class="downvote"></span>
+      <span class="hide-comment"></span>
+      <div class="comment-line1">
+        <span class="author"><%= link_to comment.commenter, "#" %></span>
+        <span><%= submitted_time_text(comment) %></span>
+        |
+        <span class="link">
+          <%= link_to t("comments.comment.link"), "##{comment.short_id}", data: { turbolinks: false} %>
+        </span>
+        |
+        <span class="link">
+          <%= link_to t("comments.comment.reply"), "", class: "reply"%>
+        </span>
+      </div>
+      <% if children.present? %>
+        <div class="comment-tree-line"></div>
+      <% end %>
+      <div class="comment-content">
+        <div class="comment-body latex-container markdownable" id="tree_<%= comment.short_id %>">
+          <%= sanitize CommonMarker.render_html(comment.body.gsub("\\", "\\\\\\")) %>
+        </div>
+        <div class="comment-reply-box" id="reply_<%= comment.short_id %>">
+          <%= render "comments/form", comment: Comment.new, parent: comment %>
+        </div>
+      <% if children %>
+        <% ancestors << subtree %>
+        <% subtree = children %>
+        <div class="comment-replies" id="replies_<%= comment.short_id %>">
+      <% else %>
+        <div class="comment-replies" id="replies_<%= comment.short_id %>"></div></div></div>
+      <% end %>
+  <% elsif (subtree = ancestors.pop) %>
+      </div></div></div>
+  <% end %>
+<% end %>

@@ -2,12 +2,16 @@ class SubmissionsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @paginator = SubmissionSearch.new(submission_search_params, current_user).results_paginator
+    @paginator = FlattenedSubmissionSearch.
+      new(submission_search_params, current_user).
+      results_paginator
   end
 
   def show
-    @submission = submission
+    @submission = FlattenedSubmissionSearch.new({}, current_user).
+      by_short_id(params[:short_id])
     @root_comment = Comment.new
+    @comments_by_parent = @submission.flattened_comments.order(:id).group_by(&:parent_id)
   end
 
   def new
@@ -25,29 +29,12 @@ class SubmissionsController < ApplicationController
 
   private
 
-  def submission
-    Submission.friendly.preload(:user, :domain, root_comments: :user).then { |rel|
-      if current_user.present?
-        rel.
-          left_join_saved_info_for(current_user).
-          left_join_hidden_info_for(current_user).
-          select(%(
-            submissions.*,
-            hidden_actions.id AS hidden_action_id,
-            saved_actions.id AS saved_action_id
-          ).squish)
-      else
-        rel.select("submissions.*, NULL AS hidden_action_id, NULL AS saved_action_id")
-      end
-    }.find(params[:short_id])
-  end
-
   def create_submission_params
     params.require(:create_submission_form).
       permit(:url, :title, :body, :original_author, tag_ids: [])
   end
 
   def submission_search_params
-    params.permit(:page, :per_page)
+    params.permit(:page, :per_page).to_h.symbolize_keys
   end
 end

@@ -1,9 +1,9 @@
-RSpec.describe SubmissionSearch do
+RSpec.describe FlattenedSubmissionSearch do
   let(:user) { create(:user) }
 
   describe "#results_paginator" do
     it "is a `ResultsPaginator`" do
-      search = SubmissionSearch.new({}, user)
+      search = FlattenedSubmissionSearch.new({}, user)
 
       expect(search.results_paginator).to be_a(ResultsPaginator)
     end
@@ -14,10 +14,10 @@ RSpec.describe SubmissionSearch do
       present1, present2, hidden = create_list(:submission, 3, :text)
       create(:submission_action, :hidden, user: user, submission: hidden)
 
-      search = SubmissionSearch.new({}, user)
+      search = FlattenedSubmissionSearch.new({}, user)
       results = search.results_paginator.results_page
 
-      expect(results).to match_array([present1, present2])
+      expect(results.map(&:id)).to match_array([present1.id, present2.id])
     end
   end
 end

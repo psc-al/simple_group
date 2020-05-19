@@ -24,7 +24,7 @@ RSpec.describe "submissions index" do
         # create a ton of submissions as part of this setup
         # to get it to page, so we'll do this for now.
         # Open to better ways to do it.
-        stub_const("SubmissionSearch::DEFAULT_PER_PAGE", 2)
+        stub_const("FlattenedSubmissionSearch::DEFAULT_PER_PAGE", 2)
         s1, s2, s3, s4, s5 = create_list(:submission, 5, :with_all_tags)
         page = SubmissionsIndexPage.new
 

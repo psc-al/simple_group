@@ -23,45 +23,52 @@ $base-background-color: $white;
 $viewport-background-color: $base-background-color;
 
 // Fonts!
-@include font-face(
-  "Computer Modern Serif",
-  "cmunrm",
-  ("eot", "eot?#iefix", "woff", "ttf", "svg")
-) {
-  font-style: normal;
-  font-weight: normal;
-}
-
-@include font-face(
-  "Computer Modern Serif",
-  "cmunbx",
-  ("eot", "eot?#iefix", "woff", "ttf", "svg")
-) {
-  font-style: normal;
-  font-weight: bold;
-}
-
-@include font-face(
-  "Computer Modern Serif",
-  "cmunti",
-  ("eot", "eot?#iefix", "woff", "ttf", "svg")
-) {
-  font-style: italic;
-  font-weight: normal;
-}
-
-@include font-face(
-  "Computer Modern Serif",
-  "cmunbi",
-  ("eot", "eot?#iefix", "woff", "ttf", "svg")
-) {
-  font-style: italic;
-  font-weight: bold;
-}
-
 $font-stack: 'Computer Modern Serif', "CMU Serif", system-ui, sans-serif;
 $font-stack-mono: "Consolas", "Menlo", monospace;
 
+@font-face {
+  font-family: "Computer Modern Serif";
+  src: font-url("cmunrm.eot") format("embedded-opentype");
+  src: font-url("cmunrm.eot?#iefix") format("embedded-opentype"),
+    font-url("cmunrm.woff") format("woff"),
+    font-url("cmunrm.ttf") format("truetype"),
+    font-url("cmunrm.svg") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "computer-modern-serif";
+  src: font-url("cmunbx.eot") format("embedded-opentype");
+  src: font-url("cmunbx.eot?#iefix") format("embedded-opentype"),
+    url("fonts/cmunbx.woff") format("woff"),
+    url("fonts/cmunbx.ttf") format("truetype"),
+    url("fonts/cmunbx.svg") format("svg");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "computer-modern-serif";
+  src: font-url("cmunti.eot") format("embedded-opentype");
+  src: font-url("cmunti.eot?#iefix") format("embedded-opentype"),
+    url("fonts/cmunti.woff") format("woff"),
+    url("fonts/cmunti.ttf") format("truetype"),
+    url("fonts/cmunti.svg") format("svg");
+  font-style: italic;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "computer-modern-serif";
+  src: font-url("cmunbi.eot") format("embedded-opentype");
+  src: font-url("cmunbi.eot?#iefix") format("embedded-opentype"),
+    url("fonts/cmunbi.woff") format("woff"),
+    url("fonts/cmunbi.ttf") format("truetype"),
+    url("fonts/cmunbi.svg") format("svg");
+  font-style: italic;
+  font-weight: bold;
+}
 $font-weight-thin: thin;
 $font-weight-normal: normal;
 $font-weight-bold: bold;

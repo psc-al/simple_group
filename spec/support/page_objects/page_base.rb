@@ -14,6 +14,6 @@ class PageBase
   end
 
   def has_notice?(notice)
-    has_css?(".alert-notice", text: notice)
+    has_css?(".flash-notice", text: notice)
   end
 end

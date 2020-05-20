@@ -31,7 +31,8 @@
     }
   }
   .submission-line1 {
-    position: relative;
+    display: flex;
+    flex-wrap: wrap;
     .submission-link a {
       text-decoration: none;
       font-size: 1.2rem;
@@ -39,9 +40,6 @@
       margin-right: $spacing-xs;
     }
     .submission-tags {
-      position: absolute;
-      top: 0;
-      bottom: 0;
       margin-left: $spacing-xs;
     }
   }
@@ -61,17 +59,6 @@
       a {
         text-decoration: none;
       }
-    }
-  }
-}
-
-// Tinyyy screens
-@media only screen and (max-width: 400px) {
-  .submission-line1 {
-    position: static !important;
-    .submission-tags {
-      position: static !important;
-      margin-left: auto !important;
     }
   }
 }

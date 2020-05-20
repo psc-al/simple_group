@@ -11,8 +11,11 @@
       = yield :page_styles
   %body
     = render "layouts/navbar"
-    - flash.each do |key, value|
-      .alert{ class: "alert-#{key}" }
-        = value
+    - flash.each do |flash_type, flash_message|
+      %label.flash_container
+        %input{ type: "checkbox" }
+        .flash{ class: "flash-#{flash_type}" }
+          = flash_message
+          %span.flash_close x
     .application-container
       = yield

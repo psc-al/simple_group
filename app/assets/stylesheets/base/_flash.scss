@@ -1,0 +1,22 @@
+.flash_container {
+    cursor: pointer;
+    .flash {
+        position: fixed;
+        padding: $spacing-small;
+        background-color: $white;
+        box-shadow: $box-shadow;
+        top: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: normal;
+        .flash_close {
+            font-family: $font-stack-mono;
+            color: lighten($scorpion, 20%);
+            margin-left: $spacing-small;
+        }
+    }
+    input[type="checkbox"],
+    :checked + .flash {
+        display: none;
+    }
+}

@@ -162,11 +162,9 @@ ActiveRecord::Schema.define(version: 2020_05_19_215536) do
   create_view "flattened_comments", sql_definition: <<-SQL
       SELECT comments.id,
       comments.short_id,
-      comments.user_id,
       comments.submission_id,
       comments.parent_id,
       comments.body,
-      comments.ancestry_path,
       comments.created_at,
       comments.updated_at,
       users.username AS commenter

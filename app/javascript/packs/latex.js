@@ -1,4 +1,4 @@
-import '../latex_styles';
+import '../latex_styles.sass';
 
 const katex = require('katex');
 

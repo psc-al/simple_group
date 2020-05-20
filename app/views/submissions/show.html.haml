@@ -4,7 +4,8 @@
 .comments-container
   = render "comments/form", comment: @root_comment, parent: nil
   = render "comments/comment_tree", comments_by_parent: @comments_by_parent
-
-= javascript_pack_tag :latex
-= javascript_pack_tag "submission_actions"
-= javascript_pack_tag "comment"
+- content_for :page_styles do
+  = stylesheet_pack_tag "latex", "data-turbolinks-track": "reload"
+  = javascript_pack_tag "latex"
+  = javascript_pack_tag "submission_actions"
+  = javascript_pack_tag "comment"

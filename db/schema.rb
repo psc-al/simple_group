@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_215536) do
+ActiveRecord::Schema.define(version: 2020_05_21_044543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -112,6 +112,18 @@ ActiveRecord::Schema.define(version: 2020_05_19_215536) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.string "votable_type", null: false
+    t.bigint "votable_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "kind", null: false
+    t.integer "downvote_reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "votable_type", "votable_id", "kind"], name: "idx_uniq_votes_user_votable_and_kind", unique: true
+    t.index ["votable_type", "votable_id", "kind"], name: "index_votes_on_votable_type_and_votable_id_and_kind"
+  end
+
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "submissions", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
@@ -122,6 +134,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_215536) do
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
+  add_foreign_key "votes", "users", on_delete: :cascade
 
   create_view "flattened_submissions", sql_definition: <<-SQL
       SELECT submissions.id,

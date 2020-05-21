@@ -4,6 +4,7 @@ RSpec.describe Comment, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:submission) }
   it { should belong_to(:parent).optional.class_name("Comment") }
+  it { should have_many(:votes) }
 
   describe ".short_id_prefix" do
     it "is :c_" do

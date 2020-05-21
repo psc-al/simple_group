@@ -5,6 +5,7 @@ class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :submission
   belongs_to :parent, optional: true, class_name: "Comment"
+  has_many :votes, as: :votable
 
   validates :body, presence: true
 

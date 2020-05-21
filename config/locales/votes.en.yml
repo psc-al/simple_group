@@ -1,0 +1,17 @@
+en:
+  votes:
+    downvote_reason:
+      off_topic: "Off-topic"
+      incorrect: "Incorrect / Inaccurate"
+      spam: "Spam"
+      mean: "Mean-spirited / unfriendly"
+      unhelpful: "Unhelpful"
+      troll: "Trolling"
+      broken_link: "Broken link"
+      repost: "Repost"
+    errors:
+      missing_downvote_reason: "You must select a downvote reason."
+      downvote_reason_for_upvote: "Upvotes can't have a downvote reason."
+      invalid_submission_downvote_reason: "Selected downvote reason is not allowed for submission."
+      invalid_comment_downvote_reason: "Selected downvote reason is not allowed for comment."
+      unsupported_votable_type: "Voting for %{type} is not supported."

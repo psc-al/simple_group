@@ -7,6 +7,7 @@ class Submission < ApplicationRecord
   has_many :tags, through: :submission_tags
   has_many :comments
   has_many :root_comments, -> { where(parent_id: nil) }, class_name: "Comment"
+  has_many :votes, as: :votable
 
   def self.short_id_prefix
     :s_

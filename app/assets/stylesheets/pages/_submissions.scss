@@ -99,6 +99,7 @@
       justify-self: center;
       align-self: center;
       font-family: $font-stack-mono;
+      white-space: nowrap;
     }
     .upvote, .hide-comment {
       line-height: 0.9;

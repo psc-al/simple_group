@@ -19,8 +19,11 @@ label {
 input,
 select,
 textarea {
-  display: block;
   font-size: 1rem;
+}
+
+.checkbox {
+  vertical-align: middle;
 }
 
 [type="color"],
@@ -78,7 +81,7 @@ textarea {
 
 [type="checkbox"],
 [type="radio"] {
-  margin: 0 $spacing-xs 0 $spacing-small;
+  margin: 0 $spacing-xs;
 }
 
 [type="file"] {
@@ -86,9 +89,15 @@ textarea {
   width: 100%;
 }
 
-select {
+#tag-select {
   margin-bottom: $spacing-small;
   width: 100%;
+  border: $border;
+  box-shadow: $box-shadow;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  font-family: $font-stack;
+  font-style: italic;;
 }
 
 [type="checkbox"],

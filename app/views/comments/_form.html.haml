@@ -1,6 +1,6 @@
 = simple_form_for comment, url: submission_comments_path(@submission.short_id) do |f|
   = f.input :body, as: :text, input_html: { rows: 5 }, label: false, required: true
   = f.input :parent_id, as: :hidden, input_html: { value: parent&.id }, wrapper: false
-  = f.submit
+  = f.button :button, type: :submit
   - if parent.present?
     = f.button :button, t(".cancel"), type: :reset, class: "cancel-reply"

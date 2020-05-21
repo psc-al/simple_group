@@ -6,7 +6,7 @@ button,
   background-color: $action-color;
   border: 0;
   border-radius: $border-radius;
-  color: $action-color--contrast;
+  color: $white;
   cursor: pointer;
   display: inline-block;
   font-family: $font-stack;
@@ -39,5 +39,9 @@ button,
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  &:active {
+    background-color: darken($action-color, 10%);
   }
 }

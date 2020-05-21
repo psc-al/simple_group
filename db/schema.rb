@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 2020_05_21_044543) do
     t.integer "kind", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "votable_type", "votable_id", "kind"], name: "idx_uniq_votes_user_votable_and_kind", unique: true
+    t.index ["user_id", "votable_type", "votable_id"], name: "idx_uniq_votes_user_and_votable", unique: true
     t.index ["votable_type", "votable_id", "kind"], name: "index_votes_on_votable_type_and_votable_id_and_kind"
   end
 

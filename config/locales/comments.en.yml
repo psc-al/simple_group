@@ -1,4 +1,10 @@
 en:
+  api:
+    v1:
+      comments:
+        downvotes:
+          update:
+            comment_before_downvote: "You must submit a response comment before you downvote a comment."
   comments:
     comment:
       link: link

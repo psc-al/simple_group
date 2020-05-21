@@ -15,4 +15,18 @@ Rails.application.routes.draw do
   namespace :users do
     resource :submission_actions, only: [:update]
   end
+
+  namespace :api do
+    namespace :v1 do
+      resources :comments, only: [], param: :short_id do
+        put :upvotes, action: :update, controller: "comments/upvotes"
+        put :downvotes, action: :update, controller: "comments/downvotes"
+      end
+
+      resources :submissions, only: [], param: :short_id do
+        put :upvotes, action: :update, controller: "submissions/upvotes"
+        put :downvotes, action: :update, controller: "submissions/downvotes"
+      end
+    end
+  end
 end

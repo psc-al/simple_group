@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(version: 2020_05_21_044543) do
     t.bigint "votable_id", null: false
     t.bigint "user_id", null: false
     t.integer "kind", null: false
-    t.integer "downvote_reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id", "votable_type", "votable_id", "kind"], name: "idx_uniq_votes_user_votable_and_kind", unique: true

@@ -10,6 +10,9 @@ class Vote < ApplicationRecord
     downvote: 1
   }
 
+  scope :submission, -> { where(votable_type: "Submission") }
+  scope :comment, -> { where(votable_type: "Comment") }
+
   SUPPORTED_VOTABLE_TYPES = [Submission, Comment].freeze
 
   private

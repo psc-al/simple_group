@@ -1,4 +1,10 @@
 en:
+  api:
+    v1:
+      submissions:
+        downvotes:
+          update:
+            comment_before_downvote: "You must submit a response comment before you downvote a submission."
   submissions:
     submission_list_item:
       submitted_by: via 

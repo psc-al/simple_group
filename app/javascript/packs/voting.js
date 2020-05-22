@@ -1,5 +1,6 @@
-const throttle = require("lodash/throttle");
 const flash = require("./flash");
+const pageload = require("./pageload");
+const throttle = require("lodash/throttle");
 
 function getOppositeControl(shortId, voteControl) {
   if (voteControl.id.startsWith("upvote_")) {
@@ -55,7 +56,7 @@ function setVoteListener(votableElement, dir) {
   let shortId = votableElement.id;
   let path = baseResourcePath(shortId) + "/" + shortId + "/" + dir + "votes";
   let voteControl = document.getElementById(dir + "vote_" + shortId);
-  throttledRequest = throttle(fetchVoteResponse,
+  let throttledRequest = throttle(fetchVoteResponse,
     750,
     { 'trailing': false }
   );
@@ -64,20 +65,11 @@ function setVoteListener(votableElement, dir) {
   });
 }
 
-const callback = function() {
+pageload.onPageLoad(function() {
   const votableElements = document.getElementsByClassName("votable");
 
   for (let i = 0; i < votableElements.length; i++) {
     setVoteListener(votableElements[i], "up");
     setVoteListener(votableElements[i], "down");
   }
-};
-
-if (
-    document.readyState === "complete" ||
-    (document.readyState !== "loading" && !document.documentElement.doScroll)
-) {
-  callback();
-} else {
-  document.addEventListener("DOMContentLoaded", callback);
-}
+});

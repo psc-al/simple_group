@@ -11,11 +11,13 @@ RSpec.describe "user comments on submission" do
 
     expect(page).to have_comment("a nice comment")
     expect(page).to have_comment_reply(comment, child)
+    expect(page).to have_vote_controls_for(comment)
 
     page.hide_comment(comment)
 
     expect(page).not_to have_comment("a nice comment")
     expect(page).not_to have_comment_reply(comment, child)
+    expect(page).not_to have_vote_controls_for(comment)
   end
 
   context "when the user is logged in" do

@@ -86,6 +86,12 @@ class ViewSubmissionPage < PageBase
     has_css?(".tag_#{tag.kind}", text: tag.id)
   end
 
+  def has_vote_controls_for?(comment)
+    within find("##{comment.short_id}") do
+      has_css?(".upvote") && has_css?(".downvote")
+    end
+  end
+
   def has_comment?(body)
     has_css?(".comment-body", text: body, wait: 0)
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_044543) do
+ActiveRecord::Schema.define(version: 2020_05_22_214242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -145,10 +145,14 @@ ActiveRecord::Schema.define(version: 2020_05_21_044543) do
       users.username AS submitter_username,
       submissions.original_author,
       submissions.created_at,
-      COALESCE(( SELECT count(comments.submission_id) AS comment_count
+      ( SELECT count(comments.submission_id) AS comment_count
              FROM comments
-            WHERE (comments.submission_id = submissions.id)
-            GROUP BY comments.submission_id), (0)::bigint) AS comment_count
+            WHERE (comments.submission_id = submissions.id)) AS comment_count,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
      FROM ((submissions
        JOIN users ON ((submissions.user_id = users.id)))
        JOIN domains ON ((submissions.domain_id = domains.id)))
@@ -163,10 +167,14 @@ ActiveRecord::Schema.define(version: 2020_05_21_044543) do
       users.username AS submitter_username,
       submissions.original_author,
       submissions.created_at,
-      COALESCE(( SELECT count(comments.submission_id) AS comment_count
+      ( SELECT count(comments.submission_id) AS comment_count
              FROM comments
-            WHERE (comments.submission_id = submissions.id)
-            GROUP BY comments.submission_id), (0)::bigint) AS comment_count
+            WHERE (comments.submission_id = submissions.id)) AS comment_count,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
      FROM (submissions
        JOIN users ON ((submissions.user_id = users.id)))
     WHERE (submissions.domain_id IS NULL);
@@ -179,7 +187,12 @@ ActiveRecord::Schema.define(version: 2020_05_21_044543) do
       comments.body,
       comments.created_at,
       comments.updated_at,
-      users.username AS commenter
+      users.username AS commenter,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 1)))) AS score
      FROM (comments
        JOIN users ON ((users.id = comments.user_id)));
   SQL

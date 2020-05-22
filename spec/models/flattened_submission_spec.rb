@@ -21,6 +21,8 @@ RSpec.describe FlattenedSubmission, type: :model do
       created_at: Time.zone.local(2020),
       num_comments: 3
     )
+    create_list(:upvote, 5, votable: text_submission)
+    create_list(:downvote, 3, votable: text_submission)
     url_submission = create(
       :submission,
       :with_comments,
@@ -32,6 +34,8 @@ RSpec.describe FlattenedSubmission, type: :model do
       created_at: Time.zone.local(2020, 1, 15),
       num_comments: 5
     )
+    create_list(:upvote, 3, votable: url_submission)
+    create_list(:downvote, 5, votable: url_submission)
 
     expect(FlattenedSubmission.count).to eq(2)
 
@@ -48,6 +52,7 @@ RSpec.describe FlattenedSubmission, type: :model do
     expect(flat_text_submission).to be_original_author
     expect(flat_text_submission.created_at).to eq(text_submission.created_at)
     expect(flat_text_submission.comment_count).to eq(3)
+    expect(flat_text_submission.score).to eq(2)
 
     expect(flat_url_submission.id).to eq(url_submission.id)
     expect(flat_url_submission.short_id).to eq(url_submission.short_id)
@@ -59,5 +64,6 @@ RSpec.describe FlattenedSubmission, type: :model do
     expect(flat_url_submission).not_to be_original_author
     expect(flat_url_submission.created_at).to eq(url_submission.created_at)
     expect(flat_url_submission.comment_count).to eq(5)
+    expect(flat_url_submission.score).to eq(-2)
   end
 end

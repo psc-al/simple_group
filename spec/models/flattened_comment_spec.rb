@@ -11,6 +11,10 @@ RSpec.describe FlattenedComment, type: :model do
       body: "child comment body",
       parent: parent
     )
+    create_list(:upvote, 5, votable: parent)
+    create_list(:downvote, 3, votable: parent)
+    create_list(:upvote, 3, votable: child)
+    create_list(:downvote, 5, votable: child)
 
     expect(FlattenedComment.count).to eq(2)
 
@@ -25,6 +29,7 @@ RSpec.describe FlattenedComment, type: :model do
     expect(flattened_parent.updated_at).to eq(parent.updated_at)
     expect(flattened_parent.commenter).to eq(user.username)
     expect(flattened_parent.parent_id).to be_nil
+    expect(flattened_parent.score).to eq(2)
 
     expect(flattened_child.id).to eq(child.id)
     expect(flattened_child.short_id).to eq(child.short_id)
@@ -34,5 +39,6 @@ RSpec.describe FlattenedComment, type: :model do
     expect(flattened_child.updated_at).to eq(child.updated_at)
     expect(flattened_child.commenter).to eq(user.username)
     expect(flattened_child.parent_id).to eq(parent.id)
+    expect(flattened_child.score).to eq(-2)
   end
 end

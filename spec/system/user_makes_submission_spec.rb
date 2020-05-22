@@ -19,7 +19,7 @@ RSpec.describe "user makes a submission" do
     let(:user) { create(:user) }
 
     context "when the submission is for a URL" do
-      it "creates the submission and redirects the user to the submission's view if successful" do
+      it "creates the submission, automagically upvotes it, and redirects the user to it if successful" do
         url = "https://foo.com"
         stub_url_health_check(url)
 
@@ -38,6 +38,8 @@ RSpec.describe "user makes a submission" do
         expect(submission.url).to eq(url)
         expect(submission.body).to be_nil
         expect(submission.original_author).to eq(true)
+        expect(submission.votes.upvote.count).to eq(1)
+        expect(submission.votes.upvote.first.user_id).to eq(user.id)
       end
 
       # i.e for redirects
@@ -146,7 +148,7 @@ RSpec.describe "user makes a submission" do
     end
 
     context "when the submission is a text submission" do
-      it "creates the submission and redirects the user to the submission's view if successful" do
+      it "creates the submission, automagically upvotes it, and redirects the user to it if successful" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
           select_tag(tag.id).
@@ -162,6 +164,8 @@ RSpec.describe "user makes a submission" do
         expect(submission.url).to be_nil
         expect(submission.body).to eq("This is a very nice submission body")
         expect(submission.original_author).to eq(true)
+        expect(submission.votes.upvote.count).to eq(1)
+        expect(submission.votes.upvote.first.user_id).to eq(user.id)
       end
     end
 

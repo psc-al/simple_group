@@ -19,7 +19,7 @@ RSpec.describe "user comments on submission" do
   end
 
   context "when the user is logged in" do
-    it "can leave a comment on the submission" do
+    it "can leave a comment on the submission that gets automagically upvoted for them" do
       page.visit(submission, as: user)
 
       expect { page.leave_comment("jet fuel can't melt dank memes") }.
@@ -32,9 +32,11 @@ RSpec.describe "user comments on submission" do
       expect(comment.submission_id).to eq(submission.id)
       expect(comment.body).to eq("jet fuel can't melt dank memes")
       expect(comment.user_id).to eq(user.id)
+      expect(comment.votes.upvote.count).to eq(1)
+      expect(comment.votes.upvote.first.user_id).to eq(user.id)
     end
 
-    it "can reply to a comment", js: true do
+    it "can reply to a comment, and the reply gets automagically upvoted for them", js: true do
       parent = create(:comment, submission: submission, user: user, body: "a nice comment")
 
       page.visit(submission, as: user)
@@ -50,6 +52,8 @@ RSpec.describe "user comments on submission" do
       expect(new_comment.body).to eq("such a nice reply")
       expect(new_comment.user_id).to eq(user.id)
       expect(new_comment.parent_id).to eq(parent.id)
+      expect(new_comment.votes.upvote.count).to eq(1)
+      expect(new_comment.votes.upvote.first.user_id).to eq(user.id)
       expect(page).to have_comment_reply(parent, new_comment)
     end
 

@@ -1,1 +1,1 @@
-%a{ href: "#", class: "tag tag_#{tag.kind}", title: tag.description }= tag.id
+%a{ href: tag_submissions_path(tag.id), class: "tag tag_#{tag.kind}", title: tag.description }= tag.id

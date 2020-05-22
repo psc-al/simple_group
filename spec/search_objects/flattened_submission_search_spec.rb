@@ -20,4 +20,19 @@ RSpec.describe FlattenedSubmissionSearch do
       expect(results.map(&:id)).to match_array([present1.id, present2.id])
     end
   end
+
+  describe "filtering" do
+    context "when filtered by tag" do
+      it "only returns submissions that have the given tag" do
+        s1, = create_list(:submission, 2, :text)
+        tag = create(:topic_tag)
+        create(:submission_tag, submission: s1, tag: tag)
+
+        search = FlattenedSubmissionSearch.new({ tag_id: tag.id }, user)
+        results = search.results_paginator.results_page
+
+        expect(results.map(&:id)).to match_array([s1.id])
+      end
+    end
+  end
 end

@@ -19,8 +19,8 @@ RSpec.describe "downvote submissions" do
         # by our user
         direct_comment = create(:comment, submission: submission)
         # i.e. the user has responded to a comment in the tree, but not the comment itself
-        # so they shouldn't be able to downvote. 
-        user_response = create(
+        # so they shouldn't be able to downvote.
+        create(
           :comment,
           parent: direct_comment,
           submission: submission,

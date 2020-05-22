@@ -221,4 +221,21 @@ RSpec.describe "submissions index" do
       end
     end
   end
+
+  context "when a user clicks on the submission's tag" do
+    it "sees all submissions that have the same tag, excluding others" do
+      tag = create(:topic_tag)
+      s1 = create(:submission, :text, tags: [tag])
+      s2 = create(:submission, :text)
+
+      page = SubmissionsIndexPage.new
+
+      page.visit(as: nil)
+
+      page.click_tag_link_on(s1, tag)
+
+      expect(page).to have_submission_row_for(s1)
+      expect(page).not_to have_submission_row_for(s2)
+    end
+  end
 end

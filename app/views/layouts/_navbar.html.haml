@@ -11,11 +11,13 @@
       %ul
         %li
           %span= link_to t("navigation.links.recent"), "#"
-        %li
-          %span= link_to t("navigation.links.submit"), new_submission_path
-        %li
-          %span= link_to t("navigation.links.your_submissions"), "#"
-        %li
-          %span= link_to t("navigation.links.inbox"), "#"
+        - if current_user.present?
+          %li
+            %span= link_to t("navigation.links.submit"), new_submission_path
+          %li
+            %span= link_to t("navigation.links.your_submissions"),
+              user_submissions_path(current_user.username)
+          %li
+            %span= link_to t("navigation.links.inbox"), "#"
         %li
           %span= link_to(*users_link_for(current_user))

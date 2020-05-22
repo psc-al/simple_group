@@ -1,4 +1,28 @@
 module NavigationComponent
+  def has_submit_link?
+    within(".navbar-links") do
+      has_link?(t("navigation.links.submit"), href: new_submission_path)
+    end
+  end
+
+  def visit_submit_link
+    within(".navbar-links") do
+      click_link(t("navigation.links.submit"))
+    end
+  end
+
+  def has_submissions_link_for?(user)
+    within(".navbar-links") do
+      has_link?(t("navigation.links.your_submissions"), href: user_submissions_path(user.username))
+    end
+  end
+
+  def visit_user_submissions_link
+    within(".navbar-links") do
+      click_link(t("navigation.links.your_submissions"))
+    end
+  end
+
   def has_login_link?
     within(".navbar-links") do
       has_link?(t("users.sessions.new.sign_in"), href: new_user_session_path)

@@ -40,6 +40,6 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_search_params
-    params.permit(:page, :per_page, :tag_id).to_h.symbolize_keys
+    params.permit(:page, :per_page, :tag_id, :username).to_h.symbolize_keys
   end
 end

@@ -6,10 +6,10 @@ class SubmissionsIndexPage < PageBase
   include PaginationComponent
   include SubmissionActionsComponent
 
-  def visit(as: nil)
+  def visit(path: submissions_path, as: nil)
     login_as(as) if as.present?
 
-    super submissions_path
+    super path
   end
 
   def click_tag_link_on(submission, tag)

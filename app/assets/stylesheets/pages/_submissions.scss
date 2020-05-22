@@ -119,7 +119,9 @@
     .downvote {
       grid-area: 2 / 1;
     }
-
+    .hide-comment {
+      grid-column: 2w;
+    }
     .upvoted {
       color: $orange;
     }
@@ -131,6 +133,7 @@
       align-self: center;
       color: $scorpion;
       line-height: 0.9;
+      grid-column: 3;
       .link a {
         color: $scorpion;
       }

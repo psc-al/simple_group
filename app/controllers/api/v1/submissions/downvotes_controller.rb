@@ -4,7 +4,7 @@ module Api
       class DownvotesController < BaseController
         def update
           find_or_initialize_vote.then do |vote|
-            if current_user.comments.where(submission_id: submission.id, parent_id: nil).exists?
+            if user_replied_to_submission? || user_authored_submission?
               handle_vote(vote)
             else
               render json: build_response(:rejected).
@@ -43,6 +43,14 @@ module Api
             short_id: params[:submission_short_id],
             action: action
           }
+        end
+
+        def user_replied_to_submission?
+          current_user.comments.where(submission_id: submission.id, parent_id: nil).exists?
+        end
+
+        def user_authored_submission?
+          submission.user_id == current_user.id
         end
 
         def submission

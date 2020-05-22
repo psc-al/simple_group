@@ -46,6 +46,14 @@ class ViewSubmissionPage < PageBase
     end
   end
 
+  def upvote_comment(comment)
+    vote_on_comment(comment, :up)
+  end
+
+  def downvote_comment(comment)
+    vote_on_comment(comment, :down)
+  end
+
   def has_correct_submission_link?(submission)
     url = submission.url.presence || submission_path(submission.short_id)
 
@@ -90,6 +98,27 @@ class ViewSubmissionPage < PageBase
   def has_open_reply_box_for?(comment)
     within find("##{comment.short_id} .comment-content") do
       has_css?("#reply_#{comment.short_id}")
+    end
+  end
+
+  def has_upvoted_comment?(comment)
+    has_comment_vote?(comment, :up)
+  end
+
+  def has_downvoted_comment?(comment)
+    has_comment_vote?(comment, :down)
+  end
+
+  private
+
+  def vote_on_comment(comment, direction)
+    find("##{direction}vote_#{comment.short_id}").click
+    self
+  end
+
+  def has_comment_vote?(comment, direction)
+    within find("##{comment.short_id}") do
+      has_css?(".#{direction}voted", wait: 1.5)
     end
   end
 end

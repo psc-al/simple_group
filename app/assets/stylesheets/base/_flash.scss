@@ -1,4 +1,4 @@
-.flash_container {
+.flash-message {
     cursor: pointer;
     .flash {
         position: fixed;
@@ -9,7 +9,7 @@
         left: 50%;
         transform: translateX(-50%);
         font-weight: normal;
-        .flash_close {
+        .flash-close {
             font-family: $font-stack-mono;
             color: lighten($scorpion, 20%);
             margin-left: $spacing-small;

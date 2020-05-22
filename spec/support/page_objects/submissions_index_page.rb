@@ -12,6 +12,12 @@ class SubmissionsIndexPage < PageBase
     super submissions_path
   end
 
+  def click_tag_link_on(submission, tag)
+    within find("##{submission.short_id} .submission-line1 .submission-tags") do
+      click_link tag.id
+    end
+  end
+
   def has_submission_row_for?(submission)
     has_css?("##{submission.short_id}") &&
       has_correct_submission_info?(submission)

@@ -10,18 +10,34 @@ class FlattenedSubmissionSearch
   end
 
   def by_short_id(short_id)
-    scope(include_hidden: true).friendly.preload(:flattened_comments).find(short_id)
+    base_relation(include_hidden: true).friendly.preload(:flattened_comments).find(short_id)
   end
 
   def results_paginator
-    ResultsPaginator.new(scope, pagination_params)
+    ResultsPaginator.new(filtered_relation, pagination_params)
   end
 
   private
 
   attr_reader :params, :user
 
-  def scope(include_hidden: false)
+  def filtered_relation
+    if params.empty?
+      base_relation
+    else
+      base_relation.then { |rel| filter_by_tag(rel) }
+    end
+  end
+
+  def filter_by_tag(rel)
+    if params[:tag_id].present?
+      rel.joins(:submission_tags).where(submission_tags: { tag_id: params[:tag_id] })
+    else
+      rel
+    end
+  end
+
+  def base_relation(include_hidden: false)
     FlattenedSubmission.preload(:tags).then do |rel|
       if user.present?
         with_action_info(rel, include_hidden)

@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
+  resources :tags, only: [], path: :t do
+    resources :submissions, only: [:index]
+  end
+
   namespace :users do
     resource :submission_actions, only: [:update]
   end

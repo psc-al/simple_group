@@ -119,6 +119,13 @@
     .downvote {
       grid-area: 2 / 1;
     }
+
+    .upvoted {
+      color: $orange;
+    }
+    .downvoted {
+      color: $purple;
+    }
     .comment-line1 {
       padding-left: $spacing-xs;
       align-self: center;

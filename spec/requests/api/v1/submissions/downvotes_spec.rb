@@ -40,6 +40,30 @@ RSpec.describe "downvote submissions" do
       end
     end
 
+    context "when the user created the submission" do
+      it "returns 200" do
+        login_as(user)
+        user_submission = create(:submission, :text, user: user)
+
+        put "/api/v1/submissions/#{user_submission.short_id}/downvotes"
+
+        body = JSON.parse(response.body).symbolize_keys
+
+        expect(response).to be_ok
+        expect(body).to eq({
+          short_id: user_submission.short_id,
+          action: "downvoted"
+        })
+        expect(Vote.count).to eq(1)
+
+        vote = Vote.first
+
+        expect(vote.user_id).to eq(user.id)
+        expect(vote.votable_type).to eq("Submission")
+        expect(vote.votable_id).to eq(user_submission.id)
+      end
+    end
+
     context "when no vote record exists for the user and submission" do
       it "creates a new downvote vote record for the user and submission and returns 200" do
         login_as(user)

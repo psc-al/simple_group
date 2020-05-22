@@ -10,7 +10,7 @@ class FlattenedSubmissionSearch
   end
 
   def by_short_id(short_id)
-    base_relation(include_hidden: true).friendly.preload(:flattened_comments).find(short_id)
+    base_relation(include_hidden: true).friendly.find(short_id)
   end
 
   def results_paginator

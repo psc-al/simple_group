@@ -39,6 +39,30 @@ RSpec.describe "downvote comments" do
       end
     end
 
+    context "when the user authored the comment" do
+      it "returns 200" do
+        login_as(user)
+        user_comment = create(:comment, user: user)
+
+        put "/api/v1/comments/#{user_comment.short_id}/downvotes"
+
+        body = JSON.parse(response.body).symbolize_keys
+
+        expect(response).to be_ok
+        expect(body).to eq({
+          short_id: user_comment.short_id,
+          action: "downvoted"
+        })
+        expect(Vote.count).to eq(1)
+
+        vote = Vote.first
+
+        expect(vote.user_id).to eq(user.id)
+        expect(vote.votable_type).to eq("Comment")
+        expect(vote.votable_id).to eq(user_comment.id)
+      end
+    end
+
     context "when no vote record exists for the user and comment" do
       it "creates a new downvote vote record for the user and comment and returns 200" do
         login_as(user)

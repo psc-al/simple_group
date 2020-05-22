@@ -14,6 +14,16 @@ class PageBase
   end
 
   def has_notice?(notice)
-    has_css?(".flash-notice", text: notice)
+    has_flash?(:notice, notice)
+  end
+
+  def has_alert?(alert)
+    has_flash?(:alert, alert)
+  end
+
+  private
+
+  def has_flash?(kind, msg)
+    has_css?(".flash-#{kind}", text: msg)
   end
 end

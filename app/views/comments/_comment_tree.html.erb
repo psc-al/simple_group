@@ -3,9 +3,9 @@
 <% while subtree %>
   <% if (comment = subtree.shift) %>
     <% children = comments_by_parent[comment.id] %>
-    <div class="comment" id="<%= comment.short_id %>">
-      <span class="upvote"></span>
-      <span class="downvote"></span>
+    <div class="comment votable" id="<%= comment.short_id %>">
+      <span id="upvote_<%= comment.short_id %>" class="<%= control_classes(comment, :upvote) %>"></span>
+      <span id="downvote_<%= comment.short_id %>" class="<%= control_classes(comment, :downvote) %>"></span>
       <span class="hide-comment"></span>
       <div class="comment-line1">
         <span class="author"><%= link_to comment.commenter, "#" %></span>

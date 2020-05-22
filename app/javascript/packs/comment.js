@@ -1,3 +1,5 @@
+const pageload = require("./pageload");
+
 function setReplyOnClick(a) {
   a.addEventListener("click", function(e) {
     e.preventDefault();
@@ -7,7 +9,7 @@ function setReplyOnClick(a) {
   });
 }
 
-const callback = function() {
+pageload.onPageLoad(function() {
   const replyLinks = document.getElementsByClassName("reply");
 
   for (let i = 0; i < replyLinks.length; i++) {
@@ -31,25 +33,22 @@ const callback = function() {
       let commentId = hide_button.closest(".comment").id;
       let commentTree = document.getElementById("tree_" + commentId);
       let replies = document.getElementById("replies_" + commentId);
+      let upvote = document.getElementById("upvote_" + commentId);
+      let downvote = document.getElementById("downvote_" + commentId);
       if (commentTree.style.display === "none") {
         hide_button.classList.remove("hidden");
         commentTree.style.display = "initial";
         replies.style.display = "initial";
+        upvote.style.display = "initial";
+        downvote.style.display = "initial";
 
       } else {
         hide_button.classList.add("hidden");
         commentTree.style.display = "none";
         replies.style.display = "none";
+        upvote.style.display = "none";
+        downvote.style.display = "none";
       }
     });
   }
-};
-
-if (
-    document.readyState === "complete" ||
-    (document.readyState !== "loading" && !document.documentElement.doScroll)
-) {
-  callback();
-} else {
-  document.addEventListener("DOMContentLoaded", callback);
-}
+});

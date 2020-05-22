@@ -25,6 +25,7 @@ class SubmissionsController < ApplicationController
   def create
     @form = CreateSubmissionForm.new(create_submission_params, current_user)
     if @form.save
+      Vote.upvote.create!(votable: @form.submission, user: current_user)
       redirect_to submission_path(@form.submission.short_id)
     else
       render :new

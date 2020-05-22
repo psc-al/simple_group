@@ -6,6 +6,7 @@ class CommentsController < ApplicationController
     @comment = build_comment_for(submission)
 
     if @comment.save
+      Vote.upvote.create!(votable: @comment, user: current_user)
       redirect_path = "#{submission_path(submission.short_id)}##{@comment.short_id}"
       flash = { notice: t(".success") }
     else

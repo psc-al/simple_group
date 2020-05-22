@@ -25,13 +25,23 @@ class FlattenedSubmissionSearch
     if params.empty?
       base_relation
     else
-      base_relation.then { |rel| filter_by_tag(rel) }
+      base_relation.
+        then { |rel| filter_by_tag(rel) }.
+        then { |rel| filter_by_user(rel) }
     end
   end
 
   def filter_by_tag(rel)
     if params[:tag_id].present?
       rel.joins(:submission_tags).where(submission_tags: { tag_id: params[:tag_id] })
+    else
+      rel
+    end
+  end
+
+  def filter_by_user(rel)
+    if params[:username].present?
+      rel.where(submitter_username: params[:username])
     else
       rel
     end

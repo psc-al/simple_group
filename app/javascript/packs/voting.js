@@ -11,18 +11,31 @@ function getOppositeControl(shortId, voteControl) {
 }
 
 function handleRemovedVote(votableElement, voteControl) {
+  let score = document.getElementById("score_" + votableElement.id);
   if (voteControl.id.startsWith("upvote_")) {
+    if (voteControl.classList.contains("upvoted")) {
+      score.innerHTML = Number(score.innerHTML) - 1;
+    }
     voteControl.classList.remove("upvoted");
-  } else if (voteControl.id.startsWith("downvote_")){
+  } else if (voteControl.id.startsWith("downvote_")) {
+    if (voteControl.classList.contains("downvoted")) {
+      score.innerHTML = Number(score.innerHTML) + 1;
+    }
     voteControl.classList.remove("downvoted");
   }
 }
 
 function handleUpdate(votableElement, voteControl, json) {
+  let score = document.getElementById("score_" + votableElement.id);
   if (json.action === "removed") {
     handleRemovedVote(votableElement, voteControl);
   } else {
     voteControl.classList.add(json.action);
+    if (json.action === "upvoted") {
+      score.innerHTML = Number(score.innerHTML) + 1;
+    } else {
+      score.innerHTML = Number(score.innerHTML) - 1;
+    }
     handleRemovedVote(votableElement, getOppositeControl(votableElement.id, voteControl));
   }
 }
@@ -60,12 +73,12 @@ function setVoteListener(votableElement, dir) {
     750,
     { 'trailing': false }
   );
-  voteControl.addEventListener("click", function(e) {
-    throttledRequest(votableElement, path, voteControl)
+  voteControl.addEventListener("click", function (e) {
+    throttledRequest(votableElement, path, voteControl);
   });
 }
 
-pageload.onPageLoad(function() {
+pageload.onPageLoad(function () {
   const votableElements = document.getElementsByClassName("votable");
 
   for (let i = 0; i < votableElements.length; i++) {

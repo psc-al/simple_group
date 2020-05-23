@@ -4,8 +4,11 @@
   <% if (comment = subtree.shift) %>
     <% children = comments_by_parent[comment.id] %>
     <div class="comment votable" id="<%= comment.short_id %>">
-      <span id="upvote_<%= comment.short_id %>" class="<%= control_classes(comment, :upvote) %>"></span>
-      <span id="downvote_<%= comment.short_id %>" class="<%= control_classes(comment, :downvote) %>"></span>
+      <span id="scoring_<%= comment.short_id %>" class="scoring">
+        <div id="upvote_<%= comment.short_id %>" class="<%= control_classes(comment, :upvote) %>"></div>
+        <div id="score_<%= comment.short_id %>" class="<%= control_classes(comment, :score) %>"><%= comment.score %></div>
+        <div id="downvote_<%= comment.short_id %>" class="<%= control_classes(comment, :downvote) %>"></div>
+      </span>
       <span class="hide-comment"></span>
       <div class="comment-line1">
         <span class="author"><%= link_to comment.commenter, "#" %></span>
@@ -22,7 +25,7 @@
       <% if children.present? %>
         <div class="comment-tree-line"></div>
       <% end %>
-      <div class="comment-content">
+      <div id="comment_content_<%= comment.short_id %>" class="comment-content">
         <div class="comment-body latex-container markdownable" id="tree_<%= comment.short_id %>">
           <%= sanitize CommonMarker.render_html(comment.body.gsub("\\", "\\\\\\")) %>
         </div>

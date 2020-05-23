@@ -1,0 +1,28 @@
+.scoring {
+    text-align: center;
+    .upvote,
+    .downvote {
+        cursor: pointer;
+        color: $scorpion;
+        line-height: 0.9;
+    }
+    .upvote::before {
+        content: "Δ";
+    }
+    .downvote::before {
+        content: "Δ";
+    }
+    .downvote {
+        -moz-transform: scale(1, -1);
+        -webkit-transform: scale(1, -1);
+        -o-transform: scale(1, -1);
+        -ms-transform: scale(1, -1);
+        transform: scale(1, -1);
+    }
+    .upvoted {
+        color: $orange;
+    }
+    .downvoted {
+        color: $purple;
+    }
+}

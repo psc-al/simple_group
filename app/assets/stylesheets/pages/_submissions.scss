@@ -21,6 +21,13 @@
 }
 
 .submission {
+  display: grid;
+  grid-template-columns: min-content auto;
+  grid-template-rows: auto;
+  grid-column-gap: $spacing-smaller;
+  .scoring {
+    align-self: center;
+  }
   @include padding(null null $spacing-small null);
   .submission-info,
   .submission-comments {
@@ -39,7 +46,7 @@
       font-weight: $font-weight-bold;
       margin-right: $spacing-xs;
     }
-    .submission-tags {
+    .submission-domain, .submission-tags {
       margin-left: $spacing-xs;
     }
   }
@@ -87,22 +94,21 @@
   .comment {
     display: grid;
     grid-template-columns: 0.8em 1em auto;
-    grid-template-rows: auto 1.2em auto;
+    grid-template-rows: auto auto 1fr;
     margin-top: $spacing-small;
-    grid-column-gap: $spacing-smaller;
-    grid-row-gap: $spacing-smaller;
-    .hide-comment,
-    .upvote,
-    .downvote {
-      cursor: pointer;
-      color: $scorpion;
-      justify-self: center;
-      align-self: center;
+    grid-gap: $spacing-smaller;
+    .scoring {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      justify-self: end;
+    }
+    .hide-comment {
+      grid-column: 2;
       font-family: $font-stack-mono;
       white-space: nowrap;
-    }
-    .upvote, .hide-comment {
-      line-height: 0.9;
+      cursor: pointer;
+      place-self: center;
+      line-height: 0.8;
     }
     .hide-comment::before {
       content: "[-]";
@@ -110,29 +116,17 @@
     .hidden.hide-comment::before {
       content: "[+]";
     }
-    .upvote::before {
-      content: "+";
-    }
-    .downvote::before {
-      content: "-";
-    }
-    .downvote {
-      grid-area: 2 / 1;
-    }
-    .hide-comment {
-      grid-column: 2w;
-    }
-    .upvoted {
-      color: $orange;
-    }
-    .downvoted {
-      color: $purple;
+    .comment-tree-line {
+      grid-area: 3 / 1;
+      background-color: $alto;
+      width: 0.1rem;
+      justify-self: center;
     }
     .comment-line1 {
       padding-left: $spacing-xs;
       align-self: center;
       color: $scorpion;
-      line-height: 0.9;
+      line-height: 0.8;
       grid-column: 3;
       .link a {
         color: $scorpion;
@@ -142,19 +136,13 @@
       }
     }
     .comment-content {
-      grid-column: 2 / 4;
-      grid-row: 2 / span 2;  
+      grid-column: 2 / span 2;
+      grid-row: 2 / span 2;
       .comment-reply-box {
         display: none;
         grid-column: 3 / 3;
         grid-row: 3 / 3;
       }
-    }
-    .comment-tree-line {
-      grid-area: 3 / 1 ;
-      background-color: $alto;
-      width: 0.1rem;
-      justify-self: center;
     }
   }
 

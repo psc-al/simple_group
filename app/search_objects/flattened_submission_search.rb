@@ -54,7 +54,7 @@ class FlattenedSubmissionSearch
       else
         rel.select("flattened_submissions.*, NULL AS hidden_action_id, NULL AS saved_action_id")
       end
-    end
+    end.with_voting_information_for(user)
   end
 
   def with_action_info(rel, include_hidden)

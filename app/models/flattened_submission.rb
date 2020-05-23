@@ -22,6 +22,25 @@ class FlattenedSubmission < ApplicationRecord
     joins(with_submission_actions_sql(user, :hidden))
   end
 
+  def self.with_voting_information_for(user)
+    if user.present?
+      joins(
+        %(
+        LEFT JOIN
+          votes
+        ON
+          votes.user_id = #{user.id}
+        AND
+          votes.votable_type = 'Submission'
+        AND
+          votes.votable_id = flattened_submissions.id
+      ).squish
+      ).select("flattened_submissions.*, votes.kind AS vote_kind")
+    else
+      select("flattened_submissions.*, NULL AS vote_kind")
+    end
+  end
+
   class << self
     private
 

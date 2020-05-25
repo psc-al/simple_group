@@ -21,8 +21,12 @@ class User < ApplicationRecord
   validates :username, presence: true
 
   def self.find_first_by_auth_conditions(warden_conditions)
-    warden_conditions.fetch(:username, nil).then do |username|
-      where("lower(username) = ?", username.downcase).first if username.present?
+    if warden_conditions.key?(:confirmation_token)
+      super
+    else
+      warden_conditions.fetch(:username, nil).then do |username|
+        where("lower(username) = ?", username.downcase).first if username.present?
+      end
     end
   end
 

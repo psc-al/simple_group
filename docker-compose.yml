@@ -30,7 +30,7 @@ services:
     restart: always
     build:
       context: ./docker/web
-      dockerfile: Dockerfile.production
+      dockerfile: Dockerfile
     volumes:
       - ./log:/var/www/log
     ports:

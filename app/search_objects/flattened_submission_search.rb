@@ -48,13 +48,13 @@ class FlattenedSubmissionSearch
   end
 
   def base_relation(include_hidden: false)
-    FlattenedSubmission.preload(:tags).then do |rel|
+    FlattenedSubmission.preload(:tags).then { |rel|
       if user.present?
         with_action_info(rel, include_hidden)
       else
         rel.select("flattened_submissions.*, NULL AS hidden_action_id, NULL AS saved_action_id")
       end
-    end.with_voting_information_for(user)
+    }.with_voting_information_for(user)
   end
 
   def with_action_info(rel, include_hidden)

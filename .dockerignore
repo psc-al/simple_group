@@ -1,0 +1,45 @@
+# ignore docker stuff
+/docker
+docker-compose.*
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+.env
+.env.*
+
+# ignore test files
+/spec
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+!/tmp/pids
+!/tmp/sockets
+
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+
+.byebug_history
+
+# ignore assets
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# ignore various other crap that we don't need in a container
+.circleci
+.git
+.gitignore
+.haml-lint.yml
+.haml-list_todo.yml
+.rspec
+.rubocop
+.rubocop.yml
+.rubocop_todo.yml
+README.md

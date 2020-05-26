@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    image: hernanat/simple-group-app-dev:latest
+    ports:
+      - "3000:3000"
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile.development
+    volumes:
+      - .:/opt/rails
+      - ./spec:/opt/rails/spec
+      - ./public:/opt/rails/public
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=password
+  db:
+    image: postgres:12.3-alpine
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password

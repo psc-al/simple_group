@@ -1,0 +1,37 @@
+version: '3'
+services:
+  app:
+    image: hernanat/simple-group-app-prod:latest
+    ports:
+      - "3000:3000"
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile.production
+      args:
+        - APPLICATION_HOST=placeholder
+        - RAILS_ENV=production
+        - SECRET_KEY_BASE=placeholder
+        - SMTP_SENDER_EMAIL=placeholder
+        - SMTP_ADDRESS=placeholder
+        - SMTP_USERNAME=placeholder
+        - SMTP_PASSWORD=placeholder
+    environment:
+      - APPLICATION_HOST=${APPLICATION_HOST}
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - SMTP_SENDER_EMAIL=${SMTP_SENDER_EMAIL}
+      - SMTP_ADDRESS=${SMTP_ADDRESS}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - DATABASE_URL=${DATABASE_URL}
+
+  nginx:
+    image: hernanat/simple-group-nginx-prod:latest
+    restart: always
+    build:
+      context: ./docker/web
+      dockerfile: Dockerfile.production
+    volumes:
+      - ./log:/var/www/log
+    ports:
+      - "80:80"

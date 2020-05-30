@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    image: hernanat/simple-group:latest
+    ports:
+      - "3000:3000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APPLICATION_HOST=placeholder
+        - RAILS_ENV=production
+        - SECRET_KEY_BASE=placeholder
+        - SMTP_SENDER_EMAIL=placeholder
+        - SMTP_ADDRESS=placeholder
+        - SMTP_USERNAME=placeholder
+        - SMTP_PASSWORD=placeholder
+    environment:
+      - APPLICATION_HOST=${APPLICATION_HOST}
+      - RAILS_ENV=production
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - SMTP_SENDER_EMAIL=${SMTP_SENDER_EMAIL}
+      - SMTP_ADDRESS=${SMTP_ADDRESS}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - DATABASE_URL=${DATABASE_URL}

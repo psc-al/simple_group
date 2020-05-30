@@ -1,0 +1,110 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+#
+# Deploy SimpleGroup web app to elastic beanstalk
+#
+# Usage
+#
+#   bin/eb-deploy <eb-environment-name> <docker-image-name>
+#
+# Example
+#   bin/eb-deploy simple-group-prod boop/image-name:tag
+#
+# Requirements:
+# 
+# 1.) configured elastic beanstalk environment
+#       - configure .elasticbeanstalk/config.yml to deploy from artifact
+#         tmp/deploy.zip
+# 2.) eb cli
+# 3.) docker-compose
+# 4.) internet
+
+require "open3"
+
+ENVIRONMENT, DOCKER_IMAGE = ARGV
+
+def deploy
+  require_args!
+  build_and_push_docker_image
+  create_deploy_zip
+  deploy_to_environment
+  remove_deploy_zip
+end
+
+def require_args!
+  unless ENVIRONMENT && DOCKER_IMAGE
+    exit_with_error("Usage: bin/eb-deploy <eb-environment-name> <docker-image-name>")
+  end
+end
+
+def build_and_push_docker_image
+  if build_docker_image.success?
+    push_docker_image
+  else
+    STDERR.puts "docker build failed" unless r.success?
+  end
+end
+
+def build_docker_image
+  puts "building docker image"
+
+  cmd = %W[docker-compose build]
+
+  Open3.popen2e(*cmd) do |_, stdout_and_err, wait_thr|
+    stdout_and_err.each { |line| puts line }
+    wait_thr.value
+  end
+end
+
+def push_docker_image 
+  cmd = %W[docker push hernanat/simple-group:latest]
+
+  Open3.popen2e(*cmd) do |_, stdout_and_err, wait_thr|
+    stdout_and_err.each { |line| puts line }
+    wait_thr.value
+  end.yield_self { |r| STDERR.puts "failed to push docker image" unless r.success? }
+end
+
+def create_deploy_zip
+  puts "creating deploy package"
+  `mkdir tmp/deploy`
+  create_dockerrun_file
+  filename = "tmp/deploy.zip"
+  docker_files = "tmp/deploy/Dockerrun.aws.json"
+
+  `zip -jX #{filename} #{docker_files}`
+  `zip -ruX #{filename} .ebextensions`
+  `rm -rf tmp/deploy`
+end
+
+def deploy_to_environment
+  puts "deploying to #{ENVIRONMENT}"
+  cmd = %W[eb deploy #{ENVIRONMENT}]
+  Open3.popen2e(*cmd) do |_, stdout_and_err, wait_thr|
+    stdout_and_err.each { |line| puts line }
+    wait_thr.value
+  end.yield_self { |r| STDERR.puts "failed to deploy to #{ENVIRONMENT}" unless r.success? }
+end
+
+def create_dockerrun_file
+  filename = "tmp/deploy/Dockerrun.aws.json"
+  `DOCKER_IMAGE=#{DOCKER_IMAGE} envsubst < Dockerrun.aws.template.json > #{filename}`
+end
+
+def remove_deploy_zip
+  puts "cleaning up build artifacts"
+  cmd = %W[rm tmp/deploy.zip]
+  _, err_msg, status = Open3.capture3(*cmd)
+
+  unless status.success?
+    exit_with_error("error while cleaning up build artifacts:", error_detail: err_msg)
+  end
+end
+
+def exit_with_error(error_base, error_detail: nil)
+  STDERR.puts(error_base)
+  STDERR.puts(error_detail) if error_detail
+  exit(false)
+end
+
+deploy

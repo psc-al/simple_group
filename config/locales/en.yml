@@ -38,3 +38,5 @@ en:
         create: "Submit"
       comment:
         create: "Comment"
+      user_invitation:
+        create: "Invite"

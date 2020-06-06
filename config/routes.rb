@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     resource :submission_actions, only: [:update]
   end
 
+  resources :user_invitations, only: [:create]
+
   namespace :api do
     namespace :v1 do
       resources :comments, only: [], param: :short_id do

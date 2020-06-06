@@ -1,0 +1,7 @@
+en:
+  user_invitation_mailer:
+    invite_email:
+      subject: "%{sender} has invited you to SimpleGroup"
+      line1: "You've been invited by %{sender} to join the discussion at SimpleGroup. If you think that this email is a mistake, please ignore it."
+      line2: "After signing up, you will be asked to verify the e-mail address that you choose to associate with your account."
+      url: "To create your account, please visit the signup url: %{url}"

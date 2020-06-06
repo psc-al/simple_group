@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_22_214242) do
+ActiveRecord::Schema.define(version: 2020_06_06_160510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -86,6 +86,21 @@ ActiveRecord::Schema.define(version: 2020_05_22_214242) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "user_invitations", force: :cascade do |t|
+    t.bigint "sender_id", null: false
+    t.string "recipient_email", null: false
+    t.bigint "recipient_id"
+    t.datetime "sent_at"
+    t.datetime "accepted_at"
+    t.string "token", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipient_email"], name: "index_user_invitations_on_recipient_email", unique: true
+    t.index ["recipient_id"], name: "index_user_invitations_on_recipient_id"
+    t.index ["sender_id"], name: "index_user_invitations_on_sender_id"
+    t.index ["token"], name: "index_user_invitations_on_token", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -133,6 +148,8 @@ ActiveRecord::Schema.define(version: 2020_05_22_214242) do
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
+  add_foreign_key "user_invitations", "users", column: "recipient_id", on_delete: :cascade
+  add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
 
   create_view "flattened_submissions", sql_definition: <<-SQL

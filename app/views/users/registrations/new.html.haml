@@ -9,7 +9,7 @@
     = f.input :email,
       required: true,
       as: :email,
-      input_html: { autocomplete: "email" }
+      input_html: { autocomplete: "email", value: @invite.recipient_email }
     = f.input :password,
       required: true,
       hint: (t('devise.shared.minimum_password_length', count: @minimum_password_length) if @minimum_password_length),
@@ -17,6 +17,7 @@
     = f.input :password_confirmation,
       required: true,
       input_html: { autocomplete: "new-password" }
+    = f.input :invite_token, as: :hidden, input_html: { value: @invite.token }, wrapper: false
   .form-actions
     = f.button :submit, t(".sign_up")
 = render "users/shared/links"

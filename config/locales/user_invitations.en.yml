@@ -1,0 +1,8 @@
+en:
+  user_invitations:
+    create:
+      already_invited: User has already been invited.
+      invited: An invitation has been sent to the user.
+      invite_error: There was an error inviting the user
+    errors:
+      sender_error: You are not able to send an invitation at this time. You may have exceeded the daily limit.

@@ -5,8 +5,8 @@ require "support/page_objects/shared_components/user_form_components"
 class UserRegistrationPage < PageBase
   include UserFormComponents
 
-  def visit
-    super new_user_registration_path
+  def visit(invite_token: create(:user_invitation).token)
+    super new_user_registration_path(invite_token: invite_token)
     self
   end
 

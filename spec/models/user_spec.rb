@@ -46,4 +46,38 @@ RSpec.describe User do
       end
     end
   end
+
+  describe "#can_invite?" do
+    around do |example|
+      now = Time.zone.now
+      travel_to now do
+        example.run
+      end
+    end
+
+    context "when the user is an admin" do
+      it "can invite, regardless of number of daily invites" do
+        admin = create(:user, :admin)
+        create_list(:user_invitation, 10, sender: admin)
+
+        expect(admin.can_invite?).to eq(true)
+      end
+    end
+
+    context "when the user is not an admin" do
+      it "is true when the daily invite max hasn't been met" do
+        user = create(:user)
+        create_list(:user_invitation, 3, sender: user)
+
+        expect(user.can_invite?).to eq(true)
+      end
+
+      it "is false when the daily invite max has been met" do
+        user = create(:user)
+        create_list(:user_invitation, 10, sender: user)
+
+        expect(user.can_invite?).to eq(false)
+      end
+    end
+  end
 end

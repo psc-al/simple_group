@@ -18,6 +18,25 @@
       input_html: { autocomplete: "current-password" }
   .form-actions
     = f.button :submit, t(".update")
+%h3= t(".invite_user")
+
+%table
+  %thead
+    %tr
+      %th= t(".user_invitations.recipient_email")
+      %th= t(".user_invitations.sent_at")
+      %th= t(".user_invitations.accepted_at")
+  %tbody.invite-table
+    - @invitations.to_a.each do |invite|
+      %tr{ id: "invite-#{invite.id}" }
+        %td= invite.recipient_email
+        %td= invite.sent_at
+        %td= invite.accepted_at
+
+= simple_form_for(UserInvitation.new, url: user_invitations_path) do |f|
+  = f.input :recipient_email
+  = f.submit
+
 %h3= t(".cancel_my_account")
 %p
   = t(".unhappy")

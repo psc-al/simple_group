@@ -3,7 +3,7 @@ button,
 [type="reset"],
 [type="submit"] {
   appearance: none;
-  background-color: $action-color;
+  background-color: $blue-medium;
   border: 0;
   border-radius: $border-radius;
   color: $white;
@@ -25,7 +25,7 @@ button,
   margin: 0.5rem 0;
 
   &:hover {
-    background-color: $action-color--alt;
+    background-color: lighten($blue-medium, 10%);
   }
 
   &:focus:not(:hover) {
@@ -42,6 +42,6 @@ button,
   }
 
   &:active {
-    background-color: darken($action-color, 10%);
+    background-color: darken($blue-medium, 10%);
   }
 }

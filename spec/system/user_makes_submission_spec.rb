@@ -18,6 +18,22 @@ RSpec.describe "user makes a submission" do
   context "when the user is signed in" do
     let(:user) { create(:user) }
 
+    context "when the user switches between URL and text tabs", js: true do
+      it "displays the correct form elements" do
+        page.visit(as: user).
+          click_text_tab
+
+        expect(page).to have_submission_body_text_box
+        expect(page).not_to have_submission_url_text_box
+
+        page.visit(as: user).
+          click_link_tab
+
+        expect(page).to have_submission_url_text_box
+        expect(page).not_to have_submission_body_text_box
+      end
+    end
+
     context "when the submission is for a URL" do
       it "creates the submission, automagically upvotes it, and redirects the user to it if successful" do
         url = "https://foo.com"
@@ -65,7 +81,7 @@ RSpec.describe "user makes a submission" do
       end
 
       context "when the URL is malformed" do
-        it "displays an error at the top of the page and doesn't save the submission" do
+        it "displays an error and doesn't save the submission" do
           create(:domain, :banned, name: "foo.com")
           url = "https:/foo.com/biz/baz"
           page.visit(as: user).
@@ -81,7 +97,7 @@ RSpec.describe "user makes a submission" do
       end
 
       context "when the URL scheme isn't HTTP or HTTPS" do
-        it "displays an error at the top of the page and doesn't save the submission" do
+        it "displays an error and doesn't save the submission" do
           create(:domain, :banned, name: "foo.com")
           url = "ftp://foo@ftp.foo.com/biz/baz"
           page.visit(as: user).
@@ -97,7 +113,7 @@ RSpec.describe "user makes a submission" do
       end
 
       context "when the domain is banned" do
-        it "displays an error at the top of the page and doesn't save the submission" do
+        it "displays an error and doesn't save the submission" do
           create(:domain, :banned, name: "foo.com")
           page.visit(as: user).
             fill_in_title("A Very Nice Title").
@@ -112,7 +128,7 @@ RSpec.describe "user makes a submission" do
       end
 
       context "when the URL healthcheck fails" do
-        it "displays an error at the top of the page and doesn't save the submission" do
+        it "displays an error and doesn't save the submission" do
           url = "https://foo.com"
           stub_url_health_check(url, healthy: false)
 
@@ -129,7 +145,7 @@ RSpec.describe "user makes a submission" do
       end
 
       context "when as submission already exists for the URL" do
-        it "displays an error at the top of the page and doesn't save the submission" do
+        it "displays an error and doesn't save the submission" do
           url = "https://foo.com"
           create(:submission, url: url)
           stub_url_health_check(url)
@@ -147,11 +163,12 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when the submission is a text submission" do
+    context "when the submission is a text submission", js: true do
       it "creates the submission, automagically upvotes it, and redirects the user to it if successful" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
           select_tag(tag.id).
+          click_text_tab.
           fill_in_body("This is a very nice submission body").
           check_original_author.
           submit_form
@@ -169,9 +186,10 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when the title is missing" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when the title is missing", js: true do
+      it "displays an error and doesn't save the submission" do
         page.visit(as: user).
+          click_text_tab.
           fill_in_body("This is a very nice submission body with some great info").
           select_tag(tag.id).
           check_original_author.
@@ -182,35 +200,31 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when the title is too short" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when the title is too short", js: true do
+      it "displays an error and doesn't save the submission" do
         page.visit(as: user).
           fill_in_title("tooshort").
+          click_text_tab.
           fill_in_body("This is a very nice submission body with some great info").
           check_original_author.
           submit_form
 
         expect(Submission.count).to eq(0)
-        expect(page).to have_title_length_error
+        expect(page).to have_title_too_short_error("8")
       end
     end
 
-    context "when the title is too long" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when the more than 175 chars are entered for the title", js: true do
+      it "only has 175 chars" do
         page.visit(as: user).
-          fill_in_title("f" * 176).
-          select_tag(tag.id).
-          fill_in_body("This is a very nice submission body with some great info").
-          check_original_author.
-          submit_form
+          fill_in_title("f" * 176)
 
-        expect(Submission.count).to eq(0)
-        expect(page).to have_title_length_error
+        expect(page).to have_title_with_x_chars(175)
       end
     end
 
     context "when both the URL and body are missing" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+      it "displays an error and doesn't save the submission" do
         page.visit(as: user).
           select_tag(tag.id).
           check_original_author.
@@ -221,29 +235,16 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when both the URL and body are present" do
-      it "displays an error at the top of the page and doesn't save the submission" do
-        page.visit(as: user).
-          fill_in_title("a very nice title").
-          fill_in_body("lalalal la la laalla la").
-          select_tag(tag.id).
-          fill_in_url("https://www.url.com").
-          check_original_author.
-          submit_form
-
-        expect(Submission.count).to eq(0)
-        expect(page).to have_url_xor_body_error
-      end
-    end
-
-    context "when the user tries to make a submission too soon after their last" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when the user tries to make a submission too soon after their last", js: true do
+      it "displays an error and doesn't save the submission" do
         now = Time.zone.now
         user = create(:user, last_submission_at: now)
 
         travel_to now + 5.minutes do
           page.visit(as: user).
             fill_in_title("a very nice title").
+            select_tag(tag.id).
+            click_text_tab.
             fill_in_body("lalalal la la laalla la").
             check_original_author.
             submit_form
@@ -254,10 +255,11 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when no tag is selected" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when no tag is selected", js: true do
+      it "displays an error and doesn't save the submission" do
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
+          click_text_tab.
           fill_in_body("This is a very nice submission body").
           check_original_author.
           submit_form
@@ -267,11 +269,12 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when too many tags are selected" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when too many tags are selected", js: true do
+      it "displays an error and doesn't save the submission" do
         tags = create_list(:topic_tag, 6)
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
+          click_text_tab.
           fill_in_body("This is a very nice submission body").
           check_original_author
 
@@ -284,11 +287,12 @@ RSpec.describe "user makes a submission" do
       end
     end
 
-    context "when there are no non-media tags selected" do
-      it "displays an error at the top of the page and doesn't save the submission" do
+    context "when there are no non-media tags selected", js: true do
+      it "displays an error and doesn't save the submission" do
         media_tag = create(:media_tag)
         page.visit(as: user).
           fill_in_title("A Very Nice Title").
+          click_text_tab.
           fill_in_body("This is a very nice submission body").
           select_tag(media_tag.id).
           check_original_author

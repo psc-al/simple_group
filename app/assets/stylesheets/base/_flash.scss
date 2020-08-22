@@ -1,22 +1,31 @@
-.flash-message {
-    cursor: pointer;
+#flash-container {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    z-index: 1;
+
+    p {
+        display: inline;
+        margin: 0;
+    }
+
     .flash {
-        position: fixed;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        cursor: pointer;
         padding: $spacing-small;
         background-color: $white;
         box-shadow: $box-shadow;
-        top: 2rem;
-        left: 50%;
         transform: translateX(-50%);
         font-weight: normal;
+        text-align: center;
+        align-items: center;
+        margin-bottom: $spacing-small;
+
         .flash-close {
+            margin-left: $spacing-smaller;
             font-family: $font-stack-mono;
             color: lighten($scorpion, 20%);
-            margin-left: $spacing-small;
         }
-    }
-    input[type="checkbox"],
-    :checked + .flash {
-        display: none;
     }
 }

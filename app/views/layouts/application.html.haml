@@ -14,10 +14,8 @@
     = render "layouts/navbar"
     #flash-container
       - flash.each do |flash_type, flash_message|
-        %label.flash-message
-          %input{ type: "checkbox" }
-          .flash{ class: "flash-#{flash_type}" }
-            = flash_message
-            %span.flash-close x
+        .flash{ class: "flash-#{flash_type}" }
+          %p= flash_message
+          %span.flash-close x
     .application-container
       = yield

@@ -22,6 +22,20 @@ class CreateSubmissionPage < PageBase
     self
   end
 
+  def click_link_tab
+    within("div#type-selector") do
+      find("label", text: t("submissions.new.link_type")).click
+    end
+    self
+  end
+
+  def click_text_tab
+    within("div#type-selector") do
+      find("label", text: t("submissions.new.text_type")).click
+    end
+    self
+  end
+
   def fill_in_body(str)
     fill_in :create_submission_form_body, with: str
     self
@@ -39,12 +53,27 @@ class CreateSubmissionPage < PageBase
     self
   end
 
-  def has_title_missing_error?
-    has_error?(t("submissions.new.error.title_missing"))
+  def has_submission_body_text_box?
+    has_css?("#body_wrapper", visible: true)
   end
 
-  def has_title_length_error?
-    has_error?(t("submissions.new.error.title_length"))
+  def has_submission_url_text_box?
+    has_css?("#url_wrapper", visible: true)
+  end
+
+  def has_title_missing_error?
+    has_client_side_error?("#create_submission_form_title", "Please fill out this field.")
+  end
+
+  def has_title_too_short_error?(char_num)
+    has_client_side_error?(
+      "#create_submission_form_title",
+      "Please lengthen this text to 10 characters or more (you are currently using #{char_num} characters)."
+    )
+  end
+
+  def has_title_with_x_chars?(char_num)
+    page.find("#create_submission_form_title").value.length == char_num
   end
 
   def has_url_xor_body_error?
@@ -52,7 +81,7 @@ class CreateSubmissionPage < PageBase
   end
 
   def has_missing_tags_error?
-    has_error?(t("submissions.new.error.tags_missing"))
+    has_client_side_error?("#tag-select", "Please select an item in the list.")
   end
 
   def has_tags_max_error?
@@ -88,8 +117,12 @@ class CreateSubmissionPage < PageBase
   end
 
   def has_error?(error)
-    within find(".errors") do
-      has_css?("li.error", text: error)
+    within("form#new_create_submission_form") do
+      has_css?("span.error", text: error)
     end
+  end
+
+  def has_client_side_error?(field, message)
+    page.find(field).native.attribute("validationMessage") == message
   end
 end

@@ -4,4 +4,27 @@ form {
     @include margin(null null $spacing-smaller null);
     display: block;
   }
+
+  .error {
+      color: $red;
+  }
+  #type-selector {
+      margin: $spacing-xs 0 $spacing-small 0;
+
+     [type="radio"] {
+       display: none;
+     }
+
+     label {
+         border-bottom: 2px solid lighten($scorpion, 20%);
+         padding: $spacing-xs;
+         font-size: 105%;
+         color: lighten($scorpion, 20%);
+     }
+
+     [type="radio"]:checked + label {
+         color: $action-color--alt;
+         border-color: $font-color--base;
+     }
+  }
 }

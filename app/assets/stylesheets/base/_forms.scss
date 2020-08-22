@@ -104,6 +104,8 @@ textarea {
 [type="radio"],
 [type="file"],
 select {
+  background-color: $white-gray;
+
   &:focus:not(:hover) {
     outline: $focus-outline;
   }

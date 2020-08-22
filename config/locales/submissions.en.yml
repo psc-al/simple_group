@@ -19,8 +19,11 @@ en:
           saved: save
       comments: "%{count} comments"
     new:
-      title: Make a new submission
+      title: New submission
       original_author: I am the original author of this content.
+      submission_type: Type
+      link_type: LINK
+      text_type: TEXT
       error:
         banned_domain: "The submission is from a banned domain: %{domain}"
         title_missing: Please ensure you provide a helpful title between 10 and 175 characters long.

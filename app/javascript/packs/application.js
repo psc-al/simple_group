@@ -14,3 +14,17 @@ require("@rails/activestorage").start()
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+const pageload = require("./pageload");
+
+pageload.onPageLoad(function() {
+  let flash_container = document.getElementById("flash-container");
+  for(let child=flash_container.firstChild; child!==null; child=child.nextSibling) {
+    child.addEventListener("click", function() {
+        child.remove();
+    });
+    setTimeout(function(){ 
+        child.remove();
+    }, 10000);
+  };
+});

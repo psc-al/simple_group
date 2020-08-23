@@ -49,6 +49,10 @@ jobs:
           command: bundle exec haml-lint app/views/**/*.haml
 
       - run:
+          name: Validate Ruby formatting
+          command: bundle exec rubocop
+
+      - run:
           name: Database setup
           command: bundle exec rails db:test:prepare
 

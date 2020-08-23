@@ -9,5 +9,6 @@ FactoryBot.define do
 
     trait(:admin) { role { :admin } }
     trait(:moderator) { role { :moderator } }
+    trait(:deactivated) { role { :deactivated } }
   end
 end

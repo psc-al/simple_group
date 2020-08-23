@@ -61,6 +61,19 @@ RSpec.describe "user fills out registration form" do
           expect(page).to have_missing_password_error
         end
       end
+
+      context "when the user tries to signup with a forbidden username" do
+        it "tells the user that the username is invalid" do
+          page.visit.fill_out_form({
+            username: User::DELETED,
+            email: "foobar@baz.com",
+            password: "abcd1234",
+            password_confirmation: "abcd1234"
+          }).submit_form
+
+          expect(page).to have_invalid_username_error
+        end
+      end
     end
   end
 

@@ -29,6 +29,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def destroy
+    UserRemovalService.new(current_user).remove
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message! :notice, :destroyed
+    redirect_to root_path
+  end
+
   protected
 
   def configure_sign_up_params

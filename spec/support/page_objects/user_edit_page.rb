@@ -44,6 +44,13 @@ class UserEditPage < PageBase
     self
   end
 
+  def cancel_account
+    accept_confirm do
+      click_link t("users.registrations.edit.cancel_my_account")
+    end
+    self
+  end
+
   def has_update_needs_confirmation_notice?
     has_notice?(t("users.registrations.update_needs_confirmation"))
   end
@@ -72,5 +79,9 @@ class UserEditPage < PageBase
           has_css?("td", text: invite.accepted_at)
       end)
     end
+  end
+
+  def has_account_cancelled_notice?
+    has_notice?(t("users.registrations.destroyed"))
   end
 end

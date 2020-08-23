@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  DELETED = "[deleted]"
+
   INVITES_PER_DAY = 10
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -11,7 +13,8 @@ class User < ApplicationRecord
   enum role: {
     member: 0,
     moderator: 10,
-    admin: 20
+    admin: 20,
+    deactivated: 100
   }
 
   has_many :submissions
@@ -19,16 +22,19 @@ class User < ApplicationRecord
   has_many :comments
   has_many :votes
   has_many :sent_user_invitations, foreign_key: :sender_id, class_name: :UserInvitation
+  has_one :received_user_invitation, foreign_key: :recipient_id, class_name: :UserInvitation, required: false
 
   validates :username, presence: true
-  validates :email, email: true
+  validate :username_not_restricted?
+
+  scope :active, -> { where.not(role: :deactivated) }
 
   def self.find_first_by_auth_conditions(warden_conditions)
     if warden_conditions.key?(:confirmation_token)
       super
     else
       warden_conditions.fetch(:username, nil).then do |username|
-        where("lower(username) = ?", username.downcase).first if username.present?
+        active.where("lower(username) = ?", username.downcase).first if username.present?
       end
     end
   end
@@ -57,5 +63,11 @@ class User < ApplicationRecord
     sent_user_invitations.
       where(sent_at: (now.beginning_of_day..now.end_of_day)).
       count < INVITES_PER_DAY
+  end
+
+  def username_not_restricted?
+    if username.present? && username.downcase == DELETED
+      errors.add(:username, :invalid)
+    end
   end
 end

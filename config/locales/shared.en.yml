@@ -3,3 +3,8 @@ en:
     pagination_controls:
       next_page: Next Page →
       previous_page: ← Previous Page
+    inbox:
+      inbox_links:
+        all: All
+        comment_replies: Comment replies
+        submission_replies: Submission replies

@@ -18,6 +18,6 @@
             %span= link_to t("navigation.links.your_submissions"),
               user_submissions_path(current_user.username)
           %li
-            %span= link_to t("navigation.links.inbox"), "#"
+            %span= link_to t("navigation.links.inbox"), inbox_path
         %li
           %span= link_to(*users_link_for(current_user))

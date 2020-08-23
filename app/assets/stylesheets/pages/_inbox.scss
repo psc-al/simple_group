@@ -1,0 +1,9 @@
+.inbox-links {
+  .inbox-link {
+    display: inline-block;
+    margin-right: $spacing-small;
+    a.active {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

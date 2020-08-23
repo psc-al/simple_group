@@ -7,6 +7,12 @@ Rails.application.routes.draw do
 
   root to: "submissions#index"
 
+  resource :inbox, only: [:show]
+  namespace :inbox do
+    resources :comment_replies, only: [:index]
+    resources :submission_replies, only: [:index]
+  end
+
   resources :submissions, only: [:index, :new, :create]
   resources :submissions, only: [:show], param: :short_id, path: :s do
     resources :comments, only: [:create]

@@ -1,0 +1,12 @@
+en:
+  inboxes:
+    show:
+      title: Inbox
+
+  inbox:
+    comment_replies:
+      index:
+        title: Comment replies
+    submission_replies:
+      index:
+        title: Submission replies

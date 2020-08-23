@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_06_160510) do
+ActiveRecord::Schema.define(version: 2020_08_23_184606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2020_06_06_160510) do
     t.string "token", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["recipient_email"], name: "index_user_invitations_on_recipient_email", unique: true
+    t.index "lower((recipient_email)::text)", name: "index_user_invitations_on_LOWER_recipient_email", unique: true, where: "(lower((recipient_email)::text) <> '[deleted]'::text)"
     t.index ["recipient_id"], name: "index_user_invitations_on_recipient_id"
     t.index ["sender_id"], name: "index_user_invitations_on_sender_id"
     t.index ["token"], name: "index_user_invitations_on_token", unique: true
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(version: 2020_06_06_160510) do
     t.integer "role", default: 0, null: false
     t.string "username", limit: 20, null: false
     t.datetime "last_submission_at"
-    t.index "lower((email)::text)", name: "index_users_on_LOWER_email", unique: true
-    t.index "lower((username)::text)", name: "index_users_on_LOWER_username", unique: true
+    t.index "lower((email)::text)", name: "index_users_on_LOWER_email", unique: true, where: "(lower((email)::text) <> '[deleted]'::text)"
+    t.index "lower((username)::text)", name: "index_users_on_LOWER_username", unique: true, where: "(lower((username)::text) <> '[deleted]'::text)"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"

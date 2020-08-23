@@ -5,5 +5,10 @@ FactoryBot.define do
     sent_at { Time.zone.now }
     accepted_at { nil }
     token { SecureRandom.uuid }
+
+    trait :accepted do
+      association :recipient, factory: :user
+      recipient_email { recipient.email }
+    end
   end
 end

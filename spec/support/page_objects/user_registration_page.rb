@@ -35,4 +35,8 @@ class UserRegistrationPage < PageBase
   def has_missing_username_error?
     has_missing_field_error?(".user_username")
   end
+
+  def has_invalid_username_error?
+    has_invalid_field_error?(".user_username")
+  end
 end

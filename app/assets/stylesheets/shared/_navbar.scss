@@ -54,6 +54,12 @@
               }
             }
           }
+          
+          span.unread {
+            a {
+              color: $orange;
+            }
+          }
         }
       }
     }

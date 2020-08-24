@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_184606) do
+ActiveRecord::Schema.define(version: 2020_08_23_233944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -41,6 +41,17 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["banned_by_id"], name: "index_domains_on_banned_by_id", where: "(banned_by_id IS NOT NULL)"
     t.index ["name"], name: "index_domains_on_name", unique: true
+  end
+
+  create_table "inbox_items", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "inboxable_type", null: false
+    t.bigint "inboxable_id", null: false
+    t.boolean "read", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inboxable_type", "inboxable_id"], name: "index_inbox_items_on_inboxable_type_and_inboxable_id"
+    t.index ["user_id", "read"], name: "index_inbox_items_on_user_id_and_read"
   end
 
   create_table "submission_actions", force: :cascade do |t|
@@ -84,6 +95,15 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
     t.integer "kind", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "thread_replies", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "comment_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["comment_id"], name: "index_thread_replies_on_comment_id"
+    t.index ["user_id"], name: "index_thread_replies_on_user_id"
   end
 
   create_table "user_invitations", force: :cascade do |t|
@@ -142,12 +162,15 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
   add_foreign_key "comments", "submissions", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "domains", "users", column: "banned_by_id"
+  add_foreign_key "inbox_items", "users", on_delete: :cascade
   add_foreign_key "submission_actions", "submissions", column: "submission_short_id", primary_key: "short_id"
   add_foreign_key "submission_actions", "users", on_delete: :cascade
   add_foreign_key "submission_tags", "submissions", on_delete: :cascade
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
+  add_foreign_key "thread_replies", "comments", on_delete: :cascade
+  add_foreign_key "thread_replies", "users", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
@@ -212,5 +235,40 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
             WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 1)))) AS score
      FROM (comments
        JOIN users ON ((users.id = comments.user_id)));
+  SQL
+  create_view "flattened_inbox_items", sql_definition: <<-SQL
+      SELECT submissions.title AS toplevel_subject,
+      'Submission'::text AS toplevel_type,
+      submissions.short_id AS toplevel_short_id,
+      inbox_items.user_id,
+      users.username AS actor_username,
+      'Comment'::text AS item_type,
+      comments.short_id AS item_short_id,
+      comments.body AS item_body,
+      inbox_items.read,
+      thread_replies.created_at AS inboxed_at
+     FROM ((((inbox_items
+       JOIN thread_replies ON ((((inbox_items.inboxable_type)::text = 'ThreadReply'::text) AND (inbox_items.inboxable_id = thread_replies.id))))
+       JOIN comments ON ((thread_replies.comment_id = comments.id)))
+       JOIN submissions ON ((comments.submission_id = submissions.id)))
+       JOIN users ON ((comments.user_id = users.id)))
+    WHERE (comments.parent_id IS NOT NULL)
+  UNION ALL
+   SELECT submissions.title AS toplevel_subject,
+      'Submission'::text AS toplevel_type,
+      submissions.short_id AS toplevel_short_id,
+      inbox_items.user_id,
+      users.username AS actor_username,
+      'Submission'::text AS item_type,
+      comments.short_id AS item_short_id,
+      comments.body AS item_body,
+      inbox_items.read,
+      thread_replies.created_at AS inboxed_at
+     FROM ((((inbox_items
+       JOIN thread_replies ON ((((inbox_items.inboxable_type)::text = 'ThreadReply'::text) AND (inbox_items.inboxable_id = thread_replies.id))))
+       JOIN comments ON ((thread_replies.comment_id = comments.id)))
+       JOIN submissions ON ((comments.submission_id = submissions.id)))
+       JOIN users ON ((comments.user_id = users.id)))
+    WHERE (comments.parent_id IS NULL);
   SQL
 end

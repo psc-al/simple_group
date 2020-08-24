@@ -1,0 +1,2 @@
+class FlattenedInboxItem < ApplicationRecord
+end

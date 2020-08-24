@@ -23,6 +23,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :sent_user_invitations, foreign_key: :sender_id, class_name: :UserInvitation
   has_one :received_user_invitation, foreign_key: :recipient_id, class_name: :UserInvitation, required: false
+  has_many :thread_replies
+  has_many :inbox_items
 
   validates :username, presence: true
   validate :username_not_restricted?

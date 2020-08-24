@@ -1,3 +1,5 @@
 %h2= t(".title")
 
 = render "shared/inbox/inbox_links"
+.inbox-items
+  = render partial: "inbox_item", collection: @inbox_items

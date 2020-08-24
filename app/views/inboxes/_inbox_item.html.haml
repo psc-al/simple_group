@@ -1,0 +1,6 @@
+.inbox-item
+  .subject
+    .prefix= subject_prefix_for(inbox_item)
+    = subject_content_for(inbox_item)
+  .body
+    = inbox_item.item_body

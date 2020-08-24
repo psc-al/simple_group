@@ -7,3 +7,15 @@
     }
   }
 }
+
+.inbox-items {
+  .inbox-item {
+    padding-bottom: $spacing-small;
+    .subject {
+      .prefix {
+        display: inline-block;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+}

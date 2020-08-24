@@ -2,6 +2,9 @@ en:
   inboxes:
     show:
       title: Inbox
+    inbox_item:
+      comment_reply: "Comment reply:"
+      submission_reply: "Submission reply:"
 
   inbox:
     comment_replies:

@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     resources :submission_replies, only: [:index]
   end
 
+  resources :inbox_items, only: [:update]
+
   resources :submissions, only: [:index, :new, :create]
   resources :submissions, only: [:show], param: :short_id, path: :s do
     resources :comments, only: [:create]

@@ -11,6 +11,7 @@
 
 /* Comment replies */
 SELECT
+  inbox_items.id,
   submissions.title AS toplevel_subject,
   'Submission' AS toplevel_type,
   submissions.short_id AS toplevel_short_id,
@@ -20,7 +21,7 @@ SELECT
   comments.short_id AS item_short_id,
   comments.body AS item_body,
   inbox_items.read,
-  thread_replies.created_at AS inboxed_at
+  comments.created_at AS created_at
 FROM
   inbox_items
 INNER JOIN
@@ -38,6 +39,7 @@ UNION ALL
 
 /* Submission replies */
 SELECT
+  inbox_items.id,
   submissions.title AS toplevel_subject,
   'Submission' AS toplevel_type,
   submissions.short_id AS toplevel_short_id,
@@ -47,7 +49,7 @@ SELECT
   comments.short_id AS item_short_id,
   comments.body AS item_body,
   inbox_items.read,
-  thread_replies.created_at AS inboxed_at
+  comments.created_at AS created_at
 FROM
   inbox_items
 INNER JOIN

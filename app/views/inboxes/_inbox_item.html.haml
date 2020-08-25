@@ -1,6 +1,14 @@
-.inbox-item
+.inbox-item{ class: ("unread" unless inbox_item.read) }
   .subject
     .prefix= subject_prefix_for(inbox_item)
     = subject_content_for(inbox_item)
   .body
+    .byline
+      = link_to inbox_item.actor_username 
+      = submitted_time_text(inbox_item)
+      |
+      = link_to t(".goto"), submission_path(inbox_item.toplevel_short_id, anchor: inbox_item.item_short_id)
+    .body
     = inbox_item.item_body
+    .action
+      = inbox_item_action_link(inbox_item)

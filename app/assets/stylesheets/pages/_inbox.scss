@@ -10,12 +10,21 @@
 
 .inbox-items {
   .inbox-item {
-    padding-bottom: $spacing-small;
+    background-color: $alto;
+    margin-bottom: $spacing-xs;
     .subject {
       .prefix {
         display: inline-block;
         font-weight: $font-weight-bold;
       }
     }
+    .body {
+      .byline {
+        a { text-decoration: none; }
+      }
+    }
+  }
+  .inbox-item.unread .body{
+    background-color: $white-gray;
   }
 }

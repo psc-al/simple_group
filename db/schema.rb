@@ -237,7 +237,8 @@ ActiveRecord::Schema.define(version: 2020_08_23_233944) do
        JOIN users ON ((users.id = comments.user_id)));
   SQL
   create_view "flattened_inbox_items", sql_definition: <<-SQL
-      SELECT submissions.title AS toplevel_subject,
+      SELECT inbox_items.id,
+      submissions.title AS toplevel_subject,
       'Submission'::text AS toplevel_type,
       submissions.short_id AS toplevel_short_id,
       inbox_items.user_id,
@@ -246,7 +247,7 @@ ActiveRecord::Schema.define(version: 2020_08_23_233944) do
       comments.short_id AS item_short_id,
       comments.body AS item_body,
       inbox_items.read,
-      thread_replies.created_at AS inboxed_at
+      comments.created_at
      FROM ((((inbox_items
        JOIN thread_replies ON ((((inbox_items.inboxable_type)::text = 'ThreadReply'::text) AND (inbox_items.inboxable_id = thread_replies.id))))
        JOIN comments ON ((thread_replies.comment_id = comments.id)))
@@ -254,7 +255,8 @@ ActiveRecord::Schema.define(version: 2020_08_23_233944) do
        JOIN users ON ((comments.user_id = users.id)))
     WHERE (comments.parent_id IS NOT NULL)
   UNION ALL
-   SELECT submissions.title AS toplevel_subject,
+   SELECT inbox_items.id,
+      submissions.title AS toplevel_subject,
       'Submission'::text AS toplevel_type,
       submissions.short_id AS toplevel_short_id,
       inbox_items.user_id,
@@ -263,7 +265,7 @@ ActiveRecord::Schema.define(version: 2020_08_23_233944) do
       comments.short_id AS item_short_id,
       comments.body AS item_body,
       inbox_items.read,
-      thread_replies.created_at AS inboxed_at
+      comments.created_at
      FROM ((((inbox_items
        JOIN thread_replies ON ((((inbox_items.inboxable_type)::text = 'ThreadReply'::text) AND (inbox_items.inboxable_id = thread_replies.id))))
        JOIN comments ON ((thread_replies.comment_id = comments.id)))

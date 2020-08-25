@@ -5,6 +5,9 @@ en:
     inbox_item:
       comment_reply: "Comment reply:"
       submission_reply: "Submission reply:"
+      goto: visit
+      mark_as_read: Mark as read
+      mark_as_unread: Mark as unread
 
   inbox:
     comment_replies:

@@ -13,8 +13,8 @@ module SubmissionsHelper
     end
   end
 
-  def submitted_time_text(submission)
-    "#{time_ago_in_words(submission.created_at)} #{t('submissions.submission_list_item.ago')}"
+  def submitted_time_text(submittable)
+    "#{time_ago_in_words(submittable.created_at)} #{t('submissions.submission_list_item.ago')}"
   end
 
   def tag_select_options(user)

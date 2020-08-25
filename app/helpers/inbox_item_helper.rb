@@ -16,4 +16,16 @@ module InboxItemHelper
       inbox_item.toplevel_subject
     end
   end
+
+  def inbox_item_action_link(inbox_item)
+    if inbox_item.read
+      link_to t(".mark_as_unread"),
+        inbox_item_path(inbox_item.id, inbox_item: { read: false }),
+        method: :patch
+    else
+      link_to t(".mark_as_read"),
+        inbox_item_path(inbox_item.id, inbox_item: { read: true }),
+        method: :patch
+    end
+  end
 end

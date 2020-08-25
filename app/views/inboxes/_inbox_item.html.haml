@@ -4,7 +4,7 @@
     = subject_content_for(inbox_item)
   .body
     .byline
-      = link_to inbox_item.actor_username 
+      = link_to inbox_item.actor_username
       = submitted_time_text(inbox_item)
       |
       = link_to t(".goto"), submission_path(inbox_item.toplevel_short_id, anchor: inbox_item.item_short_id)

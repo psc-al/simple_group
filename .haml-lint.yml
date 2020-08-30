@@ -3,3 +3,6 @@ inherits_from:
 linters:
   LineLength:
     max: 120
+  InstanceVariables:
+    exclude:
+      - "app/views/comments/_comment.html.haml"

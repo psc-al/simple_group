@@ -1,0 +1,25 @@
+- children = @comments_by_parent[comment.id]
+.comment.votable{ id: comment.short_id }
+  %span.scoring{ id: "scoring_#{comment.short_id}" }
+    %div{ id: "upvote_#{comment.short_id}", class: control_classes(comment, :upvote) }
+    %div{ id: "score_#{comment.short_id}", class: control_classes(comment, :score) }
+      = comment.score
+    %div{ id: "downvote_#{comment.short_id}", class: control_classes(comment, :downvote) }
+  %span.hide-comment
+  .comment-line1
+    %span.author= link_to comment.commenter, "#"
+    %span= submitted_time_text(comment)
+    |
+    %span.link= link_to t(".link"), "##{comment.short_id}", data: { turbolinks: false }
+    |
+    %span.link= link_to t(".reply"), "", class: "reply"
+  - if children.present?
+    .comment-tree-line
+  .comment-content{ id: "comment_content_#{comment.short_id}" }
+    .comment-body.latex-container.markdownable{ id: "tree_#{comment.short_id}" }
+      = sanitize CommonMarker.render_html(comment.body.gsub("\\", "\\\\\\"))
+    .comment-reply-box{ id: "reply_#{comment.short_id}" }
+      = render "comments/form", comment: Comment.new, parent: comment
+    .comment-replies{ id: "replies_#{comment.short_id}" }
+      - if children.present?
+        = render partial: "comments/comment", collection: children

@@ -29,8 +29,13 @@ class UserEditPage < PageBase
     self
   end
 
+  def toggle_edit_password
+    click_on t("users.registrations.edit.change_password")
+    self
+  end
+
   def submit_form
-    click_on t("users.registrations.edit.update")
+    click_on t("users.registrations.edit.save")
     self
   end
 
@@ -46,7 +51,7 @@ class UserEditPage < PageBase
 
   def cancel_account
     accept_confirm do
-      click_link t("users.registrations.edit.cancel_my_account")
+      click_link t("users.registrations.edit.delete_my_account")
     end
     self
   end

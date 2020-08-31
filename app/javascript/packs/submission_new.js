@@ -1,7 +1,6 @@
 const pageload = require("./pageload");
 
 pageload.onPageLoad(function() {
-    console.log("loaded");
     let link = document.getElementById("link");
     let text = document.getElementById("text");
     let url_wrapper = document.getElementById("url_wrapper");

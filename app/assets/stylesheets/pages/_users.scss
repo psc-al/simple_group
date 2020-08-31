@@ -1,1 +1,26 @@
 @import "users/edit";
+
+
+form {
+  .options {
+    span {
+      font-weight: 800;
+    }
+
+    span:last-child {
+      float: right;
+    }
+
+    .warning {
+      color: darken($red, 5%);
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .changing-password {
+    display: initial !important;
+  }
+}

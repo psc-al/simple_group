@@ -9,6 +9,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def update
+    @invitations = current_user.sent_user_invitations
+    super
+  end
+
   def new
     token = params[:invite_token]
     @invite = UserInvitation.find_by(token: token) if token.present?

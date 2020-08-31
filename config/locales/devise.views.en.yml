@@ -95,14 +95,20 @@ en:
       edit:
         are_you_sure: Are you sure?
         invite_user: Invite a new user
-        cancel_my_account: Cancel my account
+        change_password: Change password?
+        new_password: New password
+        new_password_again: New password, again
+        edit_acount: Edit Account
+        delete_my_account: Delete my account
         currently_waiting_confirmation_for_email: 'Currently waiting confirmation for: %{email}'
         leave_blank_if_you_don_t_want_to_change_it: leave blank if you don't want to change it
         title: Edit %{resource}
         unhappy: Unhappy?
         update: Update
+        save: Save 
         we_need_your_current_password_to_confirm_your_changes: we need your current password to confirm your changes
         user_invitations:
+          no_one_yet: No one yet. Invite some friends!
           recipient_email: Recipient e-mail
           sent_at: Sent at
           accepted_at: Accepted at

@@ -19,16 +19,17 @@ RSpec.describe "user edits account" do
     end
   end
 
-  context "current password is incorrect" do
+  context "current password is incorrect", js: true do
     it "allows no updates" do
       email = user.email
 
       page.
         visit(as: user).
         fill_in_email("newemail@beep.com").
+        toggle_edit_password.
+        fill_in_current_password("abcd12345").
         fill_in_new_password("4321dcba").
         fill_in_new_password_confirm("4321dcba").
-        fill_in_current_password("abcd12345").
         submit_form
 
       expect(page).to have_invalid_field_error(".user_current_password")
@@ -41,13 +42,14 @@ RSpec.describe "user edits account" do
     end
   end
 
-  context "password update" do
+  context "password update", js: true do
     it "updates the user's password and redirects them to the root path" do
       page.
         visit(as: user).
+        toggle_edit_password.
+        fill_in_current_password("abcd1234").
         fill_in_new_password("4321dcba").
         fill_in_new_password_confirm("4321dcba").
-        fill_in_current_password("abcd1234").
         submit_form
 
       expect(page).to have_account_updated_successfully_notice
@@ -61,9 +63,10 @@ RSpec.describe "user edits account" do
     it "requires the passwords to match" do
       page.
         visit(as: user).
+        toggle_edit_password.
+        fill_in_current_password("abcd1234").
         fill_in_new_password("4321dcba").
         fill_in_new_password_confirm("4321xdcba").
-        fill_in_current_password("abcd1234").
         submit_form
 
       expect(page).to have_mismatched_password_error

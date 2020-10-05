@@ -1,0 +1,22 @@
+en:
+  inbox:
+    thread_reply_notifications:
+      filters:
+        show_filters_header: "Show:"
+        replies_to_comments: Replies to Comments
+        replies_to_submissions: Replies to Submissions
+        show_read: Show read
+      index:
+        title: Inbox
+      thread_reply_notification:
+        comment_reply: "Comment Reply:"
+        submission_reply: "Submission Reply:"
+        mark_as_unread: Mark as unread
+        mark_as_read: Mark as read
+      thread_reply_submission:
+        comments: "%{count} comments"
+      thread_reply_comments:
+        link: link
+      reply_comment:
+        link: link
+        reply: reply

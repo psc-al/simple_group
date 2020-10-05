@@ -1,0 +1,23 @@
+- reply_short_id = notification.reply_short_id
+.comment.votable{ id: reply_short_id }
+  %span.scoring{ id: "scoring_#{reply_short_id}" }
+    %div{ id: "upvote_#{reply_short_id}", class: control_classes(notification, :upvote, prefix: :reply) }
+    %div{ id: "score_#{reply_short_id}", class: control_classes(notification, :score, prefix: :reply) }
+      = notification.reply_score
+    %div{ id: "downvote_#{reply_short_id}", class: control_classes(notification, :downvote, prefix: :reply) }
+  %span.hide-comment
+  .comment-line1
+    %span.author= link_to notification.reply_commenter, "#"
+    %span= formatted_time_text(notification.reply_created_at)
+    |
+    %span.link= link_to t(".link"),
+      submission_path(notification.flattened_submission.short_id, anchor: reply_short_id),
+      data: { turbolinks: false }
+    |
+    %span.link= link_to t(".reply"), "", class: "reply"
+  .comment-content{ id: "comment_content_#{reply_short_id}" }
+    .comment-body.latex-container.markdownable{ id: "tree_#{reply_short_id}" }
+      = sanitize CommonMarker.render_html(notification.reply_body.gsub("\\", "\\\\\\"))
+    .comment-reply-box{ id: "reply_#{reply_short_id}" }
+      = render "comments/form", submission_short_id: notification.flattened_submission.short_id,
+        comment: Comment.new, parent_id: notification.reply_id

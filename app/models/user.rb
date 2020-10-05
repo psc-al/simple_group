@@ -22,6 +22,8 @@ class User < ApplicationRecord
   has_many :comments
   has_many :votes
   has_many :sent_user_invitations, foreign_key: :sender_id, class_name: :UserInvitation
+  has_many :thread_reply_notifications, foreign_key: :recipient_id
+  has_many :flattened_thread_reply_notifications, foreign_key: :recipient_id
   has_one :received_user_invitation, foreign_key: :recipient_id, class_name: :UserInvitation, required: false
 
   validates :username, presence: true

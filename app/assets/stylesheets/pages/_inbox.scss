@@ -1,0 +1,41 @@
+.inbox-filters-container {
+  margin-bottom: $spacing-small;
+  .checkbox-filters .input.boolean {
+    display: inline-block;
+  }
+
+  .checkbox-filters * {
+    vertical-align: middle;
+  }
+}
+
+.thread-reply-container {
+  margin-top: $spacing-xs;
+  padding: $spacing-small 0;
+  border-top: $light-border;
+  .submission {
+    display: inline-block;
+    padding-bottom: $spacing-xs;
+    .submission-line1 {
+      display: inline-flex;
+    }
+    .submission-line2 {
+      display: inline;
+    }
+  }
+  .comments-container {
+    margin-top: 0;
+    .comment {
+      margin-top: 0;
+      .comment-tree-line {
+        grid-area: 1 / 1 / 4 / 1;
+      }
+    }
+  }
+  .actions {
+    a {
+      text-decoration: none;
+      float: right;
+    }
+  }
+}

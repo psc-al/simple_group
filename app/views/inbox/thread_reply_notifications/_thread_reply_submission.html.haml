@@ -1,0 +1,19 @@
+.submission{ id: submission.short_id }
+  .submission-title
+    .submission-line1
+      %span.submission-link= link_to(submission.title, submission_href_for(submission))
+      %span.submission-tags
+        = render partial: "shared/tag", collection: submission.tags
+      %span.submission-domain
+        %i= submission.domain_name.presence
+    .submission-line2
+      %span.submission-info
+        = submitted_by_text(submission)
+      %span.submission-user
+        = link_to submission.submitter_username, "#"
+      %span.submission-info
+        %span.submission-time
+          = submitted_time_text(submission)
+      %span.submission-comments
+        = link_to t(".comments", count: submission.comment_count),
+          submission_path(submission.short_id)

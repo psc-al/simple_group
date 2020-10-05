@@ -1,0 +1,10 @@
+- content_for :page_styles do
+  = javascript_pack_tag "inbox"
+
+.inbox-filters-container
+  = simple_form_for @filter_form, url: inbox_thread_reply_notifications_path, html: { method: :get } do |f|
+    .checkbox-filters
+      %label= t(".show_filters_header")
+      = f.input :replies_to_comments, as: :boolean, label: t(".replies_to_comments")
+      = f.input :replies_to_submissions, as: :boolean, label: t(".replies_to_submissions")
+      = f.input :dismissed, as: :boolean, label: t(".show_read")

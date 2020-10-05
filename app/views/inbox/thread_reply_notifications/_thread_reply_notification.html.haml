@@ -1,0 +1,8 @@
+.thread-reply-container{ id: "thread-reply-notification-#{thread_reply_notification.id}" }
+  = render "thread_reply_submission",
+    submission: thread_reply_notification.flattened_submission
+  %span.actions
+    = link_to notification_action_link_text(thread_reply_notification), "",
+      id: "thread-reply-action-#{thread_reply_notification.id}"
+  .comments-container
+    = render "thread_reply_comments", notification: thread_reply_notification

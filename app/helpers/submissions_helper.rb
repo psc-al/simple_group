@@ -23,8 +23,12 @@ module SubmissionsHelper
     end
   end
 
-  def submission_classes_for(submission)
-    [saved_class_for(submission), hidden_class_for(submission)].join(" ")
+  def submission_classes_for(submission, without_action_classes: false)
+    if without_action_classes
+      ""
+    else
+      [saved_class_for(submission), hidden_class_for(submission)].join(" ")
+    end
   end
 
   def saved_class_for(submission)

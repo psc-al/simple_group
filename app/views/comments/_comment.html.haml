@@ -19,7 +19,8 @@
     .comment-body.latex-container.markdownable{ id: "tree_#{comment.short_id}" }
       = sanitize CommonMarker.render_html(comment.body.gsub("\\", "\\\\\\"))
     .comment-reply-box{ id: "reply_#{comment.short_id}" }
-      = render "comments/form", comment: Comment.new, parent: comment
+      = render "comments/form", submission_short_id: @submission.short_id, comment: Comment.new,
+        parent_id: comment.id
     .comment-replies{ id: "replies_#{comment.short_id}" }
       - if children.present?
         = render partial: "comments/comment", collection: children

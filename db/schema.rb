@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_184606) do
+ActiveRecord::Schema.define(version: 2020_10_10_211159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -86,6 +86,19 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "thread_reply_notifications", force: :cascade do |t|
+    t.bigint "recipient_id", null: false
+    t.bigint "in_response_to_comment_id"
+    t.bigint "reply_id", null: false
+    t.boolean "dismissed", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dismissed"], name: "index_thread_reply_notifications_on_dismissed"
+    t.index ["in_response_to_comment_id"], name: "index_thread_reply_notifications_on_in_response_to_comment_id"
+    t.index ["recipient_id"], name: "index_thread_reply_notifications_on_recipient_id"
+    t.index ["reply_id"], name: "index_thread_reply_notifications_on_reply_id"
+  end
+
   create_table "user_invitations", force: :cascade do |t|
     t.bigint "sender_id", null: false
     t.string "recipient_email", null: false
@@ -148,6 +161,9 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
   add_foreign_key "submissions", "users"
+  add_foreign_key "thread_reply_notifications", "comments", column: "in_response_to_comment_id", on_delete: :cascade
+  add_foreign_key "thread_reply_notifications", "comments", column: "reply_id", on_delete: :cascade
+  add_foreign_key "thread_reply_notifications", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
@@ -212,5 +228,74 @@ ActiveRecord::Schema.define(version: 2020_08_23_184606) do
             WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 1)))) AS score
      FROM (comments
        JOIN users ON ((users.id = comments.user_id)));
+  SQL
+  create_view "flattened_thread_reply_notifications", sql_definition: <<-SQL
+      SELECT thread_reply_notifications.id,
+      thread_reply_notifications.recipient_id,
+      thread_reply_notifications.dismissed,
+      thread_reply_notifications.reply_id,
+      replies.submission_id,
+      submission_votes.kind AS submission_vote_kind,
+      replies.short_id AS reply_short_id,
+      replies.body AS reply_body,
+      reply_votes.kind AS reply_vote_kind,
+      replies.created_at AS reply_created_at,
+      replies.updated_at AS reply_updated_at,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.reply_id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.reply_id) AND (votes.kind = 1)))) AS reply_score,
+      reply_users.username AS reply_commenter,
+      thread_reply_notifications.in_response_to_comment_id AS irtc_id,
+      irtcs.short_id AS irtc_short_id,
+      irtcs.body AS irtc_body,
+      irtc_votes.kind AS irtc_vote_kind,
+      irtcs.created_at AS irtc_created_at,
+      irtcs.updated_at AS irtc_updated_at,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.in_response_to_comment_id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.in_response_to_comment_id) AND (votes.kind = 1)))) AS irtc_score
+     FROM ((((((thread_reply_notifications
+       JOIN comments replies ON ((replies.id = thread_reply_notifications.reply_id)))
+       JOIN users reply_users ON ((reply_users.id = replies.user_id)))
+       LEFT JOIN votes reply_votes ON (((reply_votes.user_id = thread_reply_notifications.recipient_id) AND ((reply_votes.votable_type)::text = 'Comment'::text) AND (reply_votes.votable_id = thread_reply_notifications.reply_id))))
+       LEFT JOIN votes submission_votes ON (((submission_votes.user_id = thread_reply_notifications.recipient_id) AND ((submission_votes.votable_type)::text = 'Submission'::text) AND (submission_votes.votable_id = replies.submission_id))))
+       JOIN comments irtcs ON ((irtcs.id = thread_reply_notifications.in_response_to_comment_id)))
+       LEFT JOIN votes irtc_votes ON (((irtc_votes.user_id = thread_reply_notifications.recipient_id) AND ((irtc_votes.votable_type)::text = 'Comment'::text) AND (irtc_votes.votable_id = thread_reply_notifications.in_response_to_comment_id))))
+    WHERE (thread_reply_notifications.in_response_to_comment_id IS NOT NULL)
+  UNION ALL
+   SELECT thread_reply_notifications.id,
+      thread_reply_notifications.recipient_id,
+      thread_reply_notifications.dismissed,
+      thread_reply_notifications.reply_id,
+      replies.submission_id,
+      submission_votes.kind AS submission_vote_kind,
+      replies.short_id AS reply_short_id,
+      replies.body AS reply_body,
+      reply_votes.kind AS reply_vote_kind,
+      replies.created_at AS reply_created_at,
+      replies.updated_at AS reply_updated_at,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.reply_id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = thread_reply_notifications.reply_id) AND (votes.kind = 1)))) AS reply_score,
+      reply_users.username AS reply_commenter,
+      NULL::bigint AS irtc_id,
+      NULL::character varying AS irtc_short_id,
+      NULL::text AS irtc_body,
+      NULL::integer AS irtc_vote_kind,
+      NULL::timestamp without time zone AS irtc_created_at,
+      NULL::timestamp without time zone AS irtc_updated_at,
+      NULL::bigint AS irtc_score
+     FROM ((((thread_reply_notifications
+       JOIN comments replies ON ((replies.id = thread_reply_notifications.reply_id)))
+       JOIN users reply_users ON ((reply_users.id = replies.user_id)))
+       LEFT JOIN votes reply_votes ON (((reply_votes.user_id = thread_reply_notifications.recipient_id) AND ((reply_votes.votable_type)::text = 'Comment'::text) AND (reply_votes.votable_id = thread_reply_notifications.reply_id))))
+       LEFT JOIN votes submission_votes ON (((submission_votes.user_id = thread_reply_notifications.recipient_id) AND ((submission_votes.votable_type)::text = 'Submission'::text) AND (submission_votes.votable_id = replies.submission_id))))
+    WHERE (thread_reply_notifications.in_response_to_comment_id IS NULL);
   SQL
 end

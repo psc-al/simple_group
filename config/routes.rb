@@ -7,6 +7,11 @@ Rails.application.routes.draw do
 
   root to: "submissions#index"
 
+  namespace :inbox do
+    resources :thread_reply_notifications, only: [:index, :update]
+  end
+  get "inbox", to: "inbox/thread_reply_notifications#index"
+
   resources :submissions, only: [:index, :new, :create]
   get "/submissions/:submission_action", to: "submissions#index", as: :marked_submissions
   resources :submissions, only: [:show], param: :short_id, path: :s do

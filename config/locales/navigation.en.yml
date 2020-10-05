@@ -5,3 +5,8 @@ en:
       submit: "Submit"
       your_submissions: "Your submissions"
       inbox: "Inbox"
+  footer:
+      links:
+          about: "About"
+          rules: "Rules"
+          source: "GitHub"

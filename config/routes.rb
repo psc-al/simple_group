@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     resources :submissions, only: [:index]
   end
 
+  get "/pages/:page", to: "pages#show", as: :pages
+
   get "u/:username/submissions", to: "submissions#index", as: :user_submissions
 
   namespace :users do

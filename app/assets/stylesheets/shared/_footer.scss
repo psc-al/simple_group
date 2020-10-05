@@ -1,0 +1,28 @@
+.footer {
+  width: 80%;
+  margin: $spacing-medium auto;
+  max-width: 80rem;
+
+  .footer-links {
+    margin: 0 auto;
+
+    a {
+      text-decoration: none;
+      color: $gray-link;
+
+      &:hover {
+        color: $blue;
+      }
+    }
+
+    ul {
+      text-align: center;
+
+      li {
+        margin-left: $spacing-xs;
+        display: inline;
+
+      }
+    }
+  }
+}

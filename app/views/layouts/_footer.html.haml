@@ -1,0 +1,10 @@
+.footer
+  .footer-links
+    %ul
+      %li
+        %span= link_to t("footer.links.about"), pages_path("about")
+      %li
+        %span= link_to t("footer.links.rules"), pages_path("rules")
+      %li
+        %span= link_to t("footer.links.source"), "https://github.com/psc-al/simple_group",
+          target: "_blank", rel: "noopener"

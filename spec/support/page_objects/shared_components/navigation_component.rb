@@ -11,9 +11,21 @@ module NavigationComponent
     end
   end
 
+  def visit_inbox_link
+    within(".navbar-links") do
+      click_link(t("navigation.links.inbox"))
+    end
+  end
+
   def has_submissions_link_for?(user)
     within(".footer") do
       has_link?(t("footer.submissions.user"), href: user_submissions_path(user.username))
+    end
+  end
+
+  def has_inbox_link?(classes: "")
+    within(".navbar-links") do
+      has_link?(t("navigation.links.inbox"), href: inbox_path, class: classes)
     end
   end
 

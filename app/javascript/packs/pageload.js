@@ -5,6 +5,6 @@ export function onPageLoad(callback) {
   ) {
     callback();
   } else {
-    document.addEventListener("DOMContentLoaded", callback);
+    document.addEventListener("turbolinks:load", callback);
   }
 }

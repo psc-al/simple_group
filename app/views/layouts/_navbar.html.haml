@@ -15,6 +15,9 @@
           %li
             %span= link_to t("navigation.links.submit"), new_submission_path
           %li
-            %span= link_to t("navigation.links.inbox"), "#"
+            - if current_user.thread_reply_notifications.unread.exists?
+              %span= link_to t("navigation.links.inbox"), inbox_path, class: "notify"
+            - else
+              %span= link_to t("navigation.links.inbox"), inbox_path
         %li
           %span= link_to(*users_link_for(current_user))

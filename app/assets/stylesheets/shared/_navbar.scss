@@ -30,6 +30,9 @@
     }
 
     .navbar-links {
+      .notify {
+        color: $orange;
+      }
       ul {
         float: right;
         li {

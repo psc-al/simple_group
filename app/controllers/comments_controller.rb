@@ -7,6 +7,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       Vote.upvote.create!(votable: @comment, user: current_user)
+      maybe_create_reply_notification(submission, @comment)
       redirect_path = "#{submission_path(submission.short_id)}##{@comment.short_id}"
       flash = { notice: t(".success") }
     else
@@ -25,6 +26,25 @@ class CommentsController < ApplicationController
       user: current_user,
       parent_id: comment_params[:parent_id]
     )
+  end
+
+  def maybe_create_reply_notification(submission, comment)
+    if comment_params[:parent_id].present?
+      parent = Comment.find(comment_params[:parent_id])
+
+      if current_user.id != parent.user_id
+        ThreadReplyNotification.create!(
+          recipient_id: parent.user_id,
+          in_response_to_comment: parent,
+          reply: comment
+        )
+      end
+    elsif current_user.id != submission.user_id
+      ThreadReplyNotification.create!(
+        recipient_id: submission.user_id,
+        reply: comment
+      )
+    end
   end
 
   def comment_params

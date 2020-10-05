@@ -1,0 +1,19 @@
+- if notification.irtc_id.present?
+  - irtc_short_id = notification.irtc_short_id
+  .comment{ id: irtc_short_id }
+    %span.hide-comment
+    .comment-line1
+      %span.author= link_to current_user.username, "#"
+      %span= formatted_time_text(notification.irtc_created_at)
+      |
+      %span.link= link_to t(".link"),
+        submission_path(notification.flattened_submission.short_id, anchor: irtc_short_id),
+        data: { turbolinks: false }
+    .comment-tree-line
+    .comment-content{ id: "comment_content_#{irtc_short_id}" }
+      .comment-body.latex-container.markdownable{ id: "tree_#{irtc_short_id}" }
+        = sanitize CommonMarker.render_html(notification.irtc_body.gsub("\\", "\\\\\\"))
+      .comment-replies{ id: "replies_#{irtc_short_id}" }
+        = render "reply_comment", notification: notification
+- else
+  = render "reply_comment", notification: notification

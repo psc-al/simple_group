@@ -2,7 +2,7 @@
 .submission-body.latex-container.markdownable
   = sanitize CommonMarker.render_html(@submission.body.gsub("\\", "\\\\\\")) if @submission.body.present?
 .comments-container
-  = render "comments/form", comment: @root_comment, parent: nil
+  = render "comments/form", submission_short_id: @submission.short_id, comment: @root_comment, parent_id: nil
   = render partial: "comments/comment", collection: @comments_by_parent[nil]
 - content_for :page_styles do
   = stylesheet_pack_tag "latex", "data-turbolinks-track": "reload"

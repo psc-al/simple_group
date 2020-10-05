@@ -40,7 +40,7 @@
   .submission-line1 {
     display: flex;
     flex-wrap: wrap;
-    .submission-link a {
+    .submission-link a, .submission-title-prefix {
       text-decoration: none;
       font-size: 1.2rem;
       font-weight: $font-weight-bold;

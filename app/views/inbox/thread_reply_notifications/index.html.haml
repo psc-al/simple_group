@@ -1,0 +1,10 @@
+%h2= t(".title")
+= render "filters"
+= render partial: "inbox/thread_reply_notifications/thread_reply_notification",
+  collection: @notifications
+
+- content_for :page_styles do
+  = stylesheet_pack_tag "latex", "data-turbolinks-track": "reload"
+  = javascript_pack_tag "latex"
+  = javascript_pack_tag "comment"
+  = javascript_pack_tag "voting"

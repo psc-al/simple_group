@@ -16,6 +16,7 @@ RSpec.describe "navigation" do
       page.visit
 
       expect(page).not_to have_submit_link
+      expect(page).not_to have_inbox_link
       expect(page).
         not_to have_link(I18n.t("footer.submissions.user"))
     end
@@ -34,7 +35,7 @@ RSpec.describe "navigation" do
       expect(page).to have_current_path(edit_user_registration_path)
     end
 
-    it "can see an click a link to make a submission" do
+    it "can see and click a link to make a submission" do
       user = create(:user)
 
       page.visit(as: user)
@@ -44,6 +45,35 @@ RSpec.describe "navigation" do
       page.visit_submit_link
 
       expect(page).to have_current_path(new_submission_path)
+    end
+
+    context "when the user has inbox notifications" do
+      it "can see and click a decorated link to go to their inbox" do
+        user = create(:user)
+        create(:thread_reply_notification, recipient: user)
+
+        page.visit(as: user)
+
+        expect(page).to have_inbox_link(classes: "notify")
+
+        page.visit_inbox_link
+
+        expect(page).to have_current_path(inbox_path)
+      end
+    end
+
+    context "when the user has no inbox notifications" do
+      it "can see and click an undecorated link to go to their inbox" do
+        user = create(:user)
+
+        page.visit(as: user)
+
+        expect(page).to have_inbox_link
+
+        page.visit_inbox_link
+
+        expect(page).to have_current_path(inbox_path)
+      end
     end
 
     it "can see and click a link to view their submissions" do

@@ -1,4 +1,4 @@
-FROM ruby:2.7.1-alpine3.11 as Builder
+FROM ruby:2.7.2-alpine3.11 as Builder
 
 ARG RAILS_ENV
 ARG SMTP_SENDER_EMAIL
@@ -36,7 +36,7 @@ RUN bundle exec rake assets:precompile \
 	&& rm -rf node_modules tmp/cache vendor/assets lib/assets \
 	&& find ./app/assets -mindepth 1 -name config -prune -o -exec rm -rf {} +
 
-FROM ruby:2.7.1-alpine3.11
+FROM ruby:2.7.2-alpine3.11
 
 RUN apk add --update --no-cache \
 	postgresql-client \

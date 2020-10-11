@@ -1,10 +1,13 @@
 .footer
+  - if current_user.present?
+    .footer-links
+      %ul
+        %li= link_to t("footer.submissions.user"), user_submissions_path(current_user.username)
+        %li= link_to t("footer.submissions.saved"), marked_submissions_path(submission_action: :saved)
+        %li= link_to t("footer.submissions.hidden"), marked_submissions_path(submission_action: :hidden)
   .footer-links
     %ul
-      %li
-        %span= link_to t("footer.links.about"), pages_path("about")
-      %li
-        %span= link_to t("footer.links.rules"), pages_path("rules")
-      %li
-        %span= link_to t("footer.links.source"), "https://github.com/psc-al/simple_group",
+      %li= link_to t("footer.links.about"), pages_path("about")
+      %li= link_to t("footer.links.rules"), pages_path("rules")
+      %li= link_to t("footer.links.source"), "https://github.com/psc-al/simple_group",
           target: "_blank", rel: "noopener"

@@ -3,9 +3,12 @@ en:
     links:
       recent: "Recent"
       submit: "Submit"
-      your_submissions: "Your submissions"
       inbox: "Inbox"
   footer:
+      submissions:
+          user: "My Submissions"
+          saved: "Saved"
+          hidden: "Hidden"
       links:
           about: "About"
           rules: "Rules"

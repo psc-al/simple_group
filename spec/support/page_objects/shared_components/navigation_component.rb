@@ -12,14 +12,14 @@ module NavigationComponent
   end
 
   def has_submissions_link_for?(user)
-    within(".navbar-links") do
-      has_link?(t("navigation.links.your_submissions"), href: user_submissions_path(user.username))
+    within(".footer") do
+      has_link?(t("footer.submissions.user"), href: user_submissions_path(user.username))
     end
   end
 
   def visit_user_submissions_link
-    within(".navbar-links") do
-      click_link(t("navigation.links.your_submissions"))
+    within(".footer") do
+      click_link(t("footer.submissions.user"))
     end
   end
 

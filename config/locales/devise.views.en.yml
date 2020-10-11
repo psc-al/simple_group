@@ -112,6 +112,9 @@ en:
           recipient_email: Recipient e-mail
           sent_at: Sent at
           accepted_at: Accepted at
+        submissions: Submissions
+        saved_submissions: Saved
+        hidden_submissions: Hidden
       new:
         sign_up: Sign up
       signed_up: Welcome! You have signed up successfully.

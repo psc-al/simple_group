@@ -25,9 +25,26 @@ class FlattenedSubmissionSearch
     if params.empty?
       base_relation
     else
-      base_relation.
+      base_relation(include_hidden: (params[:submission_action] == "hidden")).
+        then { |rel| user.present? ? filter_by_action(rel) : rel }.
         then { |rel| filter_by_tag(rel) }.
         then { |rel| filter_by_user(rel) }
+    end
+  end
+
+  def filter_by_action(rel)
+    actions = SubmissionAction.kinds
+    username = params[:username]
+    # users shouldn't be allowed to see what other users have saved / hidden
+    allowed_to_see = username.nil? || (username.present? && username == user.username)
+    if params[:submission_action].present? && actions.include?(params[:submission_action]) && allowed_to_see
+      rel.where(
+        SubmissionAction.send(params[:submission_action]).
+        where("submission_actions.submission_short_id = flattened_submissions.short_id").
+        arel.exists
+      )
+    else
+      rel
     end
   end
 

@@ -17,7 +17,7 @@ RSpec.describe "navigation" do
 
       expect(page).not_to have_submit_link
       expect(page).
-        not_to have_link(I18n.t("navigation.links.your_submissions"))
+        not_to have_link(I18n.t("footer.submissions.user"))
     end
   end
 

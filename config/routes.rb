@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   root to: "submissions#index"
 
   resources :submissions, only: [:index, :new, :create]
+  get "/submissions/:submission_action", to: "submissions#index", as: :marked_submissions
   resources :submissions, only: [:show], param: :short_id, path: :s do
     resources :comments, only: [:create]
   end

@@ -27,6 +27,10 @@ Rails.application.routes.draw do
 
   resources :user_invitations, only: [:create]
 
+  namespace :admin do
+    resources :tags, only: [:index, :new, :edit, :create, :update]
+  end
+
   namespace :api do
     namespace :v1 do
       resources :comments, only: [], param: :short_id do

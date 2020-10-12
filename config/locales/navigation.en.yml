@@ -14,3 +14,5 @@ en:
           rules: "Rules"
           source: "GitHub"
           sign_out: "Sign Out"
+      admin_menu:
+          tags: Tags

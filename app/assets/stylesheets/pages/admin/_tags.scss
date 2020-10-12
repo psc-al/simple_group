@@ -1,0 +1,26 @@
+.tag-form {
+  .tag_kind {
+    margin-bottom: $spacing-xs;
+    label {
+      display: block;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.tag-table-header {
+  display: inline;
+}
+
+.new-tag {
+  text-decoration: none;
+  float: right;
+}
+
+.no-tags {
+  text-align: center;
+}
+
+.tag-table {
+  margin-bottom: $spacing-small;
+}

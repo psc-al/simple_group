@@ -1,0 +1,5 @@
+= simple_form_for [:admin, tag] do |f|
+  = f.input :id, disabled: tag.persisted?
+  = f.input :kind, collection: Tag.kinds.keys, include_blank: false
+  = f.input :description
+  = f.button :submit

@@ -55,6 +55,37 @@
             }
           }
         }
+        .dropdown {
+          .dropbtn {
+            border: none;
+            outline: none;
+            color: $gray;
+            background-color: inherit;
+            font-family: inherit;
+            font-weight: inherit;
+            margin: inherit;
+            padding: inherit;
+          }
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            box-shadow: $box-shadow;
+            z-index: 1;
+            a {
+              color: $gray;
+              padding: 0 1rem;
+              text-decoration: none;
+              display: block;
+              text-align: left;
+            }
+            a:hover {
+              background-color: $action-color--alt;
+            }
+          }
+        }
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
       }
     }
   }

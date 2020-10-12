@@ -6,7 +6,11 @@
     %title SimpleGroup
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload"
+    - if controller_path =~ /admin/
+      = stylesheet_link_tag "admin", media: "all", "data-turbolinks-track": "reload"
+    - else
+      = stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload"
+
     = javascript_pack_tag "application", "data-turbolinks-track": "reload"
     - if content_for?(:page_styles)
       = yield :page_styles

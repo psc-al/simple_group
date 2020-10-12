@@ -1,0 +1,28 @@
+en:
+  admin:
+    tags:
+      index:
+        topic: Topic Tags
+        new_topic_tag: + Add topic tag
+        media: Media Tags
+        new_media_tag: + Add media tag
+        source: Source Tags
+        new_source_tag: + Add source tag
+        meta: Meta Tags
+        new_meta_tag: + Add meta tag
+        mod: Mod Tags
+        new_mod_tag: + Add mod tag
+        title: Tags Admin
+        id: ID
+        description: Description
+        actions: Actions
+        edit: Edit
+        no_tags: No tags for this tag kind.
+      new:
+        title: Create Tag
+      edit:
+        title: Edit Tag
+      create:
+        success: Successfully created tag
+      update:
+        success: Successfully updated tag

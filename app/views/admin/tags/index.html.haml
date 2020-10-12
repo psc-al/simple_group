@@ -1,0 +1,20 @@
+%h1= t(".title")
+- Tag.kinds.each_key do |tag_kind|
+  .tag-table{ class: "#{tag_kind}-tag-table" }
+    %h2.tag-table-header= t(".#{tag_kind}")
+    = link_to t(".new_#{tag_kind}_tag"), new_admin_tag_path(kind: tag_kind), class: "new-tag"
+    %table
+      %thead
+        %tr
+          %td= t(".id")
+          %td= t(".description")
+          %td= t(".actions")
+      %tbody
+        - if @grouped_tags[tag_kind].present?
+          - @grouped_tags[tag_kind].each do |tag|
+            %tr
+              %td= render "shared/tag", tag: tag
+              %td= tag.description
+              %td= link_to t(".edit"), edit_admin_tag_path(tag.id)
+    - if @grouped_tags[tag_kind].blank?
+      .no-tags= t(".no_tags")

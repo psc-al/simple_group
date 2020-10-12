@@ -1,0 +1,5 @@
+%h1.breadcrumb
+  = link_to t("admin.tags.index.title"), admin_tags_path
+  = "/ #{t('.title')}"
+.tag-form
+  = render "form", tag: @tag

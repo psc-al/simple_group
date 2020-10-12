@@ -77,5 +77,17 @@ RSpec.describe "upvote submissions" do
         expect(vote.votable_id).to eq(submission.id)
       end
     end
+
+    context "when the submission has been removed" do
+      it "returns 404 not found" do
+        login_as(user)
+
+        submission.update!(removed: true)
+
+        put "/api/v1/submissions/#{submission.short_id}/upvotes"
+
+        expect(response).to be_not_found
+      end
+    end
   end
 end

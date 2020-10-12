@@ -1,8 +1,8 @@
 .pagination-controls
   - if paginator.page.positive?
     %span.pagination-back
-      = link_to t(".previous_page"), submissions_path(page: paginator.page - 1)
+      = link_to t(".previous_page"), path_helper.call(page: paginator.page - 1)
 
   - if paginator.page < paginator.max_page
     %span.pagination-forward
-      = link_to t(".next_page"), submissions_path(page: paginator.page + 1)
+      = link_to t(".next_page"), path_helper.call(page: paginator.page + 1)

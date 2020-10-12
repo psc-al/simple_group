@@ -18,6 +18,12 @@ class SubmissionsIndexPage < PageBase
     end
   end
 
+  def click_remove_submission(submission)
+    within find("##{submission.short_id} .submission-line2") do
+      click_link t("submissions.submission_list_item.actions.remove")
+    end
+  end
+
   def has_submission_row_for?(submission)
     has_css?("##{submission.short_id}") &&
       has_correct_submission_info?(submission)

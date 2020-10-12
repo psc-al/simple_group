@@ -55,6 +55,12 @@
       content: "|";
     }
 
+    .submission-info {
+      .mod-action-removed {
+        font-style: italic;
+      }
+    }
+
     .submission-info a::after {
       @include margin(null 1px null null);
       @include padding(null null null 4px);

@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    submission = Submission.friendly.find(params[:submission_short_id])
+    submission = Submission.visible.friendly.find(params[:submission_short_id])
     @comment = build_comment_for(submission)
 
     if @comment.save

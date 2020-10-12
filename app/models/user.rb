@@ -58,6 +58,10 @@ class User < ApplicationRecord
     admin? || daily_invites_under_maximum?
   end
 
+  def has_mod_permissions?
+    admin? || moderator?
+  end
+
   private
 
   def daily_invites_under_maximum?

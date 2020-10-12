@@ -132,5 +132,17 @@ RSpec.describe "downvote comments" do
         expect(vote.votable_id).to eq(comment.id)
       end
     end
+
+    context "when the underlying submission for a comment has been removed" do
+      it "returns 404 not found" do
+        login_as(user)
+
+        comment.submission.update!(removed: true)
+
+        put "/api/v1/comments/#{comment.short_id}/downvotes"
+
+        expect(response).to be_not_found
+      end
+    end
   end
 end

@@ -33,4 +33,8 @@ FactoryBot.define do
       submission.comments = build_list(:comment, evaluator.num_comments)
     end
   end
+
+  trait :removed do
+    removed { true }
+  end
 end

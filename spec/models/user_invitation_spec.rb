@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe UserInvitation, type: :model do
   describe "#send_invitation" do
     let(:invitation) { create(:user_invitation) }

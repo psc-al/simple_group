@@ -10,7 +10,13 @@ class FlattenedSubmissionSearch
   end
 
   def by_short_id(short_id)
-    base_relation(include_hidden: true).friendly.find(short_id)
+    base_relation(include_hidden: true).then { |rel|
+      if user.present? && (user.admin? || user.moderator?)
+        rel
+      else
+        rel.where(removed: false)
+      end
+    }.friendly.find(short_id)
   end
 
   def results_paginator
@@ -29,7 +35,7 @@ class FlattenedSubmissionSearch
         then { |rel| user.present? ? filter_by_action(rel) : rel }.
         then { |rel| filter_by_tag(rel) }.
         then { |rel| filter_by_user(rel) }
-    end
+    end.where(removed: false)
   end
 
   def filter_by_action(rel)
@@ -65,7 +71,7 @@ class FlattenedSubmissionSearch
   end
 
   def base_relation(include_hidden: false)
-    FlattenedSubmission.preload(:tags).then { |rel|
+    FlattenedSubmission.preload(:tags, :submission_removal).then { |rel|
       if user.present?
         with_action_info(rel, include_hidden)
       else

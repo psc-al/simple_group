@@ -1,0 +1,24 @@
+.submission-removal-container {
+  .submission, .removal-info {
+    border-bottom: $light-border;
+    padding-bottom: $spacing-small;
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .submission_removal_reason {
+    margin-top: $spacing-small;
+    margin-bottom: $spacing-xs;
+    label {
+      display: block;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.removal-table {
+  tr {
+    vertical-align: middle;
+  }
+}

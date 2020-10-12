@@ -1,4 +1,5 @@
 = render "submission_list", submissions: @paginator.results_page
-= render "shared/pagination_controls", paginator: @paginator
+= render "shared/pagination_controls", paginator: @paginator,
+  path_helper: ->(params) { submissions_path(params) }
 = javascript_pack_tag "submission_actions"
 = javascript_pack_tag "voting"

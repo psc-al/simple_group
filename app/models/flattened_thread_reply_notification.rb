@@ -11,4 +11,11 @@ class FlattenedThreadReplyNotification < ApplicationRecord
 
   scope :comment_replies, -> { where.not(irtc_id: nil) }
   scope :submission_replies, -> { where(irtc_id: nil) }
+  scope :visible, lambda {
+    where(
+      Submission.
+      where(removed: false).
+      where("flattened_thread_reply_notifications.submission_id = submissions.id").arel.exists
+    )
+  }
 end

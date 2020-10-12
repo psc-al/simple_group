@@ -10,6 +10,8 @@ module Api
               handle_upvote(vote)
             end
           end
+        rescue ActiveRecord::RecordNotFound
+          head :not_found
         end
 
         private
@@ -36,10 +38,8 @@ module Api
         end
 
         def find_or_initialize_vote
-          comment = Comment.friendly.find(params[:comment_short_id])
+          comment = Comment.friendly.joins(:submission).merge(Submission.visible).find(params[:comment_short_id])
           current_user.votes.comment.find_or_initialize_by(votable_id: comment.id)
-        rescue ActiveRecord::RecordNotFound
-          head :not_found
         end
       end
     end

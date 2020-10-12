@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe SubmissionAction, type: :model do
   it do
     should belong_to(:submission).

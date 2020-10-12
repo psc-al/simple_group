@@ -29,6 +29,21 @@ RSpec.describe "submission actions" do
         end
       end
 
+      context "when the underlying submission has been removed" do
+        it "returns 404 not found" do
+          submission = create(:submission_removal).submission
+
+          put "/users/submission_actions",
+            params: {
+              submission_action: {
+                submission_short_id: submission.short_id, kind: :hidden
+              }
+            }
+
+          expect(response).to be_not_found
+        end
+      end
+
       context "when the action does not exist" do
         it "creates it" do
           put "/users/submission_actions",

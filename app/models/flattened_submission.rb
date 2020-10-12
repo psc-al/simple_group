@@ -9,6 +9,7 @@ class FlattenedSubmission < ApplicationRecord
     class_name: "FlattenedComment",
     primary_key: :id,
     foreign_key: :submission_id
+  has_one :submission_removal, required: false, foreign_key: :submission_id
 
   self.primary_key = :id
 

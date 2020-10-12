@@ -6,6 +6,8 @@ module Users
       else
         head :forbidden
       end
+    rescue ActiveRecord::RecordNotFound
+      head :not_found
     end
 
     private
@@ -27,7 +29,9 @@ module Users
     end
 
     def submission_action_params
-      params.require(:submission_action).permit(:submission_short_id, :kind)
+      params.require(:submission_action).permit(:submission_short_id, :kind).tap do |p|
+        p[:submission] = Submission.visible.friendly.find(p.delete(:submission_short_id))
+      end
     end
 
     def status_for_action(action)

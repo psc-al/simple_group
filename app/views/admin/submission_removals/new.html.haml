@@ -1,0 +1,17 @@
+%h1= t(".remove_submission")
+.submission-removal-container
+  .submission
+    %div
+      = t(".submission_title")
+      %span
+        = link_to @submission.title, submission_path(@submission.short_id)
+    %div
+      = t(".submission_author")
+      %span
+        = link_to @submission.user.username, user_submissions_path(@submission.user.username)
+
+  = simple_form_for [:admin, @removal] do |f|
+    = f.input :reason, collection: SubmissionRemoval.reasons.keys
+    = f.input :details
+    = f.input :submission_short_id, as: :hidden, input_html: { value: @submission.short_id }, wrapper: false
+    = f.button :submit, t(".submit")

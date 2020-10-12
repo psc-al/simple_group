@@ -11,6 +11,8 @@ en:
       authored_by: authored by
       ago: ago
       actions:
+        remove: remove
+        removed: removed
         created:
           hidden: hidden
           saved: saved

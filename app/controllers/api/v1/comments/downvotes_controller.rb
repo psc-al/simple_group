@@ -12,6 +12,8 @@ module Api
                 status: :forbidden
             end
           end
+        rescue ActiveRecord::RecordNotFound
+          head :not_found
         end
 
         private
@@ -54,13 +56,12 @@ module Api
         end
 
         def comment
-          @_comment ||= Comment.friendly.find(params[:comment_short_id])
+          @_comment ||= Comment.friendly.joins(:submission).
+            merge(Submission.visible).find(params[:comment_short_id])
         end
 
         def find_or_initialize_vote
           current_user.votes.comment.find_or_initialize_by(votable_id: comment.id)
-        rescue ActiveRecord::RecordNotFound
-          head :not_found
         end
       end
     end

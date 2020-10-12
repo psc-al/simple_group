@@ -1,0 +1,30 @@
+%h1= t(".title")
+
+%table.removal-table
+  %thead
+    %tr
+      %td= t(".submission_title")
+      %td= t(".submission_author")
+      %td= t(".removed_by")
+      %td= t(".reason")
+      %td= t(".details")
+      %td
+  %tbody
+    - @paginator.results_page.each do |removal|
+      %tr{ id: "removal_#{removal.id}" }
+        %td
+          = link_to removal.submission.title, submission_path(removal.submission.short_id)
+        %td
+          = link_to removal.submission.user.username,
+            user_submissions_path(removal.submission.user.username)
+        %td= removal.removed_by.username
+        %td= removal.reason
+        %td= truncate(removal.details)
+        %td
+          = link_to t(".view"), admin_submission_removal_path(removal)
+          = link_to t(".undo"), admin_submission_removal_path(removal),
+            data: { confirm: t(".confirm_reverse_removal") },
+            method: :delete
+= render "shared/pagination_controls",
+  paginator: @paginator,
+  path_helper: ->(params) { admin_submission_removals_path(params) }

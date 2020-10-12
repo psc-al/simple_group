@@ -15,6 +15,16 @@ RSpec.describe "submissions index" do
       expect(find(".submissions-list ol li", match: :first)).
         to have_css(".submission-line1", text: submission.title)
     end
+
+    it "does not show removed submissions" do
+      submission = create(:submission_removal).submission
+
+      page = SubmissionsIndexPage.new
+
+      page.visit
+
+      expect(page).not_to have_submission_row_for(submission)
+    end
   end
 
   context "when paginating results" do

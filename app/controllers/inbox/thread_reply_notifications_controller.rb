@@ -24,10 +24,11 @@ module Inbox
     private
 
     def filtered_notifications(filter_form)
+      base_relation = current_user.flattened_thread_reply_notifications.visible
       if filter_form.dismissed
-        filter_by_reply_type(current_user.flattened_thread_reply_notifications, filter_form)
+        filter_by_reply_type(base_relation, filter_form)
       else
-        filter_by_reply_type(current_user.flattened_thread_reply_notifications.where(dismissed: false), filter_form)
+        filter_by_reply_type(base_relation.where(dismissed: false), filter_form)
       end
     end
 

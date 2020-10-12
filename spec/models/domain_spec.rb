@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Domain, type: :model do
   it { should belong_to(:banned_by).class_name("User").optional }
   it { should have_many(:submissions) }

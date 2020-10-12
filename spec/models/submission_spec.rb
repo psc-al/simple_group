@@ -6,6 +6,17 @@ RSpec.describe Submission, type: :model do
   it { should have_many(:comments) }
   it { should have_many(:votes) }
 
+  describe "scopes" do
+    describe ".vislble" do
+      it "returns submissions that have not been removed" do
+        s1 = create(:submission)
+        create(:submission, :removed)
+
+        expect(Submission.visible).to eq([s1])
+      end
+    end
+  end
+
   describe ".short_id_prefix" do
     it "is :s_" do
       expect(Submission.short_id_prefix).to eq(:s_)

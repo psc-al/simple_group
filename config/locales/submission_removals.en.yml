@@ -1,0 +1,29 @@
+en:
+  admin:
+    submission_removals:
+      index:
+        title: Submission Removals
+        submission_title: Title
+        submission_author: Author
+        removed_by: Removed By
+        reason: Reason
+        details: Details
+        view: View
+        undo: Undo
+        confirm_reverse_removal: Are you sure you want to reverse this removal?
+      show:
+        title: Submission Removal
+        submission_title: "Title:"
+        submission_author: "Author:"
+        removed_by: "Removed By:"
+        reason: "Reason:"
+        details: "Details:"
+      new:
+        remove_submission: Remove Submission
+        submission_title: "Title:"
+        submission_author: "Author:"
+        submit: Remove Submission
+      create:
+        success: Submission has been successfully removed.
+      destroy:
+        success: Submission removal has been successfully reversed.

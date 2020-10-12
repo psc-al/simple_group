@@ -1,0 +1,23 @@
+%h1.breadcrumb
+  = link_to t("admin.submission_removals.index.title"), admin_submission_removals_path
+  = "/ #{t('.title')}"
+
+.submission-removal-container
+  .removal-info
+    %div
+      %label= t(".submission_title")
+      %span
+        = link_to @removal.submission.title, submission_path(@removal.submission.short_id)
+    %div
+      %label= t(".submission_author")
+      %span
+        = link_to @removal.submission.user.username, user_submissions_path(@removal.submission.user.username)
+    %div
+      %label= t(".removed_by")
+      %span= @removal.removed_by.username
+    %div
+      %label= t(".reason")
+      %span= @removal.reason
+    %div
+      %label= t(".details")
+      %span= @removal.details

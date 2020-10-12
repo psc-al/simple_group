@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_10_211159) do
+ActiveRecord::Schema.define(version: 2020_10_18_194648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -25,8 +25,10 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
     t.ltree "ancestry_path"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "removed", default: false, null: false
     t.index ["ancestry_path"], name: "index_comments_on_ancestry_path", using: :gist
     t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["removed"], name: "index_comments_on_removed"
     t.index ["short_id"], name: "index_comments_on_short_id", unique: true
     t.index ["submission_id"], name: "index_comments_on_submission_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -54,6 +56,16 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
     t.index ["user_id", "kind", "submission_short_id"], name: "idx_unique_submission_actions", unique: true
   end
 
+  create_table "submission_removals", force: :cascade do |t|
+    t.bigint "submission_id", null: false
+    t.bigint "removed_by_id", null: false
+    t.integer "reason", null: false
+    t.text "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "index_submission_removals_on_submission_id", unique: true
+  end
+
   create_table "submission_tags", force: :cascade do |t|
     t.bigint "submission_id", null: false
     t.text "tag_id", null: false
@@ -73,7 +85,9 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
     t.boolean "original_author", default: false, null: false
     t.bigint "domain_id"
     t.string "short_id", null: false
+    t.boolean "removed", default: false, null: false
     t.index ["domain_id"], name: "index_submissions_on_domain_id", where: "(domain_id IS NOT NULL)"
+    t.index ["removed"], name: "index_submissions_on_removed"
     t.index ["short_id"], name: "index_submissions_on_short_id", unique: true
     t.index ["url"], name: "index_submissions_on_url", unique: true, where: "(url IS NOT NULL)"
     t.index ["user_id"], name: "index_submissions_on_user_id"
@@ -157,6 +171,8 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
   add_foreign_key "domains", "users", column: "banned_by_id"
   add_foreign_key "submission_actions", "submissions", column: "submission_short_id", primary_key: "short_id"
   add_foreign_key "submission_actions", "users", on_delete: :cascade
+  add_foreign_key "submission_removals", "submissions", on_delete: :cascade
+  add_foreign_key "submission_removals", "users", column: "removed_by_id", on_delete: :cascade
   add_foreign_key "submission_tags", "submissions", on_delete: :cascade
   add_foreign_key "submission_tags", "tags", on_delete: :cascade
   add_foreign_key "submissions", "domains"
@@ -168,50 +184,6 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
   add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
 
-  create_view "flattened_submissions", sql_definition: <<-SQL
-      SELECT submissions.id,
-      submissions.short_id,
-      submissions.title,
-      submissions.url,
-      domains.name AS domain_name,
-      NULL::text AS body,
-      users.username AS submitter_username,
-      submissions.original_author,
-      submissions.created_at,
-      ( SELECT count(comments.submission_id) AS comment_count
-             FROM comments
-            WHERE (comments.submission_id = submissions.id)) AS comment_count,
-      (( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
-     FROM ((submissions
-       JOIN users ON ((submissions.user_id = users.id)))
-       JOIN domains ON ((submissions.domain_id = domains.id)))
-    WHERE (submissions.domain_id IS NOT NULL)
-  UNION ALL
-   SELECT submissions.id,
-      submissions.short_id,
-      submissions.title,
-      NULL::character varying AS url,
-      NULL::character varying AS domain_name,
-      submissions.body,
-      users.username AS submitter_username,
-      submissions.original_author,
-      submissions.created_at,
-      ( SELECT count(comments.submission_id) AS comment_count
-             FROM comments
-            WHERE (comments.submission_id = submissions.id)) AS comment_count,
-      (( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
-     FROM (submissions
-       JOIN users ON ((submissions.user_id = users.id)))
-    WHERE (submissions.domain_id IS NULL);
-  SQL
   create_view "flattened_comments", sql_definition: <<-SQL
       SELECT comments.id,
       comments.short_id,
@@ -297,5 +269,51 @@ ActiveRecord::Schema.define(version: 2020_10_10_211159) do
        LEFT JOIN votes reply_votes ON (((reply_votes.user_id = thread_reply_notifications.recipient_id) AND ((reply_votes.votable_type)::text = 'Comment'::text) AND (reply_votes.votable_id = thread_reply_notifications.reply_id))))
        LEFT JOIN votes submission_votes ON (((submission_votes.user_id = thread_reply_notifications.recipient_id) AND ((submission_votes.votable_type)::text = 'Submission'::text) AND (submission_votes.votable_id = replies.submission_id))))
     WHERE (thread_reply_notifications.in_response_to_comment_id IS NULL);
+  SQL
+  create_view "flattened_submissions", sql_definition: <<-SQL
+      SELECT submissions.id,
+      submissions.short_id,
+      submissions.removed,
+      submissions.title,
+      submissions.url,
+      domains.name AS domain_name,
+      NULL::text AS body,
+      users.username AS submitter_username,
+      submissions.original_author,
+      submissions.created_at,
+      ( SELECT count(comments.submission_id) AS comment_count
+             FROM comments
+            WHERE (comments.submission_id = submissions.id)) AS comment_count,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
+     FROM ((submissions
+       JOIN users ON ((submissions.user_id = users.id)))
+       JOIN domains ON ((submissions.domain_id = domains.id)))
+    WHERE (submissions.domain_id IS NOT NULL)
+  UNION ALL
+   SELECT submissions.id,
+      submissions.short_id,
+      submissions.removed,
+      submissions.title,
+      NULL::character varying AS url,
+      NULL::character varying AS domain_name,
+      submissions.body,
+      users.username AS submitter_username,
+      submissions.original_author,
+      submissions.created_at,
+      ( SELECT count(comments.submission_id) AS comment_count
+             FROM comments
+            WHERE (comments.submission_id = submissions.id)) AS comment_count,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Submission'::text) AND (votes.votable_id = submissions.id) AND (votes.kind = 1)))) AS score
+     FROM (submissions
+       JOIN users ON ((submissions.user_id = users.id)))
+    WHERE (submissions.domain_id IS NULL);
   SQL
 end

@@ -12,6 +12,8 @@ module Api
                 status: :forbidden
             end
           end
+        rescue ActiveRecord::RecordNotFound
+          head :not_found
         end
 
         private
@@ -54,13 +56,11 @@ module Api
         end
 
         def submission
-          @_submission ||= Submission.friendly.find(params[:submission_short_id])
+          @_submission ||= Submission.visible.friendly.find(params[:submission_short_id])
         end
 
         def find_or_initialize_vote
           current_user.votes.submission.find_or_initialize_by(votable_id: submission.id)
-        rescue ActiveRecord::RecordNotFound
-          head :not_found
         end
       end
     end

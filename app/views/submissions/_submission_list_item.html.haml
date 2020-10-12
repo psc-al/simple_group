@@ -23,6 +23,15 @@
       %span.submission-info
         = link_to hide_link_text_for(submission), "", class: "hide"
         = link_to save_link_text_for(submission), "", class: "save"
+        - if current_user.present? && current_user.has_mod_permissions?
+          - if submission.removed
+            = link_to t(".actions.removed"),
+              admin_submission_removal_path(submission.submission_removal),
+              class: "mod-action-removed"
+          - else
+            = link_to t(".actions.remove"),
+              new_admin_submission_removal_path(submission_removal: { submission_short_id: submission.short_id }),
+              class: "mod-action-remove"
       %span.submission-comments
         = link_to t(".comments", count: submission.comment_count),
           submission_path(submission.short_id)

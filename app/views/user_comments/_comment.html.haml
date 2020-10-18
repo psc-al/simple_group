@@ -1,0 +1,8 @@
+.user-info
+  = link_to comment.user.username, ""
+.body
+  = comment.body
+- if child.present?
+  .comment-tree-line
+  .comment.child.user-comment
+    = render "comment", comment: child, child: nil

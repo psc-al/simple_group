@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get "/pages/:page", to: "pages#show", as: :pages
 
   get "u/:username/submissions", to: "submissions#index", as: :user_submissions
+  get "/u/:username/comments", to: "user_comments#index", as: :user_comments
 
   namespace :users do
     resource :submission_actions, only: [:update]

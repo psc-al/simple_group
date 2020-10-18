@@ -1,0 +1,5 @@
+en:
+  user_comments:
+    index:
+      commented_on: commented on
+      link: link

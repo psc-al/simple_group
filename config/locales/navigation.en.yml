@@ -9,6 +9,8 @@ en:
           user: "My Submissions"
           saved: "Saved"
           hidden: "Hidden"
+      comments:
+        user: "My Comments"
       links:
           about: "About"
           rules: "Rules"

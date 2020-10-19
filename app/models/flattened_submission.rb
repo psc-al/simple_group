@@ -15,6 +15,8 @@ class FlattenedSubmission < ApplicationRecord
 
   friendly_id :short_id
 
+  scope :visible, -> { where(removed: false) }
+
   def self.left_join_saved_info_for(user)
     joins(with_submission_actions_sql(user, :saved))
   end

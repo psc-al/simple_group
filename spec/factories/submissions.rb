@@ -36,5 +36,18 @@ FactoryBot.define do
 
   trait :removed do
     removed { true }
+    transient do
+      removed_by { build(:user, :admin) }
+      reason { :spam }
+    end
+
+    after(:build) do |submission, evaluator|
+      submission.submission_removal = build(
+        :submission_removal,
+        reason: evaluator.reason,
+        removed_by: evaluator.removed_by,
+        submission: submission
+      )
+    end
   end
 end

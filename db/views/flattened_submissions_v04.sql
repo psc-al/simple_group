@@ -1,6 +1,6 @@
 SELECT
   submissions.id, submissions.short_id, submissions.removed, title, url, domains.name AS domain_name,
-  NULL AS body, users.username AS submitter_username, original_author, submissions.created_at,
+  NULL AS body, users.username AS submitter_username, original_author, submissions.created_at, submissions.user_id,
   (
       SELECT COUNT(submission_id) AS comment_count
       FROM comments
@@ -30,7 +30,7 @@ UNION ALL
 
 SELECT
   submissions.id, submissions.short_id, submissions.removed, title, NULL AS url, NULL AS domain_name,
-  submissions.body, users.username AS submitter_username, original_author, submissions.created_at,
+  submissions.body, users.username AS submitter_username, original_author, submissions.created_at, submissions.user_id,
   (
       SELECT COUNT(submission_id) AS comment_count
       FROM comments

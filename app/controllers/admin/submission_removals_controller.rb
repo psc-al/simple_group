@@ -5,13 +5,14 @@ module Admin
 
     def index
       @paginator = ResultsPaginator.new(
-        SubmissionRemoval.includes(:removed_by, submission: :user),
+        authorized_scope(SubmissionRemoval.includes(:removed_by, submission: :user)),
         pagination_params
       )
     end
 
     def show
       @removal = SubmissionRemoval.includes(:removed_by, submission: :user).find(params[:id])
+      authorize! @removal, to: :show?
     end
 
     def new

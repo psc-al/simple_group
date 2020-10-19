@@ -10,13 +10,9 @@ class FlattenedSubmissionSearch
   end
 
   def by_short_id(short_id)
-    base_relation(include_hidden: true).then { |rel|
-      if user.present? && (user.admin? || user.moderator?)
-        rel
-      else
-        rel.where(removed: false)
-      end
-    }.friendly.find(short_id)
+    SubmissionPolicy.new(user: user).
+      apply_scope(base_relation(include_hidden: true), type: :active_record_relation).
+      friendly.find(short_id)
   end
 
   def results_paginator

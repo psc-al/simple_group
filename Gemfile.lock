@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.4.4)
     actioncable (6.0.3.4)
       actionpack (= 6.0.3.4)
       nio4r (~> 2.0)
@@ -330,6 +331,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  action_policy (~> 0.4.0)
   bitters
   bootsnap (>= 1.4.2)
   bourbon

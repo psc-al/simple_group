@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_18_194648) do
+ActiveRecord::Schema.define(version: 2020_10_24_030230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -281,6 +281,7 @@ ActiveRecord::Schema.define(version: 2020_10_18_194648) do
       users.username AS submitter_username,
       submissions.original_author,
       submissions.created_at,
+      submissions.user_id,
       ( SELECT count(comments.submission_id) AS comment_count
              FROM comments
             WHERE (comments.submission_id = submissions.id)) AS comment_count,
@@ -304,6 +305,7 @@ ActiveRecord::Schema.define(version: 2020_10_18_194648) do
       users.username AS submitter_username,
       submissions.original_author,
       submissions.created_at,
+      submissions.user_id,
       ( SELECT count(comments.submission_id) AS comment_count
              FROM comments
             WHERE (comments.submission_id = submissions.id)) AS comment_count,

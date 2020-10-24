@@ -6,6 +6,9 @@ class Comment < ApplicationRecord
   belongs_to :submission
   belongs_to :parent, optional: true, class_name: "Comment"
   has_many :votes, as: :votable
+  has_one :comment_removal, required: false
+
+  scope :visible, -> { where(removed: false) }
 
   validates :body, presence: true
 

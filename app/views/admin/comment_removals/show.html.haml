@@ -1,0 +1,24 @@
+%h1.breadcrumb
+  = link_to t("admin.comment_removals.index.title"), admin_comment_removals_path
+  = "/ #{t('.title')}"
+
+.removal-container
+  .removal-info
+    %div
+      %label= t(".comment")
+      %span
+        = link_to t(".view"),
+          submission_path(@removal.comment.submission.short_id, anchor: @removal.comment.short_id)
+    %div
+      %label= t(".comment_author")
+      %span
+        = link_to @removal.comment.user.username, ""
+    %div
+      %label= t(".removed_by")
+      %span= @removal.removed_by.username
+    %div
+      %label= t(".reason")
+      %span= @removal.reason
+    %div
+      %label= t(".details")
+      %span= @removal.details

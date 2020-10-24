@@ -1,6 +1,10 @@
 class FlattenedComment < ApplicationRecord
   self.primary_key = :id
 
+  has_one :comment_removal, required: false, foreign_key: :comment_id
+
+  scope :visible, -> { where(removed: false) }
+
   def self.with_voting_information_for(user)
     if user.present?
       joins(

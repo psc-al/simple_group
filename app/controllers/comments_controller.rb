@@ -21,17 +21,16 @@ class CommentsController < ApplicationController
   private
 
   def build_comment_for(submission)
+    authorize!(parent, to: :reply?) if parent.present?
     submission.comments.new(
       body: comment_params[:body],
       user: current_user,
-      parent_id: comment_params[:parent_id]
+      parent: parent
     )
   end
 
   def maybe_create_reply_notification(submission, comment)
-    if comment_params[:parent_id].present?
-      parent = Comment.find(comment_params[:parent_id])
-
+    if parent.present?
       if current_user.id != parent.user_id
         ThreadReplyNotification.create!(
           recipient_id: parent.user_id,
@@ -45,6 +44,10 @@ class CommentsController < ApplicationController
         reply: comment
       )
     end
+  end
+
+  def parent
+    @_parent ||= Comment.find(comment_params[:parent_id]) if comment_params[:parent_id].present?
   end
 
   def comment_params

@@ -8,7 +8,7 @@ en:
         removed_by: Removed By
         reason: Reason
         details: Details
-        view: View
+        view: View More
         undo: Undo
         confirm_reverse_removal: Are you sure you want to reverse this removal?
       show:

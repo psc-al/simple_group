@@ -36,7 +36,10 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :submission_removals, only: [:index, :show, :new, :create, :destroy]
     resources :tags, only: [:index, :new, :edit, :create, :update]
+    resources :users, only: [:index, :show, :edit, :update]
   end
+
+  post "/admin/users/:id/unban", to: "admin/users#unban", as: :admin_unban_user
 
   namespace :api do
     namespace :v1 do

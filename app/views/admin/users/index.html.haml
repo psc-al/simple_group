@@ -1,0 +1,17 @@
+%h1= t(".title")
+%table.users-table
+  %thead
+    %tr
+      %td= t(".username")
+      %td= t(".submission_karma")
+      %td= t(".submissions")
+      %td= t(".comment_karma")
+      %td= t(".comments")
+      %td= t(".total_karma")
+      %td= t(".banned")
+      %td
+  %tbody
+    = render @paginator.results_page
+= render "shared/pagination_controls",
+  paginator: @paginator,
+  path_helper: ->(params) { admin_users_path(params) }

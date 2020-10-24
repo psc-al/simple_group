@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_030230) do
+ActiveRecord::Schema.define(version: 2020_10_24_182216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -146,8 +146,15 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
     t.integer "role", default: 0, null: false
     t.string "username", limit: 20, null: false
     t.datetime "last_submission_at"
+    t.bigint "banned_by_id"
+    t.datetime "banned_at"
+    t.integer "ban_type"
+    t.text "ban_reason"
+    t.datetime "temp_ban_end_at"
+    t.datetime "unbanned_at"
     t.index "lower((email)::text)", name: "index_users_on_LOWER_email", unique: true, where: "(lower((email)::text) <> '[deleted]'::text)"
     t.index "lower((username)::text)", name: "index_users_on_LOWER_username", unique: true, where: "(lower((username)::text) <> '[deleted]'::text)"
+    t.index ["banned_by_id"], name: "index_users_on_banned_by_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
@@ -182,6 +189,7 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
   add_foreign_key "thread_reply_notifications", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
+  add_foreign_key "users", "users", column: "banned_by_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
 
   create_view "flattened_comments", sql_definition: <<-SQL

@@ -1,5 +1,5 @@
-.submission-removal-container {
-  .submission, .removal-info {
+.removal-container {
+  .removable, .removal-info {
     border-bottom: $light-border;
     padding-bottom: $spacing-small;
     a {
@@ -7,7 +7,7 @@
     }
   }
 
-  .submission_removal_reason {
+  .submission_removal_reason, .comment_removal_reason {
     margin-top: $spacing-small;
     margin-bottom: $spacing-xs;
     label {

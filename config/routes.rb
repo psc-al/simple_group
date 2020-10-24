@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :user_invitations, only: [:create]
 
   namespace :admin do
+    resources :comment_removals, only: [:index, :show, :new, :create, :destroy]
     resources :submission_removals, only: [:index, :show, :new, :create, :destroy]
     resources :tags, only: [:index, :new, :edit, :create, :update]
     resources :users, only: [:index, :show, :edit, :update]

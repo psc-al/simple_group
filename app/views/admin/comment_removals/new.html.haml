@@ -1,0 +1,17 @@
+%h1= t(".remove_comment")
+.removal-container
+  .removable
+    %div
+      = t(".comment")
+      %span
+        = @comment.body
+    %div
+      = t(".comment_author")
+      %span
+        = link_to @comment.user.username, ""
+
+  = simple_form_for [:admin, @removal] do |f|
+    = f.input :reason, collection: CommentRemoval.reasons.keys
+    = f.input :details
+    = f.input :comment_id, as: :hidden, input_html: { value: @comment.id }, wrapper: false
+    = f.button :submit, t(".submit")

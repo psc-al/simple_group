@@ -38,7 +38,8 @@ module Api
         end
 
         def find_or_initialize_vote
-          comment = Comment.friendly.joins(:submission).merge(Submission.visible).find(params[:comment_short_id])
+          comment = Comment.friendly.visible.joins(:submission).
+            merge(Submission.visible).find(params[:comment_short_id])
           current_user.votes.comment.find_or_initialize_by(votable_id: comment.id)
         end
       end

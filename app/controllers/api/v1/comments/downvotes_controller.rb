@@ -56,7 +56,7 @@ module Api
         end
 
         def comment
-          @_comment ||= Comment.friendly.joins(:submission).
+          @_comment ||= Comment.friendly.visible.joins(:submission).
             merge(Submission.visible).find(params[:comment_short_id])
         end
 

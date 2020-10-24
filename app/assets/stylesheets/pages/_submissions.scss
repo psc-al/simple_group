@@ -22,7 +22,7 @@
 
 .submission {
   display: grid;
-  grid-template-columns: min-content auto;
+  grid-template-columns: min-content 1fr;
   grid-template-rows: auto;
   grid-column-gap: $spacing-smaller;
   .scoring {
@@ -37,9 +37,15 @@
       color: $scorpion;
     }
   }
+  .submission-title {
+    word-break: break-word;
+  }
   .submission-line1 {
     display: flex;
     flex-wrap: wrap;
+    .submission-link {
+      word-wrap: break-word;
+    }
     .submission-link a, .submission-title-prefix {
       text-decoration: none;
       font-size: 1.2rem;
@@ -79,6 +85,7 @@
 .submission-body {
   border-top: $light-border;
   padding-top: $spacing-smaller;
+  word-wrap: break-word;
 }
 
 .original-author-statement {
@@ -86,7 +93,7 @@
   margin-bottom: $spacing-smaller;
 }
 
-@media only screen and (max-width: 1155px) {
+@media only screen and (max-width: $mobile-cutoff) {
   .submissions-list {
     .submission {
       border-bottom: $light-border;
@@ -99,7 +106,7 @@
   margin-top: $spacing-medium;
   .comment {
     display: grid;
-    grid-template-columns: 0.8em 1em auto;
+    grid-template-columns: 0.8em 1em 1fr;
     grid-template-rows: auto auto 1fr;
     margin-top: $spacing-small;
     grid-gap: $spacing-smaller;
@@ -144,6 +151,7 @@
     .comment-content {
       grid-column: 2 / span 2;
       grid-row: 2 / span 2;
+      word-break: break-word;
       .comment-reply-box {
         display: none;
         grid-column: 3 / 3;

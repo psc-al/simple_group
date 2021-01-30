@@ -39,6 +39,9 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Lint/MissingSuper:
+  Enabled: false
+
 Lint/RaiseException:
   Enabled: true
 

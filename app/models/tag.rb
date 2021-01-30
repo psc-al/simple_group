@@ -1,5 +1,5 @@
 class Tag < ApplicationRecord
-  ID_REGEX = /\A[a-z]+(-[a-z0-9]+|[a-z0-9])*\z/.freeze
+  ID_REGEX = /\A[a-z]+(-[a-z0-9]+|[a-z0-9])*\z/
   enum kind: {
     topic: 0,
     media: 5,

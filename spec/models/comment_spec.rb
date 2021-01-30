@@ -20,7 +20,7 @@ RSpec.describe Comment, type: :model do
 
       expect(comment.short_id).not_to be_nil
       expect(comment.short_id).to start_with("c_")
-      expect(comment.short_id[2..-1].length).to eq(8)
+      expect(comment.short_id[2..].length).to eq(8)
     end
   end
 

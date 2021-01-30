@@ -33,7 +33,7 @@ RSpec.describe Submission, type: :model do
 
       expect(submission.short_id).not_to be_nil
       expect(submission.short_id).to start_with("s_")
-      expect(submission.short_id[2..-1].length).to eq(8)
+      expect(submission.short_id[2..].length).to eq(8)
     end
   end
 end

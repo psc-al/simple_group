@@ -9,10 +9,6 @@ class PageBase
   include Rails.application.routes.url_helpers
   include Warden::Test::Helpers
 
-  def visit(path)
-    super
-  end
-
   def has_notice?(notice)
     has_flash?(:notice, notice)
   end

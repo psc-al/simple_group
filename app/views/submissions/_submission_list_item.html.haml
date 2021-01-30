@@ -1,9 +1,9 @@
 .submission.votable{ id: submission.short_id, class: submission_classes_for(submission) }
-  %span.scoring{ id: "scoring_" + submission.short_id }
-    .upvote{ id: "upvote_" + submission.short_id, class: control_classes(submission, :upvote) }
-    .score{ id: "score_" + submission.short_id, class: control_classes(submission, :score) }
+  %span.scoring{ id: "scoring_#{submission.short_id}" }
+    .upvote{ id: "upvote_#{submission.short_id}", class: control_classes(submission, :upvote) }
+      .score{ id: "score_#{submission.short_id}", class: control_classes(submission, :score) }
       = submission.score
-    .downvote{ id: "downvote_" + submission.short_id, class: control_classes(submission, :downvote) }
+    .downvote{ id: "downvote_#{submission.short_id}", class: control_classes(submission, :downvote) }
   .submission-title
     .submission-line1
       %span.submission-link= link_to(submission.title, submission_href_for(submission))

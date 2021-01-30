@@ -1,0 +1,36 @@
+en:
+  admin:
+    users:
+      index:
+        title: Users
+        username: Username
+        submission_karma: Submission Karma
+        submissions: Submissions
+        comment_karma: Comment Karma
+        comments: Comments
+        total_karma: Total Karma
+        banned: Banned
+      user:
+        ban: ban
+        details: details
+      edit:
+        ban: Ban
+        ban_durations:
+          1_day: "One Day"
+          1_week: "One Week"
+          1_month: "One Month"
+          3_months: "Three Months"
+          permanent: Permanent
+      show:
+        banned_at: "Banned At:"
+        ban_reason: "Ban Reason:"
+        ban_type: "Ban Type:"
+        ban_types:
+          temp: Temporary
+          perma: Permanent
+        ban_end_at: "Ban End At:"
+        unban: Unban
+  users:
+    banned:
+      permaban_flash: "This account has been permanently banned."
+      tempban_flash: "This account has been temporarily banned. Check back at %{return_at}."

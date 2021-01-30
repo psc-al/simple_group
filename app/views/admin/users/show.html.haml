@@ -1,0 +1,22 @@
+%h1.breadcrumb
+  = link_to t("admin.users.index.title"), admin_users_path
+  = "/ #{@user.username}"
+- if @user.banned_at.present?
+  %div
+    %label= t(".banned_at")
+    %span= @user.banned_at
+  %div
+    %label= t(".ban_reason")
+    %span= @user.ban_reason
+  %div
+    %label= t(".ban_type")
+    %span= t(".ban_types.#{@user.ban_type}")
+  %div
+    - if @user.temp_banned?
+      %label= t(".ban_end_at")
+      %span= @user.temp_ban_end_at
+  %div
+    = link_to t(".unban"),
+      admin_unban_user_path(@user.id),
+      method: :post,
+      data: { confirm: "Are you use you want to unban #{@user.username}?" }

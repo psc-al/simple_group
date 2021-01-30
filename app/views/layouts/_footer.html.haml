@@ -5,9 +5,12 @@
         %ul
           %li= link_to t("footer.admin_menu.tags"), admin_tags_path
           %li= link_to t("footer.admin_menu.submission_removals"), admin_submission_removals_path
+          %li= link_to t("footer.admin_menu.comment_removals"), admin_comment_removals_path
+          %li= link_to t("footer.admin_menu.users"), admin_users_path
     .footer-links
       %ul
         %li= link_to t("footer.submissions.user"), user_submissions_path(current_user.username)
+        %li= link_to t("footer.comments.user"), user_comments_path(current_user.username)
         %li= link_to t("footer.submissions.saved"), marked_submissions_path(submission_action: :saved)
         %li= link_to t("footer.submissions.hidden"), marked_submissions_path(submission_action: :hidden)
         %li= link_to t("footer.links.sign_out"), destroy_user_session_path, method: :delete

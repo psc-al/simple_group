@@ -2,19 +2,29 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_030230) do
+ActiveRecord::Schema.define(version: 2020_10_24_182216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "plpgsql"
+
+  create_table "comment_removals", force: :cascade do |t|
+    t.bigint "comment_id", null: false
+    t.bigint "removed_by_id", null: false
+    t.integer "reason", null: false
+    t.text "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["comment_id"], name: "index_comment_removals_on_comment_id", unique: true
+  end
 
   create_table "comments", force: :cascade do |t|
     t.string "short_id", null: false
@@ -146,8 +156,15 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
     t.integer "role", default: 0, null: false
     t.string "username", limit: 20, null: false
     t.datetime "last_submission_at"
+    t.bigint "banned_by_id"
+    t.datetime "banned_at"
+    t.integer "ban_type"
+    t.text "ban_reason"
+    t.datetime "temp_ban_end_at"
+    t.datetime "unbanned_at"
     t.index "lower((email)::text)", name: "index_users_on_LOWER_email", unique: true, where: "(lower((email)::text) <> '[deleted]'::text)"
     t.index "lower((username)::text)", name: "index_users_on_LOWER_username", unique: true, where: "(lower((username)::text) <> '[deleted]'::text)"
+    t.index ["banned_by_id"], name: "index_users_on_banned_by_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
@@ -165,6 +182,8 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
     t.index ["votable_type", "votable_id", "kind"], name: "index_votes_on_votable_type_and_votable_id_and_kind"
   end
 
+  add_foreign_key "comment_removals", "comments", on_delete: :cascade
+  add_foreign_key "comment_removals", "users", column: "removed_by_id", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "submissions", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
@@ -182,25 +201,9 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
   add_foreign_key "thread_reply_notifications", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "user_invitations", "users", column: "sender_id", on_delete: :cascade
+  add_foreign_key "users", "users", column: "banned_by_id", on_delete: :cascade
   add_foreign_key "votes", "users", on_delete: :cascade
 
-  create_view "flattened_comments", sql_definition: <<-SQL
-      SELECT comments.id,
-      comments.short_id,
-      comments.submission_id,
-      comments.parent_id,
-      comments.body,
-      comments.created_at,
-      comments.updated_at,
-      users.username AS commenter,
-      (( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
-             FROM votes
-            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 1)))) AS score
-     FROM (comments
-       JOIN users ON ((users.id = comments.user_id)));
-  SQL
   create_view "flattened_thread_reply_notifications", sql_definition: <<-SQL
       SELECT thread_reply_notifications.id,
       thread_reply_notifications.recipient_id,
@@ -317,5 +320,24 @@ ActiveRecord::Schema.define(version: 2020_10_24_030230) do
      FROM (submissions
        JOIN users ON ((submissions.user_id = users.id)))
     WHERE (submissions.domain_id IS NULL);
+  SQL
+  create_view "flattened_comments", sql_definition: <<-SQL
+      SELECT comments.id,
+      comments.short_id,
+      comments.removed,
+      comments.submission_id,
+      comments.parent_id,
+      comments.body,
+      comments.created_at,
+      comments.updated_at,
+      users.id AS user_id,
+      users.username AS commenter,
+      (( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 0))) - ( SELECT count(votes.votable_id) AS count
+             FROM votes
+            WHERE (((votes.votable_type)::text = 'Comment'::text) AND (votes.votable_id = comments.id) AND (votes.kind = 1)))) AS score
+     FROM (comments
+       JOIN users ON ((users.id = comments.user_id)));
   SQL
 end

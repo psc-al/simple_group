@@ -1,0 +1,31 @@
+en:
+  admin:
+    comment_removals:
+      index:
+        title: Comment Removals
+        comment: Comment
+        comment_author: Author
+        removed_by: Removed By
+        reason: Reason
+        details: Details
+        view: View More
+        undo: Undo
+        confirm_reverse_removal: Are you sure you want to reverse this removal?
+      show:
+        title: "Comment Removal:"
+        comment: "Comment:"
+        view: "View"
+        comment_author: "Author:"
+        removed_by: "Removed By:"
+        reason: "Reason:"
+        details: "Details:"
+      new:
+        comment: "Comment:"
+        view: view
+        remove_comment: Remove Comment
+        comment_author: "Author:"
+        submit: Remove Comment
+      create:
+        success: Comment has been successfully removed.
+      destroy:
+        success: Comment removal has been successfully reversed.

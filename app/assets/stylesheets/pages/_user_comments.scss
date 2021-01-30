@@ -1,0 +1,29 @@
+.user-comments-container {
+  a { text-decoration: none; }
+  .comment-container {
+    border: $light-border;
+    border-radius: $border-radius;
+    padding-bottom: $spacing-xs;
+    .headline {
+      @include padding(null $spacing-xs null $spacing-xs);
+      @include margin(null $spacing-xs null $spacing-xs);
+      border-bottom: $light-border;
+      .comment-link { float: right; }
+    }
+    .user-info, .body {
+      @include padding(null $spacing-xs null $spacing-xs);
+      @include margin(null $spacing-xs null $spacing-xs);
+    }
+    .comment.child {
+      padding-left: $spacing-small;
+    }
+    .comment.user-comment {
+      .body {
+        word-wrap: break-word;
+      }
+    }
+    .comment.user-comment .user-info, .comment.user-comment .body {
+      background-color: $alto;
+    }
+  }
+}

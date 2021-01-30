@@ -11,11 +11,10 @@ class SubmissionsController < ApplicationController
     @submission = FlattenedSubmissionSearch.new({}, current_user).
       by_short_id(params[:short_id])
     @root_comment = Comment.new
-    @comments_by_parent = @submission.
-      flattened_comments.
-      with_voting_information_for(current_user).
-      order(:id).
-      group_by(&:parent_id)
+    @comments_by_parent = authorized_scope(
+      @submission.flattened_comments.with_voting_information_for(current_user),
+      with: CommentPolicy
+    ).includes(:comment_removal).order(:id).group_by(&:parent_id)
   end
 
   def new

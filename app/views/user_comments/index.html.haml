@@ -1,0 +1,15 @@
+.user-comments-container
+  - @paginator.results_page.each do |comment|
+    .comment-container{ id: comment.short_id }
+      .headline
+        = link_to @user.username, ""
+        = t(".commented_on")
+        = link_to comment.submission.title, submission_path(comment.submission)
+        = link_to t(".link"), submission_path(comment.submission, anchor: comment.short_id),
+          class: "comment-link"
+      - if comment.parent.present?
+        .comment
+          = render "comment", comment: comment.parent, child: comment
+      - else
+        .comment.user-comment
+          = render "comment", comment: comment, child: nil

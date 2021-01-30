@@ -9,6 +9,8 @@ en:
           user: "My Submissions"
           saved: "Saved"
           hidden: "Hidden"
+      comments:
+        user: "My Comments"
       links:
           about: "About"
           rules: "Rules"
@@ -16,4 +18,6 @@ en:
           sign_out: "Sign Out"
       admin_menu:
           tags: Tags
+          comment_removals: Comment Removals
           submission_removals: Submission Removals
+          users: Users

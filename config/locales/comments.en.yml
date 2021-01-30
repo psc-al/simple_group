@@ -9,6 +9,8 @@ en:
     comment:
       link: link
       reply: reply
+      remove: remove
+      removed: removed
     form:
       cancel: Cancel
     create:

@@ -13,6 +13,14 @@
     %span.link= link_to t(".link"), "##{comment.short_id}", data: { turbolinks: false }
     |
     %span.link= link_to t(".reply"), "", class: "reply"
+    - if allowed_to?(:remove?, comment, with: CommentPolicy)
+      |
+      - if comment.comment_removal.present?
+        %span.link= link_to t(".removed"),
+          admin_comment_removal_path(comment.comment_removal.id)
+      - else
+        %span.link= link_to t(".remove"),
+          new_admin_comment_removal_path(comment_removal: { comment_id: comment.id })
   - if children.present?
     .comment-tree-line
   .comment-content{ id: "comment_content_#{comment.short_id}" }

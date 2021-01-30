@@ -1,0 +1,13 @@
+%tr
+  %td= user.username
+  %td= user.submission_karma
+  %td= link_to user.submission_count, user_submissions_path(user.username)
+  %td= user.comment_karma
+  %td= link_to user.comment_count, ""
+  %td= user.submission_karma + user.comment_karma
+  %td= user.banned_at.present?
+  %td
+    - unless user.banned?
+      = link_to t(".ban"), edit_admin_user_path(user.id)
+      |
+    = link_to t(".details"), admin_user_path(user.id)

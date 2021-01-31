@@ -13,7 +13,6 @@
     .navbar-links
       %ul
         %li
-          %span= link_to t("navigation.links.recent"), "#"
         - if current_user.present?
           %li
             %span= link_to t("navigation.links.submit"), new_submission_path

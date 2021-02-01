@@ -1,6 +1,6 @@
 %h1.breadcrumb
   = link_to t("admin.users.index.title"), admin_users_path
-  = "/ #{t(".ban")} #{@user.username}"
+  = "/ #{t('.ban')} #{@user.username}"
 = simple_form_for @ban_form, url: admin_user_path(@user), method: :patch do |f|
   = f.input :ban_duration,
     collection: BanUserForm::BAN_DURATIONS.map { |d| [t(".ban_durations.#{d}"), d] },
